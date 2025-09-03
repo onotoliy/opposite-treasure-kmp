@@ -1,0 +1,10 @@
+/.gradle/
+/.git/
+/.idea/
+/local.properties
+/shareApp/build
+/kotlin-js-store
+/jsApp/build
+/build
+/androidApp/build
+/.kotlin
