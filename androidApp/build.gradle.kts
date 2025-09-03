@@ -11,9 +11,19 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shareApp"))
+                implementation("androidx.activity:activity-compose:1.7.2")
+                implementation("androidx.appcompat:appcompat:1.6.1")
+                implementation("androidx.core:core-ktx:1.10.1")
             }
         }
     }
+}
+
+dependencies {
+    implementation(project(":shareApp"))
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.10.1")
 }
 
 android {

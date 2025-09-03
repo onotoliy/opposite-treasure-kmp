@@ -14,7 +14,7 @@ kotlin {
         publishLibraryVariants("release", "debug")
     }
 
-    jvm("desktop")
+//    jvm("desktop")
 
     js(IR) {
         browser()
@@ -26,6 +26,7 @@ kotlin {
                 optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
             }
         }
+
         commonMain.dependencies {
             implementation(compose.ui)
             implementation(compose.foundation)
@@ -34,19 +35,23 @@ kotlin {
             implementation("org.jetbrains.compose.material:material-icons-core:1.6.11")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
         }
-        val androidMain by getting {
-        }
 
-        val desktopMain by getting {
-
+        androidMain.dependencies {
+            api("androidx.activity:activity-compose:1.7.2")
+            api("androidx.appcompat:appcompat:1.6.1")
+            api("androidx.core:core-ktx:1.10.1")
         }
+//
+//        val desktopMain by getting {
+//
+//        }
 
     }
 }
 
 android {
     namespace = "com.example.shareApp"
-    compileSdk = 35   // 🔥 обязательно!
+    compileSdk = 36
     defaultConfig {
         minSdk = 26
     }
