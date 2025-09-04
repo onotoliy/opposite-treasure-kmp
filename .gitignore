@@ -8,3 +8,4 @@
 /build
 /androidApp/build
 /.kotlin
+/app/build
