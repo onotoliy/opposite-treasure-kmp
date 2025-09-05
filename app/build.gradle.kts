@@ -1,9 +1,4 @@
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
-@file:OptIn(ExperimentalWasmDsl::class)
-
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -21,24 +16,9 @@ kotlin {
 
     jvm("desktop")
 
-
-    wasmJs {
-//        moduleName = "app"
+    js(IR) {
         binaries.executable()
-        browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
-            commonWebpackConfig {
-                outputFileName = "app.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
-                }
-            }
-        }
+        browser()
     }
 
     sourceSets {
@@ -53,13 +33,6 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.components.resources)
-            implementation("org.jetbrains.skiko:skiko:0.9.24")
-        }
-
-        wasmJsMain.dependencies {
-            implementation (compose.ui)
-            implementation (compose.foundation)
-            implementation("org.jetbrains.skiko:skiko-wasm-js:0.9.24")
         }
 
         androidMain.dependencies {
