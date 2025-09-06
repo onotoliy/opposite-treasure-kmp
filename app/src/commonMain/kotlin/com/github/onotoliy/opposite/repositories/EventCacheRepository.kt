@@ -1,5 +1,7 @@
 package com.github.opposite.treasure.shared
 
+import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.data.Option
 import kotlin.String
 import kotlin.time.Clock
 import kotlin.time.Instant
@@ -26,7 +28,7 @@ class EventCacheRepository : IEventRepository {
     }
 
     override fun get(uuid: String): Event {
-        return EVENTS.first { it.uuid == uuid }
+        return EVENTS.firstOrNull() { it.uuid == uuid } ?: EVENTS.first()
     }
 
     override fun getOptionAll(): List<Option> {

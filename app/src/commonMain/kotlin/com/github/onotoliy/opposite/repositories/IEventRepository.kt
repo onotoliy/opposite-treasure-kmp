@@ -1,5 +1,8 @@
 package com.github.opposite.treasure.shared
 
+import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.data.Option
+
 interface IEventRepository {
 
     fun get(uuid: String): Event

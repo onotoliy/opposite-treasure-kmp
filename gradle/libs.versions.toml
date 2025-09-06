@@ -1,9 +1,12 @@
 [versions]
 agp = "8.7.3"
+composematerialdatatable = "1.2.2"
 composeMultiplatform = "1.8.2"
 kotlin = "2.2.0"
 
 [libraries]
+composematerialdatatable-wasm-js = { module = "io.github.aleksandar-stefanovic:composematerialdatatable-wasm-js", version.ref = "composematerialdatatable" }
+composematerialdatatable = { module = "io.github.aleksandar-stefanovic:composematerialdatatable", version.ref = "composematerialdatatable" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -1,4 +1,4 @@
-package com.github.opposite.treasure.shared
+package com.github.onotoliy.opposite.data
 
 data class Option(
     val uuid: String,

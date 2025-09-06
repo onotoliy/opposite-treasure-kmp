@@ -1,4 +1,6 @@
-package com.github.opposite.treasure.shared
+package com.github.onotoliy.opposite.data
+
+import com.github.onotoliy.opposite.data.Option
 
 data class Event(
     val uuid: String,
