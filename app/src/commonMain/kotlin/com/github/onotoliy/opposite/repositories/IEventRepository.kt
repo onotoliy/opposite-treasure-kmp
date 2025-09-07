@@ -5,20 +5,19 @@ import com.github.onotoliy.opposite.data.Option
 
 interface IEventRepository {
 
-    fun get(uuid: String): Event
+    suspend fun get(uuid: String): Event
 
-    fun getOptionAll(): List<Option>
+    suspend fun getOptionAll(): List<Option>
 
-    fun getAll(
+    suspend fun getAll(
         name: String?,
         offset: Int,
         numberOfRows: Int
     ): List<Event>
 
-    fun create(event: Event): Event
+    suspend fun create(event: Event): Event
 
-    fun update(event: Event): Event
+    suspend fun update(event: Event): Event
 
-    fun delete(uuid: String)
-
+    suspend fun delete(uuid: String)
 }

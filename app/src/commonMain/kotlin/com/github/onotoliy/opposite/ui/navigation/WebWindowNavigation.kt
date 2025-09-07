@@ -37,7 +37,6 @@ fun WebWindowNavigation(
 
             composable("events") {
                 EventsTableScreen(
-                    events = events.getAll(null, 0, 10),
                     onSelect = { navController.navigate1(it) }
                 )
             }
@@ -49,14 +48,17 @@ fun WebWindowNavigation(
                 val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
                     ?: throw IllegalArgumentException()
 
-                EventViewScreen(event = events.get(uuid))
+                EventViewScreen(uuid)
             }
 
             composable(
                 route = "event/{uuid}/edit",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
-                EventEditScreen(event = events.get(""))
+                val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
+                    ?: throw IllegalArgumentException()
+
+                EventEditScreen(uuid)
             }
 
             composable("users") {

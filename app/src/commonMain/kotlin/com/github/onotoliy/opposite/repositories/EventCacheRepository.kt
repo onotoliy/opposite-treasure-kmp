@@ -2,6 +2,7 @@ package com.github.opposite.treasure.shared
 
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.data.Option
+import kotlinx.coroutines.delay
 import kotlin.String
 import kotlin.time.Clock
 import kotlin.time.Instant
@@ -22,41 +23,47 @@ private fun newEvent(id: Int): Event {
 class EventCacheRepository : IEventRepository {
 
     companion object {
-        private val EVENTS: MutableList<Event> = mutableListOf<Event>(
+        val EVENTS: MutableList<Event> = mutableListOf<Event>(
             newEvent(1), newEvent(2), newEvent(3), newEvent(4)
         )
     }
 
-    override fun get(uuid: String): Event {
+    override suspend fun get(uuid: String): Event {
+        delay(1000)
         return EVENTS.firstOrNull() { it.uuid == uuid } ?: EVENTS.first()
     }
 
-    override fun getOptionAll(): List<Option> {
+    override suspend fun getOptionAll(): List<Option> {
+        delay(1000)
         return EVENTS.map { Option(it.uuid, it.name) }
     }
 
-    override fun getAll(
+    override suspend fun getAll(
         name: String?,
         offset: Int,
         numberOfRows: Int
     ): List<Event> {
+        delay(1000)
         return EVENTS
     }
 
-    override fun create(event: Event): Event {
+    override suspend fun create(event: Event): Event {
+        delay(1000)
         EVENTS.add(event)
 
         return get(event.uuid)
     }
 
-    override fun update(event: Event): Event {
+    override suspend fun update(event: Event): Event {
+        delay(1000)
         delete(event.uuid)
         create(event)
 
         return get(event.uuid)
     }
 
-    override fun delete(uuid: String) {
+    override suspend fun delete(uuid: String) {
+        delay(1000)
         val list = EVENTS.filter { it.uuid != uuid }
 
         EVENTS.clear()
