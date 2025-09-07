@@ -1,5 +1,6 @@
 package com.github.onotoliy.opposite.ui.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
@@ -14,6 +15,7 @@ import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
 import com.github.onotoliy.opposite.ui.events.EventEditScreen
 import com.github.onotoliy.opposite.ui.events.EventViewScreen
 import com.github.onotoliy.opposite.ui.events.EventsTableScreen
+import com.github.onotoliy.opposite.ui.events.NewEventViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
@@ -21,6 +23,7 @@ import com.github.onotoliy.opposite.ui.users.UserEditScreen
 import com.github.onotoliy.opposite.ui.users.UserViewScreen
 import com.github.onotoliy.opposite.ui.users.UsersTableScreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WebWindowNavigation(
     onNavHostReady: suspend (NavController) -> Unit = {}
@@ -48,7 +51,7 @@ fun WebWindowNavigation(
                 val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
                     ?: throw IllegalArgumentException()
 
-                EventViewScreen(uuid)
+                NewEventViewScreen(uuid)
             }
 
             composable(

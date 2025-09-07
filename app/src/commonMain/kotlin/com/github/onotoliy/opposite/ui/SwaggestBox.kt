@@ -1,12 +1,12 @@
 package com.github.onotoliy.opposite.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.ExposedDropdownMenuDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import com.github.onotoliy.opposite.data.Option
 import kotlinx.coroutines.delay
 
-@ExperimentalMaterialApi
+@ExperimentalMaterial3Api
 @Composable
 fun SwaggestBox(
     label: String,
@@ -58,14 +58,13 @@ fun SwaggestBox(
         ) {
             values.forEach { option ->
                 DropdownMenuItem(
+                    text = { Text(option.name) },
                     onClick = {
                         expanded = false
 
                         onSelected(option)
                     }
-                ) {
-                    Text(option.name)
-                }
+                )
             }
         }
     }

@@ -4,12 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Error
@@ -28,13 +27,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.github.onotoliy.opposite.data.Option
+import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.SwaggestBox
 import com.github.opposite.treasure.shared.EventCacheRepository
 import kotlinx.coroutines.delay
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class, ExperimentalTime::class)
+@OptIn( ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun CashboxScreen() {
     val s = "Длинный StakTrase ошибка\nДлинный StakTrase ошибка\nДлинный StakTrase ошибка\nДлинный StakTrase ошибка\n"
@@ -58,43 +59,12 @@ fun CashboxScreen() {
 //        }
 //    )
 
-    val state = rememberDatePickerState()
-    var open by remember { mutableStateOf(false) }
-    var expanded by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
-    val selectedDate: String? = datePickerState.selectedDateMillis?.let { millis ->
-        Instant.fromEpochMilliseconds(millis).toString()
-    }
+    var selectedDate by remember { mutableStateOf<Instant>(Clock.System.now()) }
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .clickable { open = true
-            println("12") }) {
-        OutlinedTextField(
-            value = selectedDate?.toString() ?: "",
-            onValueChange = {},
-            label = { Text("Дата") },
-            enabled = false, // поле неактивно
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { open = true
-                    println("helll") },
-            readOnly = true,
-            trailingIcon = { Icon(Icons.Default.DateRange, contentDescription = null) }
-        )
-
-        if (open) {
-            DatePickerDialog(
-                onDismissRequest = { open = false },
-                confirmButton = {
-                    TextButton(onClick = { open = false }) { Text("OK") }
-                },
-                dismissButton = {
-                    TextButton(onClick = { open = false }) { Text("Отмена") }
-                }
-            ) {
-                DatePicker(state = datePickerState)
-            }
-        }
+    CalendarField(
+        label = "Сдать до",
+        value = selectedDate
+    ) {
+        selectedDate = it
     }
 }

@@ -2,24 +2,27 @@ package com.github.onotoliy.opposite.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.People
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +30,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WebWindowScaffold(
     onSelect: (Screen) -> Unit,
@@ -36,15 +40,18 @@ fun WebWindowScaffold(
         Scaffold(
             topBar = { WebWindowHeader() },
             content = { paddingValues ->
-                Row {
+                Row(modifier = Modifier.padding(paddingValues)) {
                     WebWindowSideMenu(onSelect)
-                    content()
+                    Column(modifier = Modifier.fillMaxSize().padding(10.dp)) {
+                        content()
+                    }
                 }
             }
         )
     }
 }
 
+@ExperimentalMaterial3Api
 @Composable
 private fun WebWindowHeader() {
     TopAppBar(
@@ -82,7 +89,7 @@ private fun WebWindowSideMenu(
 @Composable
 private fun WebWindowMenuButton(
     imageVector: ImageVector,
-    contentDescription: String,
+    label: String,
     onClick: () -> Unit
 ) {
     Row(
@@ -95,13 +102,12 @@ private fun WebWindowMenuButton(
     ) {
         Icon(
             imageVector = imageVector,
-            contentDescription = contentDescription,
+            contentDescription = label,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = contentDescription,
-            style = MaterialTheme.typography.button,
+            text = label,
             modifier = Modifier.fillMaxWidth()
         )
     }

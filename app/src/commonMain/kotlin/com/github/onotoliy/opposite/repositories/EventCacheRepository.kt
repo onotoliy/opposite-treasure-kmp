@@ -7,18 +7,7 @@ import kotlin.String
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-private fun newEvent(id: Int): Event {
-    return Event(
-        uuid = id.toString(),
-        name = "Event $id",
-        contribution = "1000",
-        total = "1000",
-        deadline = "2025-09-04",
-        creationDate = "2025-09-04",
-        author = Option("1", "Author"),
-        deletionDate = null
-    )
-}
+
 
 class EventCacheRepository : IEventRepository {
 
