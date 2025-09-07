@@ -13,6 +13,8 @@ import com.github.onotoliy.opposite.repositories.TransactionCacheRepository
 import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
 import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
 import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
+import com.github.onotoliy.opposite.viewmodel.users.UsersListModel
 import com.github.opposite.treasure.shared.EventCacheRepository
 import com.github.opposite.treasure.shared.IEventRepository
 import org.koin.dsl.module
@@ -27,7 +29,9 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    factory { (id: String) -> EventViewModel(get(), get(), id) }
+    factory { (id: String) -> EventViewModel(get(), get(), get(), get(),  id) }
     factory { (id: String) -> EventEditModel(get(), id) }
     single { EventsListModel(get()) }
+    single { TransactionsListModel(get()) }
+    single { UsersListModel(get()) }
 }

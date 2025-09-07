@@ -1,6 +1,6 @@
 package com.github.onotoliy.opposite.data
 
-enum class TransactionType(label: String) {
+enum class TransactionType(val label: String) {
     NONE("Не выбрано"),
     COST("Расход"),
     CONTRIBUTION("Взнос"),

@@ -9,13 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.github.onotoliy.opposite.repositories.events
 import com.github.onotoliy.opposite.ui.WebWindowScaffold
 import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
 import com.github.onotoliy.opposite.ui.events.EventEditScreen
-import com.github.onotoliy.opposite.ui.events.EventViewScreen
 import com.github.onotoliy.opposite.ui.events.EventsTableScreen
-import com.github.onotoliy.opposite.ui.events.NewEventViewScreen
+import com.github.onotoliy.opposite.ui.events.EventViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
@@ -45,17 +43,17 @@ fun WebWindowNavigation(
             }
 
             composable(
-                route = "event/{uuid}",
+                route = "events/{uuid}",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
                 val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
                     ?: throw IllegalArgumentException()
 
-                NewEventViewScreen(uuid)
+                EventViewScreen(uuid, onSelect = { navController.navigate1(it) })
             }
 
             composable(
-                route = "event/{uuid}/edit",
+                route = "events/{uuid}/edit",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
                 val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
@@ -65,7 +63,7 @@ fun WebWindowNavigation(
             }
 
             composable("users") {
-                UsersTableScreen()
+                UsersTableScreen(onSelect = { navController.navigate1(it) })
             }
 
             composable(
@@ -83,18 +81,18 @@ fun WebWindowNavigation(
             }
 
             composable("transactions") {
-                TransactionsTableScreen()
+                TransactionsTableScreen(onSelect = { navController.navigate1(it) })
             }
 
             composable(
-                route = "transaction/{uuid}",
+                route = "transactions/{uuid}",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
                 TransactionViewScreen()
             }
 
             composable(
-                route = "transaction/{uuid}/edit",
+                route = "transactions/{uuid}/edit",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
                 TransactionEditScreen()
@@ -112,16 +110,16 @@ fun NavController.navigate1(screen: Screen) {
         is Screen.CashScreen -> "cashbox"
 
         is Screen.EventsScreen -> "events"
-        is Screen.EventEditScreen -> "event/${screen.uuid}/edit"
-        is Screen.EventViewScreen -> "event/${screen.uuid}"
+        is Screen.EventEditScreen -> "events/${screen.uuid}/edit"
+        is Screen.EventViewScreen -> "events/${screen.uuid}"
 
         is Screen.TransactionsScreen -> "transactions"
-        is Screen.TransactionEditScreen -> "transaction/${screen.uuid}/edit"
-        is Screen.TransactionViewScreen -> "transaction/${screen.uuid}"
+        is Screen.TransactionEditScreen -> "transactions/${screen.uuid}/edit"
+        is Screen.TransactionViewScreen -> "transactions/${screen.uuid}"
 
         is Screen.UsersScreen -> "users"
-        is Screen.UserEditScreen -> "user/${screen.uuid}/edit"
-        is Screen.UserViewScreen -> "user/${screen.uuid}"
+        is Screen.UserEditScreen -> "users/${screen.uuid}/edit"
+        is Screen.UserViewScreen -> "users/${screen.uuid}"
     }
     this.navigate(route)
 }

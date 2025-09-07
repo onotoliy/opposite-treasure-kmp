@@ -6,7 +6,7 @@ interface ITransactionRepository {
 
     suspend fun get(uuid: String): Transaction
 
-    suspend fun getAll(q: String? = null, offset: Int = 0, numberOfRows: Int = 10): List<Transaction>
+    suspend fun getAll(q: String? = null, eventID: String? = null, offset: Int = 0, numberOfRows: Int = 10): List<Transaction>
 
     suspend fun create(user: Transaction): Transaction
 

@@ -17,7 +17,7 @@ class TransactionCacheRepository : ITransactionRepository {
     }
 
 
-    override suspend fun getAll(q: String?, offset: Int, numberOfRows: Int): List<Transaction> {
+    override suspend fun getAll(q: String?, eventID: String?, offset: Int, numberOfRows: Int): List<Transaction> {
         delay(1000)
         return TRANSACTIONS
     }

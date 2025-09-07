@@ -87,7 +87,7 @@ private fun WebWindowSideMenu(
 }
 
 @Composable
-private fun WebWindowMenuButton(
+fun WebWindowMenuButton(
     imageVector: ImageVector,
     label: String,
     onClick: () -> Unit

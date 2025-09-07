@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,12 +15,9 @@ import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Label
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,21 +28,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.data.Transaction
+import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
-import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
+import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
+import com.github.onotoliy.opposite.ui.users.UsersTableScreen
 import com.github.onotoliy.opposite.viewmodel.events.EventView
 import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun NewEventViewScreen(
+fun EventViewScreen(
     uuid: String,
-    model: EventViewModel = koinViewModel { parametersOf(uuid) }
+    model: EventViewModel = koinViewModel { parametersOf(uuid) },
+    onSelect: (Screen) -> Unit
 ) {
     val state by model.state.collectAsState()
 
@@ -74,18 +74,17 @@ fun NewEventViewScreen(
                 }
             }
 
-            // Контент выбранной вкладки
             when (selectedTabIndex) {
-                0 -> EventInformationTab(data.event, data.logo)
-                1 -> TabContent("Profile content")
-                2 -> TabContent("Settings content")
+                0 -> InformationTab(data.event, data.logo)
+                1 -> TransactionsScreen(data.transactions, onSelect = onSelect)
+                2 -> DebtorsScreen(data.debtors, onSelect = onSelect)
             }
         }
     }
 }
 
 @Composable
-private fun EventInformationTab(event: Event, logo: DrawableResource) {
+private fun InformationTab(event: Event, logo: DrawableResource) {
     var name by remember { mutableStateOf(event.name) }
     var author by remember { mutableStateOf(event.author.name) }
     var deadline by remember { mutableStateOf(event.deadline) }
@@ -122,10 +121,12 @@ private fun EventInformationTab(event: Event, logo: DrawableResource) {
             }
         }
     }
-
 }
 
 @Composable
-private fun TabContent(label: String) {
-    Text(label)
-}
+private fun DebtorsScreen(users: List<User>, onSelect: (Screen) -> Unit) =
+    UsersTableScreen(users, onSelect)
+
+@Composable
+private fun TransactionsScreen(transactions: List<Transaction>, onSelect: (Screen) -> Unit) =
+    TransactionsTableScreen(transactions, onSelect)

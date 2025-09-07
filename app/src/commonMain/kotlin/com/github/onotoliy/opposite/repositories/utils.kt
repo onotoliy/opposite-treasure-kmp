@@ -33,12 +33,12 @@ fun newUser(id: Int): User {
 fun newTransaction(id: Int, eventID: Int? = null, personID: Int? = null): Transaction {
     return Transaction(
         uuid = "$id",
-        name = "UserName $id",
+        name = "Transaction $id",
         type = TransactionType.CONTRIBUTION,
         cash = "10000",
-        person = personID?.let { Option("$id", "User $id") },
+        person = personID?.let { Option("$id", "Event $id") },
         event = eventID?.let { Option("$id", "User $id") },
-        author = Option("$id", "User $id") ,
+        author = Option("$id", "Author $id") ,
         creationDate = "14.06.1992",
         transactionDate = "14.06.1992",
         deletionDate = null

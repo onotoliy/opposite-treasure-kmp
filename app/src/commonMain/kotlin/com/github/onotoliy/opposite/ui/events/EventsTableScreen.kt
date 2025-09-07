@@ -33,8 +33,6 @@ fun EventsTableScreen(model: EventsListModel = koinViewModel(), onSelect: (Scree
                 column { Text("Название") }
                 column { Text("Сумма") }
                 column { Text("Сдать до") }
-                column { Text("Автор") }
-                column { Text("Дата создания") }
             }
         ) {
             events.forEach { record ->
@@ -50,8 +48,6 @@ fun EventsTableScreen(model: EventsListModel = koinViewModel(), onSelect: (Scree
                     }
                     cell { Text(record.contribution) }
                     cell { Text(record.deadline) }
-                    cell { Text(record.author.name) }
-                    cell { Text(record.creationDate) }
                 }
 
             }
