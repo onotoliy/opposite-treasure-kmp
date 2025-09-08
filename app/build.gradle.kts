@@ -43,6 +43,15 @@ kotlin {
             implementation("io.github.windedge.table:table-m3:0.2.2")
         }
 
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.windows_x64)
+                implementation("org.jetbrains.skiko:skiko-awt-runtime-windows-x64:0.9.24")
+            }
+
+
+        }
+
         jsMain.dependencies {
         }
 
@@ -50,6 +59,12 @@ kotlin {
             implementation(compose.uiTooling)
             implementation(compose.preview)
         }
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "com.github.onotoliy.opposite.MainKt"
     }
 }
 

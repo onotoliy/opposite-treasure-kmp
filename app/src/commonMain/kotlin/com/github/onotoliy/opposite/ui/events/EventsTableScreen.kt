@@ -1,25 +1,14 @@
 package com.github.onotoliy.opposite.ui.events
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.ui.UiStateScreen
-import com.github.onotoliy.opposite.ui.components.EventTableComponent
+import com.github.onotoliy.opposite.ui.components.EventTable
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
-import io.github.windedge.table.DataTable
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 fun EventsTableScreen(model: EventsListModel = koinViewModel(), onSelect: (Screen) -> Unit) {
@@ -32,5 +21,5 @@ fun EventsTableScreen(model: EventsListModel = koinViewModel(), onSelect: (Scree
 
 @Composable
 fun EventsTableScreen(events: List<Event>, onSelect: (Screen) -> Unit) {
-    EventTableComponent(events, onSelect)
+    EventTable(events, onSelect)
 }

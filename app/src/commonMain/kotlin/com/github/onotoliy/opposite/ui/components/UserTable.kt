@@ -12,7 +12,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import io.github.windedge.table.DataTable
 
 @Composable
-fun UserTableScreen(users: List<User>, onSelect: (Screen) -> Unit) {
+fun UserTable(users: List<User>, onSelect: (Screen) -> Unit) {
     DataTable(
         columns = {
             headerBackground {

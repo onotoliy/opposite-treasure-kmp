@@ -12,7 +12,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import io.github.windedge.table.DataTable
 
 @Composable
-fun TransactionTableComponent(transactions: List<Transaction>, onSelect: (Screen) -> Unit) {
+fun TransactionTable(transactions: List<Transaction>, onSelect: (Screen) -> Unit) {
     DataTable(
         columns = {
             headerBackground {

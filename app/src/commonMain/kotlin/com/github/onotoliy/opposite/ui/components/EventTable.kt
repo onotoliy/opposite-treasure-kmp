@@ -12,7 +12,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import io.github.windedge.table.DataTable
 
 @Composable
-fun EventTableComponent(events: List<Event>, onSelect: (Screen) -> Unit) {
+fun EventTable(events: List<Event>, onSelect: (Screen) -> Unit) {
     DataTable(
         columns = {
             headerBackground {
