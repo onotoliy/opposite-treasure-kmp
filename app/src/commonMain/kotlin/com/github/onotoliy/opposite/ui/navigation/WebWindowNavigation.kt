@@ -12,7 +12,7 @@ import androidx.navigation.navArgument
 import com.github.onotoliy.opposite.ui.WebWindowScaffold
 import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
 import com.github.onotoliy.opposite.ui.events.EventEditScreen
-import com.github.onotoliy.opposite.ui.events.EventsTableScreen
+import com.github.onotoliy.opposite.ui.events.EventsScreen
 import com.github.onotoliy.opposite.ui.events.EventViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionViewScreen
@@ -37,7 +37,7 @@ fun WebWindowNavigation(
             }
 
             composable("events") {
-                EventsTableScreen(
+                EventsScreen(
                     onSelect = { navController.navigate1(it) }
                 )
             }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.transactions.TransactionInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionView
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionViewModel
@@ -75,42 +76,14 @@ fun TransactionViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> InformationTab(data.transactions, onSelect)
+                0 -> TransactionInformationView(data.transactions, onSelect)
                 1 -> FilesTab(data.files)
             }
         }
     }
 }
 
-@Composable
-private fun InformationTab(transaction: Transaction, onSelect: (Screen) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        LabelledText("Тип", transaction.type.label)
-        LabelledText("Название", transaction.name)
-        LabelledText("Сумма", transaction.cash)
-        transaction.person?.let {
-            LabelledText("Пользователь", it.name) {
-                onSelect(Screen.UserViewScreen(it.uuid))
-            }
-        }
-        transaction.event?.let {
-            LabelledText("Событие", it.name) {
-                onSelect(Screen.EventViewScreen(it.uuid))
-            }
-        }
-        LabelledText("Дата транзакции", transaction.transactionDate)
-        LabelledText("Автор", transaction.author.name)
-        LabelledText("Дата создания", transaction.creationDate)
 
-        Button(
-            onClick = { /* обработка */ },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Сохранить")
-        }
-    }
-
-}
 
 @Composable
 private fun FilesTab(files: List<DrawableResource>) {

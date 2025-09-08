@@ -17,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,8 +32,10 @@ import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.events.view.EventInformationWebView
+import com.github.onotoliy.opposite.ui.components.transactions.TransactionListView
+import com.github.onotoliy.opposite.ui.components.users.UserListView
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
 import com.github.onotoliy.opposite.ui.users.UsersTableScreen
 import com.github.onotoliy.opposite.viewmodel.events.EventView
 import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
@@ -79,52 +80,10 @@ fun EventViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> InformationTab(data.event, data.logo)
-                1 -> TransactionsScreen(data.transactions, onSelect = onSelect)
-                2 -> DebtorsScreen(data.debtors, onSelect = onSelect)
+                0 -> EventInformationWebView(data.event, data.logo)
+                1 -> TransactionListView(data.transactions, onSelect = onSelect)
+                2 -> UserListView(data.debtors, onSelect = onSelect)
             }
         }
     }
 }
-
-@Composable
-private fun InformationTab(event: Event, logo: DrawableResource) {
-    Row(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Image(
-            painter = painterResource(logo),
-            contentDescription = null,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.size(300.dp)
-        )
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            LabelledText("Название", event.name)
-            LabelledText("Сумма", event.contribution)
-            LabelledText("Сдать до", event.deadline)
-            LabelledText("Автор", event.author.name)
-            LabelledText("Дата создания", event.creationDate)
-
-            Button(
-                onClick = { /* обработка */ },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Сохранить")
-            }
-        }
-    }
-}
-
-@Composable
-private fun DebtorsScreen(users: List<User>, onSelect: (Screen) -> Unit) =
-    UsersTableScreen(users, onSelect)
-
-@Composable
-private fun TransactionsScreen(transactions: List<Transaction>, onSelect: (Screen) -> Unit) =
-    TransactionsTableScreen(transactions, onSelect)

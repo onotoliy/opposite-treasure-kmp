@@ -1,4 +1,4 @@
-package com.github.onotoliy.opposite.ui.components
+package com.github.onotoliy.opposite.ui.components.users.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +12,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import io.github.windedge.table.DataTable
 
 @Composable
-fun UserTable(users: List<User>, onSelect: (Screen) -> Unit) {
+fun WebUserTableComponent(users: List<User>, onSelect: (Screen) -> Unit) {
     DataTable(
         columns = {
             headerBackground {

@@ -1,4 +1,4 @@
-package com.github.onotoliy.opposite.ui.components
+package com.github.onotoliy.opposite.ui.components.events.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +12,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import io.github.windedge.table.DataTable
 
 @Composable
-fun EventTable(events: List<Event>, onSelect: (Screen) -> Unit) {
+fun EventTableWebView(events: List<Event>, onSelect: (Screen) -> Unit) {
     DataTable(
         columns = {
             headerBackground {
@@ -36,7 +36,6 @@ fun EventTable(events: List<Event>, onSelect: (Screen) -> Unit) {
                 cell { Text(record.contribution) }
                 cell { Text(record.deadline) }
             }
-
         }
     }
 }

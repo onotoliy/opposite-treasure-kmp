@@ -48,8 +48,6 @@ kotlin {
                 implementation(compose.desktop.windows_x64)
                 implementation("org.jetbrains.skiko:skiko-awt-runtime-windows-x64:0.9.24")
             }
-
-
         }
 
         jsMain.dependencies {

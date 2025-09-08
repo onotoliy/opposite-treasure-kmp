@@ -1,4 +1,4 @@
-package com.github.onotoliy.opposite.ui.components
+package com.github.onotoliy.opposite.ui.components.transactions.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +12,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import io.github.windedge.table.DataTable
 
 @Composable
-fun TransactionTable(transactions: List<Transaction>, onSelect: (Screen) -> Unit) {
+fun TransactionTableView(transactions: List<Transaction>, onSelect: (Screen) -> Unit) {
     DataTable(
         columns = {
             headerBackground {

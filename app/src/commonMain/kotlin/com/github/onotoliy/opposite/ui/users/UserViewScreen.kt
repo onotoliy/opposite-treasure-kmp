@@ -27,15 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Event
-import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
-import com.github.onotoliy.opposite.ui.events.EventsTableScreen
+import com.github.onotoliy.opposite.ui.components.events.EventListView
+import com.github.onotoliy.opposite.ui.components.transactions.TransactionListView
+import com.github.onotoliy.opposite.ui.components.users.UserInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
-import com.github.onotoliy.opposite.viewmodel.events.EventView
 import com.github.onotoliy.opposite.viewmodel.users.UserView
 import com.github.onotoliy.opposite.viewmodel.users.UserViewModel
 import org.jetbrains.compose.resources.DrawableResource
@@ -79,51 +77,10 @@ fun UserViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> InformationTab(data.user, data.logo)
-                1 -> TransactionsScreen(data.transactions, onSelect = onSelect)
-                2 -> DebtsScreen(data.debts, onSelect = onSelect)
+                0 -> UserInformationView(data.user, data.logo)
+                1 -> TransactionListView(data.transactions, onSelect = onSelect)
+                2 -> EventListView(data.debts, onSelect = onSelect)
             }
         }
     }
 }
-
-@Composable
-private fun InformationTab(user: User, logo: DrawableResource) {
-    Row(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Image(
-            painter = painterResource(logo),
-            contentDescription = null,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.size(300.dp)
-        )
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            LabelledText("Название", user.name)
-            LabelledText("Депозит", user.deposit)
-            LabelledText("Номер телефона", user.login)
-            LabelledText("День рождения", user.birthday)
-
-            Button(
-                onClick = { /* обработка */ },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Сохранить")
-            }
-        }
-    }
-}
-
-@Composable
-private fun DebtsScreen(events: List<Event>, onSelect: (Screen) -> Unit) =
-    EventsTableScreen(events, onSelect)
-
-@Composable
-private fun TransactionsScreen(transactions: List<Transaction>, onSelect: (Screen) -> Unit) =
-    TransactionsTableScreen(transactions, onSelect)
