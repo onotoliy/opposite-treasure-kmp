@@ -23,7 +23,7 @@ fun LabelledText(
     Row {
         Text(
             text = label,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.width(120.dp)
         )
 

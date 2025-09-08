@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.EventTableComponent
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
 import io.github.windedge.table.DataTable
@@ -25,32 +26,11 @@ fun EventsTableScreen(model: EventsListModel = koinViewModel(), onSelect: (Scree
     val state by model.state.collectAsState()
 
     UiStateScreen<List<Event>>(state, load = model::load) { events ->
-        DataTable(
-            columns = {
-                headerBackground {
-                    Box(modifier = Modifier.background(color = Color.LightGray))
-                }
-                column { Text("Название") }
-                column { Text("Сумма") }
-                column { Text("Сдать до") }
-            }
-        ) {
-            events.forEach { record ->
-                row(modifier = Modifier) {
-                    cell {
-                        Text(modifier = Modifier.clickable(onClick = {
-                            onSelect(
-                                Screen.EventViewScreen(
-                                    record.uuid
-                                )
-                            )
-                        }), text = record.name)
-                    }
-                    cell { Text(record.contribution) }
-                    cell { Text(record.deadline) }
-                }
-
-            }
-        }
+        EventsTableScreen(events, onSelect)
     }
+}
+
+@Composable
+fun EventsTableScreen(events: List<Event>, onSelect: (Screen) -> Unit) {
+    EventTableComponent(events, onSelect)
 }

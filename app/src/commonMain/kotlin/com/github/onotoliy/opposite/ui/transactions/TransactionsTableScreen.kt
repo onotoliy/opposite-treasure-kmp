@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.TransactionTableComponent
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.users.UsersTableScreen
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
@@ -31,57 +32,5 @@ fun TransactionsTableScreen(model: TransactionsListModel = koinViewModel(), onSe
 
 @Composable
 fun TransactionsTableScreen(transactions: List<Transaction>, onSelect: (Screen) -> Unit) {
-    DataTable(
-        columns = {
-            headerBackground {
-                Box(modifier = Modifier.background(color = Color.LightGray))
-            }
-            column { Text("Тип") }
-            column { Text("Название") }
-            column { Text("Сумма") }
-            column { Text("Пользователь") }
-            column { Text("Событие") }
-            column { Text("Дата создания") }
-        }
-    ) {
-        transactions.forEach { record ->
-            row(modifier = Modifier) {
-                cell { Text(record.type.label) }
-                cell {
-                    Text(
-                        modifier = Modifier.clickable(
-                            onClick = { onSelect(Screen.TransactionViewScreen(record.uuid)) }),
-                        text = record.name
-                    )
-                }
-                cell { Text(record.cash) }
-                cell {
-                    Text(
-                        modifier = Modifier.then(
-                            record.person?.uuid?.let {
-                                Modifier.clickable {
-                                    onSelect(Screen.UserViewScreen(it))
-                                }
-                            } ?: Modifier
-                        ),
-                        text = record.person?.name ?: ""
-                    )
-                }
-                cell {
-                    Text(
-                        modifier = Modifier.then(
-                            record.event?.uuid?.let {
-                                Modifier.clickable {
-                                    onSelect(Screen.EventViewScreen(it))
-                                }
-                            } ?: Modifier
-                        ),
-                        text = record.event?.name ?: ""
-                    )
-                }
-                cell { Text(record.transactionDate) }
-            }
-
-        }
-    }
+    TransactionTableComponent(transactions, onSelect)
 }

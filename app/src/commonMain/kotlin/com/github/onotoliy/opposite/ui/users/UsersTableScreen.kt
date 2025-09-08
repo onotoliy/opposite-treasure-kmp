@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.UserTableScreen
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
 import com.github.onotoliy.opposite.viewmodel.users.UsersListModel
@@ -29,26 +30,5 @@ fun UsersTableScreen(model: UsersListModel = koinViewModel(), onSelect: (Screen)
 
 @Composable
 fun UsersTableScreen(users: List<User>, onSelect: (Screen) -> Unit) {
-    DataTable(
-        columns = {
-            headerBackground {
-                Box(modifier = Modifier.background(color = Color.LightGray))
-            }
-            column { Text("ФИО") }
-            column { Text("Депозит") }
-        }
-    ) {
-        users.forEach { record ->
-            row(modifier = Modifier) {
-                cell {
-                    Text(
-                        modifier = Modifier.clickable { onSelect(Screen.UserViewScreen(record.uuid)) },
-                        text = record.name
-                    )
-                }
-                cell { Text(record.deposit) }
-            }
-
-        }
-    }
+    UserTableScreen(users, onSelect)
 }

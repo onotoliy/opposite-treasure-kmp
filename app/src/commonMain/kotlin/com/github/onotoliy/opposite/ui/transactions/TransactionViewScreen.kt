@@ -1,18 +1,18 @@
-package com.github.onotoliy.opposite.ui.events
+package com.github.onotoliy.opposite.ui.transactions
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.outlined.CurrencyExchange
-import androidx.compose.material.icons.outlined.People
+import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ScrollableTabRow
@@ -28,34 +28,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.data.Transaction
-import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
-import com.github.onotoliy.opposite.ui.users.UsersTableScreen
-import com.github.onotoliy.opposite.viewmodel.events.EventView
-import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionView
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionViewModel
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun EventViewScreen(
+fun TransactionViewScreen(
     uuid: String,
-    model: EventViewModel = koinViewModel { parametersOf(uuid) },
+    model: TransactionViewModel = koinViewModel { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
     val state by model.state.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Информация", "Транзакции", "Должники")
-    val icons = listOf(Icons.Filled.Info, Icons.Outlined.CurrencyExchange, Icons.Outlined.People)
+    val tabs = listOf("Информация", "Фотографии")
+    val icons = listOf(Icons.Filled.Info, Icons.Outlined.Photo)
 
-    UiStateScreen<EventView>(state, load = model::load) { data ->
+    UiStateScreen<TransactionView>(state, load = model::load) { data ->
         Column {
             ScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
@@ -79,52 +75,55 @@ fun EventViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> InformationTab(data.event, data.logo)
-                1 -> TransactionsScreen(data.transactions, onSelect = onSelect)
-                2 -> DebtorsScreen(data.debtors, onSelect = onSelect)
+                0 -> InformationTab(data.transactions, onSelect)
+                1 -> FilesTab(data.files)
             }
         }
     }
 }
 
 @Composable
-private fun InformationTab(event: Event, logo: DrawableResource) {
-    Row(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Image(
-            painter = painterResource(logo),
-            contentDescription = null,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.size(300.dp)
-        )
+private fun InformationTab(transaction: Transaction, onSelect: (Screen) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        LabelledText("Тип", transaction.type.label)
+        LabelledText("Название", transaction.name)
+        LabelledText("Сумма", transaction.cash)
+        transaction.person?.let {
+            LabelledText("Пользователь", it.name) {
+                onSelect(Screen.UserViewScreen(it.uuid))
+            }
+        }
+        transaction.event?.let {
+            LabelledText("Событие", it.name) {
+                onSelect(Screen.EventViewScreen(it.uuid))
+            }
+        }
+        LabelledText("Дата транзакции", transaction.transactionDate)
+        LabelledText("Автор", transaction.author.name)
+        LabelledText("Дата создания", transaction.creationDate)
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        Button(
+            onClick = { /* обработка */ },
+            modifier = Modifier.align(Alignment.End)
         ) {
-            LabelledText("Название", event.name)
-            LabelledText("Сумма", event.contribution)
-            LabelledText("Сдать до", event.deadline)
-            LabelledText("Автор", event.author.name)
-            LabelledText("Дата создания", event.creationDate)
-
-            Button(
-                onClick = { /* обработка */ },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Сохранить")
-            }
+            Text("Сохранить")
         }
     }
+
 }
 
 @Composable
-private fun DebtorsScreen(users: List<User>, onSelect: (Screen) -> Unit) =
-    UsersTableScreen(users, onSelect)
-
-@Composable
-private fun TransactionsScreen(transactions: List<Transaction>, onSelect: (Screen) -> Unit) =
-    TransactionsTableScreen(transactions, onSelect)
+private fun FilesTab(files: List<DrawableResource>) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 120.dp), // авто-сетка
+    ) {
+        items(files.size) { idx ->
+            Image(
+                painter = painterResource(files[idx]),
+                contentDescription = null,
+                alignment = Alignment.TopCenter,
+                modifier = Modifier.size(120.dp)
+            )
+        }
+    }
+}

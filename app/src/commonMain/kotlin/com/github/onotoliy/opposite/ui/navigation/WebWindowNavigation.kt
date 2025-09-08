@@ -33,7 +33,7 @@ fun WebWindowNavigation(
     ) {
         NavHost(navController, startDestination = "cashbox") {
             composable("cashbox") {
-                CashboxScreen()
+                CashboxScreen(onSelect = { navController.navigate1(it) })
             }
 
             composable("events") {
@@ -70,7 +70,10 @@ fun WebWindowNavigation(
                 route = "users/{uuid}",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
-                UserViewScreen()
+                val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
+                    ?: throw IllegalArgumentException()
+
+                UserViewScreen(uuid, onSelect = { navController.navigate1(it) })
             }
 
             composable(
@@ -88,7 +91,10 @@ fun WebWindowNavigation(
                 route = "transactions/{uuid}",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
-                TransactionViewScreen()
+                val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
+                    ?: throw IllegalArgumentException()
+
+                TransactionViewScreen(uuid, onSelect = { navController.navigate1(it) })
             }
 
             composable(
