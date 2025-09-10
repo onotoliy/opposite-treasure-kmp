@@ -32,6 +32,7 @@ import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.events.EventInformationView
 import com.github.onotoliy.opposite.ui.components.events.view.EventInformationWebView
 import com.github.onotoliy.opposite.ui.components.transactions.TransactionListView
 import com.github.onotoliy.opposite.ui.components.users.UserListView
@@ -80,7 +81,7 @@ fun EventViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> EventInformationWebView(data.event, data.logo)
+                0 -> EventInformationView(data.event, data.logo)
                 1 -> TransactionListView(data.transactions, onSelect = onSelect)
                 2 -> UserListView(data.debtors, onSelect = onSelect)
             }

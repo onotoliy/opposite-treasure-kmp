@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.github.onotoliy.opposite.ui.WebWindowScaffold
 import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
+import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.events.EventEditScreen
 import com.github.onotoliy.opposite.ui.events.EventsScreen
 import com.github.onotoliy.opposite.ui.events.EventViewScreen
@@ -28,7 +28,7 @@ fun WebWindowNavigation(
 ) {
     val navController = rememberNavController()
 
-    WebWindowScaffold(
+    ApplicationScaffold(
         onSelect = { navController.navigate1(it) }
     ) {
         NavHost(navController, startDestination = "cashbox") {

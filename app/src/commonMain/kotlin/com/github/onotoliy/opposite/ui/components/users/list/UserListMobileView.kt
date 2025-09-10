@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.User
@@ -21,7 +24,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
 fun UserListMobileView(users: List<User>, onSelect: (Screen) -> Unit) {
-    LazyColumn {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         items(users.size) {
             UserMobileItem(users[it], onSelect)
         }
@@ -33,8 +36,11 @@ private fun UserMobileItem(user: User, onSelect: (Screen) -> Unit) {
     ElevatedCard(
         modifier = Modifier.clickable { onSelect(Screen.EventViewScreen(user.uuid)) }
     ) {
-        Row {
-            Icon(imageVector = Icons.Outlined.Event, contentDescription = null)
+        Row(
+            modifier = Modifier.padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Outlined.People, contentDescription = null)
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = user.name)

@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Event
@@ -21,7 +24,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
 fun EventListMobileView(events: List<Event>, onSelect: (Screen) -> Unit) {
-    LazyColumn {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         items(events.size) {
             EventMobileItem(events[it], onSelect)
         }
@@ -33,7 +36,10 @@ private fun EventMobileItem(event: Event, onSelect: (Screen) -> Unit) {
     ElevatedCard(
         modifier = Modifier.clickable { onSelect(Screen.EventViewScreen(event.uuid)) }
     ) {
-        Row {
+        Row(
+            modifier = Modifier.padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(imageVector = Icons.Outlined.Event, contentDescription = null)
 
             Column(modifier = Modifier.weight(1f)) {
@@ -43,8 +49,8 @@ private fun EventMobileItem(event: Event, onSelect: (Screen) -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = event.contribution)
-                    Text(text = event.deadline)
+                    Text(text = "Сумма: ${event.contribution}")
+                    Text(text = "Сдать до: ${event.deadline}")
                 }
             }
         }

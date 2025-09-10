@@ -20,34 +20,27 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun EventInformationMobileView(event: Event, logo: DrawableResource) {
-    Row(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.Top
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        LabelledText("Название", event.name)
+        LabelledText("Сумма", event.contribution)
+        LabelledText("Сдать до", event.deadline)
+        LabelledText("Автор", event.author.name)
+        LabelledText("Дата создания", event.creationDate)
+
+        Button(
+            onClick = { /* обработка */ },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Сохранить")
+        }
+
         Image(
             painter = painterResource(logo),
             contentDescription = null,
             alignment = Alignment.TopCenter,
             modifier = Modifier.size(300.dp)
         )
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            LabelledText("Название", event.name)
-            LabelledText("Сумма", event.contribution)
-            LabelledText("Сдать до", event.deadline)
-            LabelledText("Автор", event.author.name)
-            LabelledText("Дата создания", event.creationDate)
-
-            Button(
-                onClick = { /* обработка */ },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Сохранить")
-            }
-        }
     }
 }
