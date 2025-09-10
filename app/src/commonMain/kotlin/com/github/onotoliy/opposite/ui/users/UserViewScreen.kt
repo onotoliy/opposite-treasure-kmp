@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.events.EventListView
 import com.github.onotoliy.opposite.ui.components.transactions.TransactionListView
 import com.github.onotoliy.opposite.ui.components.users.UserInformationView
@@ -54,32 +55,36 @@ fun UserViewScreen(
     val icons = listOf(Icons.Filled.Info, Icons.Outlined.CurrencyExchange, Icons.Outlined.Event)
 
     UiStateScreen<UserView>(state, load = model::load) { data ->
-        Column {
-            ScrollableTabRow(
-                selectedTabIndex = selectedTabIndex,
-                edgePadding = 0.dp
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTabIndex == index,
-                        onClick = { selectedTabIndex = index }
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(16.dp)
+        ApplicationScaffold(
+            onSelect = onSelect
+        ) {
+            Column {
+                ScrollableTabRow(
+                    selectedTabIndex = selectedTabIndex,
+                    edgePadding = 0.dp
+                ) {
+                    tabs.forEachIndexed { index, title ->
+                        Tab(
+                            selected = selectedTabIndex == index,
+                            onClick = { selectedTabIndex = index }
                         ) {
-                            Icon(imageVector = icons[index], contentDescription = title)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = title)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Icon(imageVector = icons[index], contentDescription = title)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = title)
+                            }
                         }
                     }
                 }
-            }
 
-            when (selectedTabIndex) {
-                0 -> UserInformationView(data.user, data.logo)
-                1 -> TransactionListView(data.transactions, onSelect = onSelect)
-                2 -> EventListView(data.debts, onSelect = onSelect)
+                when (selectedTabIndex) {
+                    0 -> UserInformationView(data.user, data.logo)
+                    1 -> TransactionListView(data.transactions, onSelect = onSelect)
+                    2 -> EventListView(data.debts, onSelect = onSelect)
+                }
             }
         }
     }

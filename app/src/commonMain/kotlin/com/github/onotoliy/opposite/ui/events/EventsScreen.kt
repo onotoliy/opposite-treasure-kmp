@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.events.EventListView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
@@ -15,7 +16,11 @@ fun EventsScreen(model: EventsListModel = koinViewModel(), onSelect: (Screen) ->
     val state by model.state.collectAsState()
 
     UiStateScreen<List<Event>>(state, load = model::load) { events ->
-        EventListView(events, onSelect)
+        ApplicationScaffold(
+            onSelect = onSelect
+        ) {
+            EventListView(events, onSelect)
+        }
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.transactions.TransactionListView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
@@ -16,6 +17,10 @@ fun TransactionsTableScreen(model: TransactionsListModel = koinViewModel(), onSe
     val state by model.state.collectAsState()
 
     UiStateScreen<List<Transaction>>(state, load = model::load) { events ->
-        TransactionListView(events, onSelect)
+        ApplicationScaffold(
+            onSelect = onSelect
+        ) {
+            TransactionListView(events, onSelect)
+        }
     }
 }

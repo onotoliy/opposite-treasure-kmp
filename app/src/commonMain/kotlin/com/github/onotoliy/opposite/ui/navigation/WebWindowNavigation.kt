@@ -28,9 +28,7 @@ fun WebWindowNavigation(
 ) {
     val navController = rememberNavController()
 
-    ApplicationScaffold(
-        onSelect = { navController.navigate1(it) }
-    ) {
+
         NavHost(navController, startDestination = "cashbox") {
             composable("cashbox") {
                 CashboxScreen(onSelect = { navController.navigate1(it) })
@@ -108,7 +106,7 @@ fun WebWindowNavigation(
         LaunchedEffect(navController) {
             onNavHostReady(navController)
         }
-    }
+
 }
 
 fun NavController.navigate1(screen: Screen) {

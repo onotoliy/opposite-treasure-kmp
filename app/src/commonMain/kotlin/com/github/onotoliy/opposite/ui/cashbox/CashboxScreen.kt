@@ -32,7 +32,9 @@ import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.SwaggestBox
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.navigate1
 import com.github.onotoliy.opposite.ui.users.UserViewScreen
 import com.github.onotoliy.opposite.viewmodel.cashbox.CashboxViewModel
 import com.github.onotoliy.opposite.viewmodel.events.EventView

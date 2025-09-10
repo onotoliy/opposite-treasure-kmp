@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.transactions.TransactionInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionView
@@ -53,31 +54,35 @@ fun TransactionViewScreen(
     val icons = listOf(Icons.Filled.Info, Icons.Outlined.Photo)
 
     UiStateScreen<TransactionView>(state, load = model::load) { data ->
-        Column {
-            ScrollableTabRow(
-                selectedTabIndex = selectedTabIndex,
-                edgePadding = 0.dp
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTabIndex == index,
-                        onClick = { selectedTabIndex = index }
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(16.dp)
+        ApplicationScaffold(
+            onSelect = onSelect
+        ) {
+            Column {
+                ScrollableTabRow(
+                    selectedTabIndex = selectedTabIndex,
+                    edgePadding = 0.dp
+                ) {
+                    tabs.forEachIndexed { index, title ->
+                        Tab(
+                            selected = selectedTabIndex == index,
+                            onClick = { selectedTabIndex = index }
                         ) {
-                            Icon(imageVector = icons[index], contentDescription = title)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = title)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Icon(imageVector = icons[index], contentDescription = title)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = title)
+                            }
                         }
                     }
                 }
-            }
 
-            when (selectedTabIndex) {
-                0 -> TransactionInformationView(data.transactions, onSelect)
-                1 -> FilesTab(data.files)
+                when (selectedTabIndex) {
+                    0 -> TransactionInformationView(data.transactions, onSelect)
+                    1 -> FilesTab(data.files)
+                }
             }
         }
     }
