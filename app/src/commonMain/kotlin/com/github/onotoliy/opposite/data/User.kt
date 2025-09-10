@@ -6,5 +6,7 @@ data class User(
     val login: String,
     val name: String,
     val deposit: String,
-    val birthday: String
+    val birthday: String,
+    val joiningDate: String,
+    val position: String
 )

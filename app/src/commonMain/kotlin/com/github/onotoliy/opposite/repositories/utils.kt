@@ -27,7 +27,9 @@ fun newUser(id: Int): User {
         login = "user-$id",
         name = "UserName $id",
         deposit = "1000",
-        birthday = "14.06.1992"
+        birthday = "14.06.1992",
+        position = "Position $id",
+        joiningDate = "14.06.1992"
     )
 }
 fun newTransaction(id: Int, eventID: Int? = null, personID: Int? = null): Transaction {

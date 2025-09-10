@@ -22,7 +22,10 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun TransactionInformationWebView(transaction: Transaction, onSelect: (Screen) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = Modifier.padding(horizontal = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         LabelledText("Тип", transaction.type.label)
         LabelledText("Название", transaction.name)
         LabelledText("Сумма", transaction.cash)

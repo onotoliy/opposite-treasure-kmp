@@ -1,12 +1,8 @@
 package com.github.onotoliy.opposite.ui.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.Event
@@ -14,16 +10,16 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.navigation.Screen
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,9 +30,15 @@ fun ApplicationMobileScaffold(
     MaterialTheme {
         Scaffold(
             topBar = {
-                TopAppBar(
+                 TopAppBar(
                     title = { Text("Opposite MK") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 )
             },
             content = { paddingValues ->
@@ -45,19 +47,31 @@ fun ApplicationMobileScaffold(
                 }
             },
             bottomBar = {
-                Row {
-                    IconButton(onClick = { onSelect(Screen.CashScreen) }) {
-                        Icon(imageVector = Icons.Outlined.Home, contentDescription = "Home")
-                    }
-                    IconButton(onClick = { onSelect(Screen.UsersScreen) }) {
-                        Icon(imageVector = Icons.Outlined.People, contentDescription = "Home")
-                    }
-                    IconButton(onClick = { onSelect(Screen.EventsScreen) }) {
-                        Icon(imageVector = Icons.Outlined.Event, contentDescription = "Home")
-                    }
-                    IconButton(onClick = { onSelect(Screen.TransactionsScreen) }) {
-                        Icon(imageVector = Icons.Outlined.CurrencyExchange, contentDescription = "Home")
-                    }
+                NavigationBar {
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = { onSelect(Screen.CashScreen) },
+                        icon = { Icon(Icons.Outlined.Home, contentDescription = "Cash") },
+                        label = { Text("Cash") }
+                    )
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = { onSelect(Screen.UsersScreen) },
+                        icon = { Icon(Icons.Outlined.People, contentDescription = "Users") },
+                        label = { Text("Users") }
+                    )
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = { onSelect(Screen.EventsScreen) },
+                        icon = { Icon(Icons.Outlined.Event, contentDescription = "Events") },
+                        label = { Text("Events") }
+                    )
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = { onSelect(Screen.TransactionsScreen) },
+                        icon = { Icon(Icons.Outlined.CurrencyExchange, contentDescription = "Transactions") },
+                        label = { Text("Transactions") }
+                    )
                 }
             }
         )

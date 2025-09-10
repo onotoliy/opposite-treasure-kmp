@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,25 +34,28 @@ fun UserListMobileView(users: List<User>, onSelect: (Screen) -> Unit) {
 
 @Composable
 private fun UserMobileItem(user: User, onSelect: (Screen) -> Unit) {
-    ElevatedCard(
-        modifier = Modifier.clickable { onSelect(Screen.EventViewScreen(user.uuid)) }
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 4.dp)
+            .clickable { onSelect(Screen.UserViewScreen(user.uuid)) },
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Outlined.People, contentDescription = null)
+        Icon(imageVector = Icons.Outlined.People, contentDescription = null)
 
-            Column(modifier = Modifier.weight(1f)) {
+        Column(modifier = Modifier.weight(1f)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(text = user.name)
+
                 Spacer(modifier = Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = user.deposit)
-                }
+
+                Text(text = user.deposit)
             }
+
+            HorizontalDivider()
         }
     }
+
 }
