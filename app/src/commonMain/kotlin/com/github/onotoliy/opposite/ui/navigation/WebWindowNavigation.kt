@@ -10,11 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
-import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
-import com.github.onotoliy.opposite.ui.events.EventEditScreen
-import com.github.onotoliy.opposite.ui.events.EventNewScreen
-import com.github.onotoliy.opposite.ui.events.EventsScreen
-import com.github.onotoliy.opposite.ui.events.EventViewScreen
+import com.github.onotoliy.opposite.ui.components.events.screens.EventEditScreen
+import com.github.onotoliy.opposite.ui.components.events.screens.EventNewScreen
+import com.github.onotoliy.opposite.ui.components.events.screens.EventListScreen
+import com.github.onotoliy.opposite.ui.components.events.screens.EventViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
@@ -42,7 +41,7 @@ fun WebWindowNavigation(
             }
 
             composable("events") {
-                EventsScreen(
+                EventListScreen(
                     onSelect = { navController.navigate1(it) }
                 )
             }
@@ -64,7 +63,7 @@ fun WebWindowNavigation(
                 val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
                     ?: throw IllegalArgumentException()
 
-                EventEditScreen(uuid)
+                EventEditScreen(uuid, onSelect = { navController.navigate1(it) })
             }
 
             composable("users") {

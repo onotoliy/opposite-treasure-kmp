@@ -39,7 +39,7 @@ class EventNewViewModel(
                         name = name,
                         contribution = contribution,
                         total = contribution,
-                        deadline = deadline.toString(),
+                        deadline = deadline,
                         creationDate = Clock.System.now().toString(),
                         author = Option("", ""),
                         deletionDate = null

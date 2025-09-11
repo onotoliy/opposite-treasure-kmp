@@ -6,14 +6,17 @@ import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.TransactionType
 import com.github.onotoliy.opposite.data.User
 import kotlin.String
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 fun newEvent(id: Int): Event {
     return Event(
         uuid = id.toString(),
         name = "Event $id",
         contribution = "1000",
         total = "1000",
-        deadline = "2025-09-04",
+        deadline = Clock.System.now(),
         creationDate = "2025-09-04",
         author = Option("1", "Author"),
         deletionDate = null
