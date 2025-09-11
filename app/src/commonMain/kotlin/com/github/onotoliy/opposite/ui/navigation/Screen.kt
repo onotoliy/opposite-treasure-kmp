@@ -18,6 +18,9 @@ sealed class Screen {
     data class EventEditScreen(val uuid: String) : Screen();
 
     @Serializable
+    object EventNewScreen : Screen();
+
+    @Serializable
     object UsersScreen : Screen();
 
     @Serializable

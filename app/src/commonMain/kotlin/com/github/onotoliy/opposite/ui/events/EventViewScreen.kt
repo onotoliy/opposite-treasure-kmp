@@ -85,7 +85,7 @@ fun EventViewScreen(
                 }
 
                 when (selectedTabIndex) {
-                    0 -> EventInformationView(data.event, data.logo)
+                    0 -> EventInformationView(data.event, data.logo, onSelect)
                     1 -> TransactionListView(data.transactions, onSelect = onSelect)
                     2 -> UserListView(data.debtors, onSelect = onSelect)
                 }

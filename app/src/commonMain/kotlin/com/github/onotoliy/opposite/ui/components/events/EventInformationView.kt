@@ -6,4 +6,4 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import org.jetbrains.compose.resources.DrawableResource
 
 @Composable
-expect fun EventInformationView(event: Event, logo: DrawableResource)
+expect fun EventInformationView(event: Event, logo: DrawableResource, onSelect: (Screen) -> Unit)

@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
 import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.events.EventEditScreen
+import com.github.onotoliy.opposite.ui.events.EventNewScreen
 import com.github.onotoliy.opposite.ui.events.EventsScreen
 import com.github.onotoliy.opposite.ui.events.EventViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
@@ -32,6 +33,12 @@ fun WebWindowNavigation(
         NavHost(navController, startDestination = "cashbox") {
             composable("cashbox") {
                 CashboxScreen(onSelect = { navController.navigate1(it) })
+            }
+
+            composable("events/new") {
+                EventNewScreen(
+                    onSelect = { navController.navigate1(it) }
+                )
             }
 
             composable("events") {
@@ -116,6 +123,7 @@ fun NavController.navigate1(screen: Screen) {
         is Screen.EventsScreen -> "events"
         is Screen.EventEditScreen -> "events/${screen.uuid}/edit"
         is Screen.EventViewScreen -> "events/${screen.uuid}"
+        is Screen.EventNewScreen -> "events/new"
 
         is Screen.TransactionsScreen -> "transactions"
         is Screen.TransactionEditScreen -> "transactions/${screen.uuid}/edit"

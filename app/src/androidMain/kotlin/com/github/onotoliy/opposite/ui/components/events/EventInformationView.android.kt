@@ -7,7 +7,5 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import org.jetbrains.compose.resources.DrawableResource
 
 @Composable
-actual fun EventInformationView(
-    event: Event,
-    logo: DrawableResource
-) = EventInformationMobileView(event,  logo)
+actual fun EventInformationView(event: Event, logo: DrawableResource, onSelect: (Screen) -> Unit) =
+    EventInformationMobileView(event, logo, onSelect)
