@@ -31,6 +31,7 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventView
 import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
+import com.github.onotoliy.opposite.viewmodel.users.UsersListModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -39,6 +40,7 @@ fun EventViewScreen(
     uuid: String,
     model: EventViewModel = koinViewModel { parametersOf(uuid) },
     tlist: TransactionsListModel = koinViewModel { parametersOf(uuid) },
+    ulist: UsersListModel = koinViewModel { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
     val state by model.state.collectAsState()
@@ -76,7 +78,7 @@ fun EventViewScreen(
                 when (selectedTabIndex) {
                     0 -> EventInformationView(data.event, data.logo, onSelect)
                     1 -> TransactionListView(tlist, onSelect = onSelect)
-                    2 -> UserListView(data.debtors, onSelect = onSelect)
+                    2 -> UserListView(ulist, onSelect = onSelect)
                 }
             }
         }

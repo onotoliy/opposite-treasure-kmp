@@ -2,6 +2,7 @@ package com.github.onotoliy.opposite.repositories
 
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.data.Transaction
+import com.github.opposite.treasure.shared.EventCacheRepository.Companion.EVENTS
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -19,7 +20,16 @@ class TransactionCacheRepository : ITransactionRepository {
 
     override suspend fun getAll(q: String?, eventID: String?, offset: Int, numberOfRows: Int): List<Transaction> {
         delay(1000)
-        return TRANSACTIONS
+
+        if (TRANSACTIONS.size < offset) {
+            return emptyList()
+        }
+
+        if (TRANSACTIONS.size < offset + numberOfRows) {
+            return TRANSACTIONS.subList(offset, TRANSACTIONS.size)
+        }
+
+        return TRANSACTIONS.subList(offset, offset + numberOfRows)
     }
 
     override suspend fun create(user: Transaction): Transaction {

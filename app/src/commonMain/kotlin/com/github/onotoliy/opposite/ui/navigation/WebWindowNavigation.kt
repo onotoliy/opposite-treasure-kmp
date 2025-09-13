@@ -14,13 +14,14 @@ import com.github.onotoliy.opposite.ui.components.events.screens.EventEditScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventNewScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventListScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventViewScreen
-import com.github.onotoliy.opposite.ui.transactions.TransactionCreateScreen
-import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
-import com.github.onotoliy.opposite.ui.transactions.TransactionViewScreen
-import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
-import com.github.onotoliy.opposite.ui.users.UserEditScreen
+import com.github.onotoliy.opposite.ui.components.users.screens.UserEditScreen
+import com.github.onotoliy.opposite.ui.components.users.screens.UserNewScreen
+import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionCreateScreen
+import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionEditScreen
+import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionViewScreen
+import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionsTableScreen
 import com.github.onotoliy.opposite.ui.users.UserViewScreen
-import com.github.onotoliy.opposite.ui.users.UsersTableScreen
+import com.github.onotoliy.opposite.ui.users.UserListScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +69,12 @@ fun WebWindowNavigation(
             }
 
             composable("users") {
-                UsersTableScreen(onSelect = { navController.navigate1(it) })
+                UserListScreen(onSelect = { navController.navigate1(it) })
+            }
+
+            composable(route = "users/new") { backStackEntry ->
+
+                UserNewScreen(onSelect = { navController.navigate1(it) })
             }
 
             composable(
@@ -85,7 +91,10 @@ fun WebWindowNavigation(
                 route = "users/{uuid}/edit",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
-                UserEditScreen()
+                val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
+                    ?: throw IllegalArgumentException()
+
+                UserEditScreen(uuid, onSelect = { navController.navigate1(it) })
             }
 
             composable("transactions") {
@@ -140,6 +149,7 @@ fun NavController.navigate1(screen: Screen) {
         is Screen.UsersScreen -> "users"
         is Screen.UserEditScreen -> "users/${screen.uuid}/edit"
         is Screen.UserViewScreen -> "users/${screen.uuid}"
+        is Screen.UserNewScreen -> "users/new"
     }
     this.navigate(route)
 }

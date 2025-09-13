@@ -5,7 +5,6 @@ import com.github.onotoliy.opposite.data.Option
 import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.TransactionType
 import com.github.onotoliy.opposite.data.User
-import kotlin.String
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -23,6 +22,7 @@ fun newEvent(id: Int): Event {
     )
 }
 
+@OptIn(ExperimentalTime::class)
 fun newUser(id: Int): User {
     return User(
         uuid = "$id",
@@ -30,9 +30,9 @@ fun newUser(id: Int): User {
         login = "user-$id",
         name = "UserName $id",
         deposit = "1000",
-        birthday = "14.06.1992",
+        birthday = Clock.System.now(),
         position = "Position $id",
-        joiningDate = "14.06.1992"
+        joiningDate =  Clock.System.now()
     )
 }
 @OptIn(ExperimentalTime::class)

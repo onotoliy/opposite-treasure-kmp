@@ -13,6 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+
+@OptIn(ExperimentalTime::class)
+@Composable
+fun LabelledText(
+    label: String,
+    text: Instant,
+    onTextClick: (() -> Unit)? = null,
+) = LabelledText(label, text.toString(), onTextClick)
 
 @Composable
 fun LabelledText(

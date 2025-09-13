@@ -32,7 +32,6 @@ import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
 import com.github.onotoliy.opposite.viewmodel.users.UserView
 import com.github.onotoliy.opposite.viewmodel.users.UserViewModel
-import com.github.onotoliy.opposite.viewmodel.users.UsersListModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -77,7 +76,7 @@ fun UserViewScreen(
                 }
 
                 when (selectedTabIndex) {
-                    0 -> UserInformationView(data.user, data.logo)
+                    0 -> UserInformationView(data.user, data.logo, onSelect)
                     1 -> TransactionListView(tlist, onSelect = onSelect)
                     2 -> EventListView(elist, onSelect = onSelect)
                 }

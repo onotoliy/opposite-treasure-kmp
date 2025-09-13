@@ -24,6 +24,9 @@ sealed class Screen {
     object UsersScreen : Screen();
 
     @Serializable
+    object UserNewScreen : Screen();
+
+    @Serializable
     data class UserViewScreen(val uuid: String) : Screen();
 
     @Serializable

@@ -1,25 +1,23 @@
-package com.github.onotoliy.opposite.ui.components.transactions.screens
+package com.github.onotoliy.opposite.ui.components.users.screens
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.events.views.EventEditView
-import com.github.onotoliy.opposite.ui.components.transactions.TransactionEditView
+import com.github.onotoliy.opposite.ui.components.users.UserEditView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionEditModel
+import com.github.onotoliy.opposite.viewmodel.users.UserEditModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-
 @Composable
-fun TransactionEditScreen(
+fun UserEditScreen(
     uuid: String,
-    model: TransactionEditModel = koinViewModel { parametersOf(uuid) },
+    model: UserEditModel = koinViewModel { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
     ApplicationScaffold(onSelect = onSelect) {
-        TransactionEditView(model, onSelect)
+        UserEditView(model, onSelect)
     }
 }
-

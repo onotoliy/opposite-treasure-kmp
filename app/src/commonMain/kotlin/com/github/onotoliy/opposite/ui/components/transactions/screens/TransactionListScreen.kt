@@ -1,4 +1,4 @@
-package com.github.onotoliy.opposite.ui.transactions
+package com.github.onotoliy.opposite.ui.components.transactions.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
