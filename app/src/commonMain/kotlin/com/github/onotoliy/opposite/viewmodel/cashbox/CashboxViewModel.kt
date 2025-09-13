@@ -3,8 +3,9 @@ package com.github.onotoliy.opposite.viewmodel.cashbox
 import androidx.lifecycle.ViewModel
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.repositories.IUserRepository
+import com.github.onotoliy.opposite.ui.components.users.newUser
+import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
 import com.github.onotoliy.opposite.viewmodel.UiState
-import com.github.onotoliy.opposite.viewmodel.users.UserView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -14,20 +15,13 @@ import kotlinx.coroutines.launch
 
 open class CashboxViewModel(
     private val users: IUserRepository,
-) : ViewModel() {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val _state = MutableStateFlow<UiState<User>>(UiState.Loading)
-    val state: StateFlow<UiState<User>> = _state
+) : AbstractViewModel<User>() {
+    override suspend fun get(): User = users.get("1")
 
-    fun load() {
-        _state.value = UiState.Loading
-
-        scope.launch {
-            try {
-                _state.value = UiState.Success(users.get("1"))
-            } catch (e: Exception) {
-                _state.value = UiState.Error(e.message ?: "Unknown error")
-            }
-        }
+    override suspend fun loadAdditionalValues() {
     }
+
+    override val defaultValue: User
+        get() = com.github.onotoliy.opposite.repositories.newUser(-1000)
+
 }

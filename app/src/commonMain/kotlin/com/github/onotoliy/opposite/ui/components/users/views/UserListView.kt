@@ -1,16 +1,13 @@
 package com.github.onotoliy.opposite.ui.components.users
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.HorizontalDivider
@@ -21,25 +18,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.users.UsersListModel
-import io.github.windedge.table.DataTable
+import com.github.onotoliy.opposite.viewmodel.users.UserListModel
 
 @Composable
-expect fun UserListView(viewModel: UsersListModel, onSelect: (Screen) -> Unit)
+expect fun UserListView(viewModel: UserListModel, onSelect: (Screen) -> Unit)
 
 @Composable
-fun UserListMobileView(viewModel: UsersListModel, onSelect: (Screen) -> Unit) {
+fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
     LocalMobileScafoldState.current.floatingActionButton = {
         AddFloatingActionButton { onSelect(Screen.UserNewScreen) }
     }
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
     val hasLoadMore by viewModel.hasLoadMore.collectAsState()
 
@@ -82,7 +77,7 @@ private fun UserMobileItem(user: User, onSelect: (Screen) -> Unit) {
 }
 
 @Composable
-fun UserTableWebView(viewModel: UsersListModel, onSelect: (Screen) -> Unit) {
+fun UserTableWebView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
 //    DataTable(
 //        columns = {
 //            headerBackground {

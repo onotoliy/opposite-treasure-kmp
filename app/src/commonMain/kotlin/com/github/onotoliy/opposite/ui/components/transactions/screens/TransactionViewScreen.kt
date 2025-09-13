@@ -29,7 +29,6 @@ import com.github.onotoliy.opposite.ui.UiStateScreen
 import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.transactions.TransactionInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionView
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionViewModel
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -42,13 +41,13 @@ fun TransactionViewScreen(
     model: TransactionViewModel = koinViewModel { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
-    val state by model.state.collectAsState()
+    val state by model.loadState.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Информация", "Фотографии")
     val icons = listOf(Icons.Filled.Info, Icons.Outlined.Photo)
 
-    UiStateScreen<TransactionView>(state, load = model::load) { data ->
+    UiStateScreen(state, load = model::load) {
         ApplicationScaffold(
             onSelect = onSelect
         ) {
@@ -75,8 +74,8 @@ fun TransactionViewScreen(
                 }
 
                 when (selectedTabIndex) {
-                    0 -> TransactionInformationView(data.transactions, onSelect)
-                    1 -> FilesTab(data.files)
+                    0 -> TransactionInformationView(model.info.value, onSelect)
+                    1 -> FilesTab(model.receipts.value)
                 }
             }
         }

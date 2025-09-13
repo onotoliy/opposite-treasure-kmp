@@ -12,21 +12,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.data.Option
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.events.EventNewViewModel
+import com.github.onotoliy.opposite.viewmodel.events.EventCreateModel
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
-expect fun EventCreateView(viewModel: EventNewViewModel, onSelect: (Screen) -> Unit)
+expect fun EventCreateView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit)
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventCreateMobileView(viewModel: EventNewViewModel, onSelect: (Screen) -> Unit) {
+fun EventCreateMobileView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
     var name by remember { mutableStateOf("") }
     var contribution by remember { mutableStateOf("") }
     var deadline by remember { mutableStateOf(Clock.System.now()) }
@@ -34,7 +39,7 @@ fun EventCreateMobileView(viewModel: EventNewViewModel, onSelect: (Screen) -> Un
     LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
-            viewModel.onSave(name, contribution, deadline) {
+            viewModel.onSave(newEvent(name, contribution, deadline)) {
                 onSelect(Screen.EventViewScreen(it.uuid))
             }
         }
@@ -53,7 +58,7 @@ fun EventCreateMobileView(viewModel: EventNewViewModel, onSelect: (Screen) -> Un
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventCreateWebView(viewModel: EventNewViewModel, onSelect: (Screen) -> Unit) {
+fun EventCreateWebView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
     var name by remember { mutableStateOf("") }
     var contribution by remember { mutableStateOf("") }
     var deadline by remember { mutableStateOf(Clock.System.now()) }
@@ -74,7 +79,7 @@ fun EventCreateWebView(viewModel: EventNewViewModel, onSelect: (Screen) -> Unit)
 
         Row {
             SaveButton {
-                viewModel.onSave(name, contribution, deadline) {
+                viewModel.onSave(newEvent(name, contribution, deadline)) {
                     onSelect(Screen.EventViewScreen(it.uuid))
                 }
             }
@@ -84,3 +89,15 @@ fun EventCreateWebView(viewModel: EventNewViewModel, onSelect: (Screen) -> Unit)
         }
     }
 }
+
+@OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
+fun newEvent(name: String, contribution: String, deadline: Instant): Event = Event(
+    uuid = Uuid.random().toString(),
+    name = name,
+    contribution = contribution,
+    total = contribution,
+    deadline = deadline,
+    creationDate = Clock.System.now().toString(),
+    author = Option("", ""),
+    deletionDate = null
+)

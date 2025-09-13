@@ -1,21 +1,17 @@
 package com.github.onotoliy.opposite.ui.components.transactions
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowOutward
-import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -32,20 +28,18 @@ import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.ui.navigation.Screen.EventViewScreen
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
-import io.github.windedge.table.DataTable
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionListModel
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun TransactionListView(viewModel: TransactionsListModel, onSelect: (Screen) -> Unit)
+expect fun TransactionListView(viewModel: TransactionListModel, onSelect: (Screen) -> Unit)
 
 @Composable
-fun TransactionListMobileView(viewModel: TransactionsListModel, onSelect: (Screen) -> Unit) {
+fun TransactionListMobileView(viewModel: TransactionListModel, onSelect: (Screen) -> Unit) {
     LocalMobileScafoldState.current.floatingActionButton = {
         AddFloatingActionButton { onSelect(Screen.TransactionNewScreen) }
     }
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
     val hasLoadMore by viewModel.hasLoadMore.collectAsState()
 
@@ -111,7 +105,7 @@ private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -
 }
 
 @Composable
-fun TransactionTableView(model: TransactionsListModel, onSelect: (Screen) -> Unit) {
+fun TransactionTableView(model: TransactionListModel, onSelect: (Screen) -> Unit) {
     /*DataTable(
         columns = {
             headerBackground {

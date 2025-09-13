@@ -1,29 +1,12 @@
 package com.github.onotoliy.opposite.ui.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Page
-import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.UiState
-import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
+import com.github.onotoliy.opposite.viewmodel.events.EventListModel
 
 @Composable
 fun <T> TableInfinity(
-    viewModel: EventsListModel,
+    viewModel: EventListModel,
     content: @Composable (List<T>) -> Unit
 ) {
 

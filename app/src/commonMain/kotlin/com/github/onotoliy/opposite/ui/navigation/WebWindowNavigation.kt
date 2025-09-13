@@ -11,11 +11,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventEditScreen
-import com.github.onotoliy.opposite.ui.components.events.screens.EventNewScreen
+import com.github.onotoliy.opposite.ui.components.events.screens.EventCreateScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventListScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventViewScreen
 import com.github.onotoliy.opposite.ui.components.users.screens.UserEditScreen
-import com.github.onotoliy.opposite.ui.components.users.screens.UserNewScreen
+import com.github.onotoliy.opposite.ui.components.users.screens.UserCreateScreen
 import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionCreateScreen
 import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionEditScreen
 import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionViewScreen
@@ -37,7 +37,7 @@ fun WebWindowNavigation(
             }
 
             composable("events/new") {
-                EventNewScreen(
+                EventCreateScreen(
                     onSelect = { navController.navigate1(it) }
                 )
             }
@@ -74,7 +74,7 @@ fun WebWindowNavigation(
 
             composable(route = "users/new") { backStackEntry ->
 
-                UserNewScreen(onSelect = { navController.navigate1(it) })
+                UserCreateScreen(onSelect = { navController.navigate1(it) })
             }
 
             composable(

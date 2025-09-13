@@ -17,7 +17,7 @@ import com.github.onotoliy.opposite.viewmodel.UiState
 
 @Composable
 fun <T> ListInfinity(
-    loadingState: UiState<Unit>,
+    loadingState: UiState,
     values: List<T>,
     canLoadMore: Boolean,
     onLoadMore: () -> Unit,
@@ -48,7 +48,7 @@ fun <T> ListInfinity(
             is UiState.Loading -> {
                 LinearProgressIndicator()
             }
-            is UiState.Success<Unit> -> {
+            is UiState.Success -> {
 
             }
         }

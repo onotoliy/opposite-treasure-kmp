@@ -29,9 +29,10 @@ expect fun TransactionEditView(viewModel: TransactionEditModel, onSelect: (Scree
 @Composable
 @OptIn(ExperimentalTime::class)
 fun TransactionEditMobileView(viewModel: TransactionEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
+    val data by viewModel.info.collectAsState()
 
-    UiStateScreen<Transaction>(state, load = viewModel::load) { data ->
+    UiStateScreen(state, load = viewModel::load) {
         var type by remember { mutableStateOf(data.type) }
         var name by remember { mutableStateOf(data.name) }
         var cash by remember { mutableStateOf(data.cash) }
@@ -83,9 +84,10 @@ fun TransactionEditMobileView(viewModel: TransactionEditModel, onSelect: (Screen
 @Composable
 @OptIn(ExperimentalTime::class)
 fun TransactionEditWebView(viewModel: TransactionEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
+    val data by viewModel.info.collectAsState()
 
-    UiStateScreen<Transaction>(state, load = viewModel::load) { data ->
+    UiStateScreen(state, load = viewModel::load) {
         var type by remember { mutableStateOf(data.type) }
         var name by remember { mutableStateOf(data.name) }
         var cash by remember { mutableStateOf(data.cash) }

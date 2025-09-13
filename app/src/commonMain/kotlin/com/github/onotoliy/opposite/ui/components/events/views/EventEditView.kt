@@ -30,9 +30,10 @@ expect fun EventEditView(viewModel: EventEditModel, onSelect: (Screen) -> Unit)
 @Composable
 @OptIn(ExperimentalTime::class)
 fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
+    val data by viewModel.info.collectAsState()
 
-    UiStateScreen<Event>(state, load = viewModel::load) { data ->
+    UiStateScreen(state, load = viewModel::load) {
         var name by remember { mutableStateOf(data.name) }
         var contribution by remember { mutableStateOf(data.contribution) }
         var deadline by remember { mutableStateOf(data.deadline) }
@@ -61,9 +62,10 @@ fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
 @Composable
 @OptIn(ExperimentalTime::class)
 fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
+    val data by viewModel.info.collectAsState()
 
-    UiStateScreen<Event>(state, load = viewModel::load) { data ->
+    UiStateScreen(state, load = viewModel::load) {
         var name by remember { mutableStateOf(data.name) }
         var contribution by remember { mutableStateOf(data.contribution) }
         var deadline by remember { mutableStateOf(data.deadline) }

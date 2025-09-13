@@ -13,21 +13,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Option
+import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.TransactionType
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionNewViewModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionCreateModel
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
-expect fun TransactionCreateView(viewModel: TransactionNewViewModel, onSelect: (Screen) -> Unit)
+expect fun TransactionCreateView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit)
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun TransactionCreateMobileView(viewModel: TransactionNewViewModel, onSelect: (Screen) -> Unit) {
+fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
     var type by remember { mutableStateOf(TransactionType.NONE) }
     var name by remember { mutableStateOf("") }
     var cash by remember { mutableStateOf("") }
@@ -39,12 +43,14 @@ fun TransactionCreateMobileView(viewModel: TransactionNewViewModel, onSelect: (S
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(
+                newTransaction(
                     name = name,
                     type = type,
                     cash = cash,
                     person = person,
                     event = event,
                     transactionDate = transactionDate
+                )
             ) {
                 onSelect(Screen.TransactionViewScreen(it.uuid))
             }
@@ -75,7 +81,7 @@ fun TransactionCreateMobileView(viewModel: TransactionNewViewModel, onSelect: (S
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun TransactionCreateWebView(viewModel: TransactionNewViewModel, onSelect: (Screen) -> Unit) {
+fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
     var type by remember { mutableStateOf(TransactionType.NONE) }
     var name by remember { mutableStateOf("") }
     var cash by remember { mutableStateOf("") }
@@ -111,12 +117,14 @@ fun TransactionCreateWebView(viewModel: TransactionNewViewModel, onSelect: (Scre
         Row {
             SaveButton {
                 viewModel.onSave(
-                    name = name,
-                    type = type,
-                    cash = cash,
-                    person = person,
-                    event = event,
-                    transactionDate = transactionDate
+                    newTransaction(
+                        name = name,
+                        type = type,
+                        cash = cash,
+                        person = person,
+                        event = event,
+                        transactionDate = transactionDate
+                    )
                 ) {
                     onSelect(Screen.TransactionViewScreen(it.uuid))
                 }
@@ -126,4 +134,27 @@ fun TransactionCreateWebView(viewModel: TransactionNewViewModel, onSelect: (Scre
             }
         }
     }
+}
+
+@OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
+fun newTransaction(
+    name: String,
+    cash: String,
+    type: TransactionType,
+    person: Option?,
+    event: Option?,
+    transactionDate: Instant
+): Transaction {
+    return Transaction(
+        uuid = Uuid.random().toString(),
+        name = name,
+        cash = cash,
+        type = type,
+        person = person,
+        event = event,
+        transactionDate = transactionDate,
+        creationDate = Clock.System.now(),
+        author = Option("", ""),
+        deletionDate = null
+    )
 }

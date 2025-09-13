@@ -27,10 +27,9 @@ import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.events.views.EventListView
 import com.github.onotoliy.opposite.ui.components.transactions.TransactionListView
 import com.github.onotoliy.opposite.ui.components.users.UserInformationView
+import com.github.onotoliy.opposite.ui.components.users.models.UserEventListModel
+import com.github.onotoliy.opposite.ui.components.users.models.UserTransactionListModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
-import com.github.onotoliy.opposite.viewmodel.users.UserView
 import com.github.onotoliy.opposite.viewmodel.users.UserViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -39,17 +38,17 @@ import org.koin.core.parameter.parametersOf
 fun UserViewScreen(
     uuid: String,
     model: UserViewModel = koinViewModel { parametersOf(uuid) },
-    elist: EventsListModel = koinViewModel(),
-    tlist: TransactionsListModel = koinViewModel(),
+    transactions: UserTransactionListModel = koinViewModel { parametersOf(uuid) },
+    users: UserEventListModel = koinViewModel { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
-    val state by model.state.collectAsState()
+    val state by model.loadState.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Информация", "Транзакции", "Долги")
     val icons = listOf(Icons.Filled.Info, Icons.Outlined.CurrencyExchange, Icons.Outlined.Event)
 
-    UiStateScreen<UserView>(state, load = model::load) { data ->
+    UiStateScreen(state, load = model::load) {
         ApplicationScaffold(
             onSelect = onSelect
         ) {
@@ -76,9 +75,9 @@ fun UserViewScreen(
                 }
 
                 when (selectedTabIndex) {
-                    0 -> UserInformationView(data.user, data.logo, onSelect)
-                    1 -> TransactionListView(tlist, onSelect = onSelect)
-                    2 -> EventListView(elist, onSelect = onSelect)
+                    0 -> UserInformationView(model.info.value, model.logo.value , onSelect)
+                    1 -> TransactionListView(transactions, onSelect = onSelect)
+                    2 -> EventListView(users, onSelect = onSelect)
                 }
             }
         }

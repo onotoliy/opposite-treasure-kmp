@@ -15,8 +15,10 @@ import kotlin.time.ExperimentalTime
 @OptIn( ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun CashboxScreen(model: CashboxViewModel = koinViewModel(), onSelect: (Screen) -> Unit) {
-    val state by model.state.collectAsState()
-    UiStateScreen<User>(state, load = model::load) { data ->
+    val loadState by model.loadState.collectAsState()
+    val data by model.info.collectAsState()
+
+    UiStateScreen(loadState, load = model::load) {
         UserViewScreen(data.uuid, onSelect = onSelect)
     }
 }

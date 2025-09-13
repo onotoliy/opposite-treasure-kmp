@@ -29,20 +29,20 @@ import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.TableInfinity
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.navigation.Screen.EventViewScreen
-import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
+import com.github.onotoliy.opposite.viewmodel.events.EventListModel
 import io.github.windedge.table.DataTable
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun EventListView(viewModel: EventsListModel, onSelect: (Screen) -> Unit)
+expect fun EventListView(viewModel: EventListModel, onSelect: (Screen) -> Unit)
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventListMobileView(viewModel: EventsListModel, onSelect: (Screen) -> Unit) {
+fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
     LocalMobileScafoldState.current.floatingActionButton = {
         AddFloatingActionButton { onSelect(Screen.EventNewScreen) }
     }
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
     val hasLoadMore by viewModel.hasLoadMore.collectAsState()
 
@@ -85,7 +85,7 @@ fun EventListMobileView(viewModel: EventsListModel, onSelect: (Screen) -> Unit) 
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventTableWebView(viewModel: EventsListModel, onSelect: (Screen) -> Unit) {
+fun EventTableWebView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
     TableInfinity<Event>(viewModel) { events ->
         DataTable(
             columns = {

@@ -1,11 +1,10 @@
 package com.github.onotoliy.opposite.ui.components.users
 
 import androidx.compose.runtime.Composable
-import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.users.UsersListModel
+import com.github.onotoliy.opposite.viewmodel.users.UserListModel
 
 @Composable
 actual fun UserListView(
-    viewModel: UsersListModel, onSelect: (Screen) -> Unit
+    viewModel: UserListModel, onSelect: (Screen) -> Unit
 ) = UserListMobileView(viewModel, onSelect)

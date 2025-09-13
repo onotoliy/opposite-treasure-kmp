@@ -29,9 +29,10 @@ expect fun UserEditView(viewModel: UserEditModel, onSelect: (Screen) -> Unit)
 @Composable
 @OptIn(ExperimentalTime::class)
 fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
+    val data by viewModel.info.collectAsState()
 
-    UiStateScreen<User>(state, load = viewModel::load) { data ->
+    UiStateScreen(state, load = viewModel::load) {
         var name by remember { mutableStateOf(data.name) }
         var login by remember { mutableStateOf(data.login) }
         var birthday by remember { mutableStateOf(data.birthday) }
@@ -73,9 +74,10 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
 @Composable
 @OptIn(ExperimentalTime::class)
 fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.loadState.collectAsState()
+    val data by viewModel.info.collectAsState()
 
-    UiStateScreen<User>(state, load = viewModel::load) { data ->
+    UiStateScreen(state, load = viewModel::load) {
         var name by remember { mutableStateOf(data.name) }
         var login by remember { mutableStateOf(data.login) }
         var birthday by remember { mutableStateOf(data.birthday) }

@@ -1,0 +1,41 @@
+package com.github.onotoliy.opposite.viewmodel
+
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.time.ExperimentalTime
+import kotlin.uuid.ExperimentalUuidApi
+
+@OptIn(ExperimentalUuidApi::class, ExperimentalTime::class, ExperimentalTime::class)
+abstract class AbstractCreateModel<T>: ViewModel() {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val _loadState = MutableStateFlow<UiState>(UiState.Success)
+
+    val loadState: StateFlow<UiState> = _loadState
+
+    fun onSave(value: T, onSuccess: (T) -> Unit) {
+        _loadState.value = UiState.Loading
+
+        scope.launch {
+            try {
+                val newValue = withContext(Dispatchers.Default) {
+                    create(value)
+                }
+
+                withContext(Dispatchers.Main) {
+                    onSuccess(newValue) // переход на другой экран
+                }
+
+            } catch (exception: Exception) {
+                _loadState.value = UiState.Error(exception.message ?: "Unknown error")
+            }
+        }
+    }
+
+    protected abstract suspend fun create(value: T): T
+}
