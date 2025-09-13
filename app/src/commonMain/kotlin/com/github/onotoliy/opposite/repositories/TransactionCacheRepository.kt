@@ -1,14 +1,14 @@
 package com.github.onotoliy.opposite.repositories
 
+import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.data.Transaction
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class TransactionCacheRepository : ITransactionRepository {
 
     companion object {
-        val TRANSACTIONS: MutableList<Transaction> = mutableListOf<Transaction>(
-            newTransaction(1, 1, 2), newTransaction(2), newTransaction(3, 3, 4), newTransaction(4)
-        )
+        val TRANSACTIONS: MutableList<Transaction> = (0..35).map { newTransaction(it, Random.nextInt(0,10), Random.nextInt(0,10)) }.toMutableList()
     }
 
     override suspend fun get(uuid: String): Transaction {

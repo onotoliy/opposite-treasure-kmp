@@ -35,6 +35,7 @@ fun newUser(id: Int): User {
         joiningDate = "14.06.1992"
     )
 }
+@OptIn(ExperimentalTime::class)
 fun newTransaction(id: Int, eventID: Int? = null, personID: Int? = null): Transaction {
     return Transaction(
         uuid = "$id",
@@ -44,8 +45,8 @@ fun newTransaction(id: Int, eventID: Int? = null, personID: Int? = null): Transa
         person = personID?.let { Option("$id", "Event $id") },
         event = eventID?.let { Option("$id", "User $id") },
         author = Option("$id", "Author $id") ,
-        creationDate = "14.06.1992",
-        transactionDate = "14.06.1992",
+        creationDate = Clock.System.now(),
+        transactionDate = Clock.System.now(),
         deletionDate = null
     )
 }

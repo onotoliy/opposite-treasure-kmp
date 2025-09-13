@@ -16,49 +16,31 @@ class EventsListModel(
     private val repository: IEventRepository
 ): ViewModel() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val _state = MutableStateFlow<UiState<List<Event>>>(UiState.Loading)
+    private val _state = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    private val _values = MutableStateFlow<List<Event>>(mutableListOf())
+    private val _hasLoadMore = MutableStateFlow<Boolean>(true)
 
-    val state: StateFlow<UiState<List<Event>>> = _state
+    val state: StateFlow<UiState<Unit>> = _state
+    val values: StateFlow<List<Event>> = _values
+    val hasLoadMore: StateFlow<Boolean> = _hasLoadMore
 
-    fun load(): List<Event> {
+    private val items = mutableListOf<Event>()
+
+    fun load() {
+        if (!_hasLoadMore.value) return
+
         _state.value = UiState.Loading
 
         scope.launch {
             try {
-                _state.value = UiState.Success(repository.getAll(null, 0, 10))
+                val page = repository.getAll(null, _values.value.size, 10)
+
+                _hasLoadMore.value = page.size == 10
+                _values.value = _values.value + page
+                _state.value = UiState.Success(Unit)
             } catch (e: Exception) {
                 _state.value = UiState.Error(e.message ?: "Unknown error")
             }
         }
-
-        return EventCacheRepository.EVENTS
-    }
-
-    fun loadMore() {
-//        if (isLoadingMore || endReached) return
-//
-//        isLoadingMore = true
-//
-//        // emit current state with same list but could add a "loading" UI if needed
-//        // We'll keep using UiState.Success with current items
-//        scope.launch {
-//            try {
-//                val page = withContext(Dispatchers.Default) {
-//                    repository.getAll(null, currentOffset, pageSize)
-//                } ?: emptyList()
-//
-//                // append
-//                items.addAll(page)
-//                currentOffset = items.size
-//                endReached = page.size < pageSize
-//
-//                _state.value = UiState.Success(items.toList())
-//            } catch (e: Exception) {
-//                // keep existing items but show error
-//                _state.value = UiState.Error(e.message ?: "Unknown error")
-//            } finally {
-//                isLoadingMore = false
-//            }
-//        }
     }
 }

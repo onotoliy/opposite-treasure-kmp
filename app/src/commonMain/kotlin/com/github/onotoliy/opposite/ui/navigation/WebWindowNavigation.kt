@@ -14,6 +14,7 @@ import com.github.onotoliy.opposite.ui.components.events.screens.EventEditScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventNewScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventListScreen
 import com.github.onotoliy.opposite.ui.components.events.screens.EventViewScreen
+import com.github.onotoliy.opposite.ui.transactions.TransactionCreateScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionEditScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionViewScreen
 import com.github.onotoliy.opposite.ui.transactions.TransactionsTableScreen
@@ -91,6 +92,10 @@ fun WebWindowNavigation(
                 TransactionsTableScreen(onSelect = { navController.navigate1(it) })
             }
 
+            composable(route = "transactions/new",) { backStackEntry ->
+                TransactionCreateScreen(onSelect = { navController.navigate1(it) })
+            }
+
             composable(
                 route = "transactions/{uuid}",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
@@ -105,7 +110,10 @@ fun WebWindowNavigation(
                 route = "transactions/{uuid}/edit",
                 arguments = listOf(navArgument("uuid") { type = NavType.StringType })
             ) { backStackEntry ->
-                TransactionEditScreen()
+                val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
+                    ?: throw IllegalArgumentException()
+
+                TransactionEditScreen(uuid, onSelect = { navController.navigate1(it) })
             }
         }
 
@@ -127,6 +135,7 @@ fun NavController.navigate1(screen: Screen) {
         is Screen.TransactionsScreen -> "transactions"
         is Screen.TransactionEditScreen -> "transactions/${screen.uuid}/edit"
         is Screen.TransactionViewScreen -> "transactions/${screen.uuid}"
+        is Screen.TransactionNewScreen -> "transactions/new"
 
         is Screen.UsersScreen -> "users"
         is Screen.UserEditScreen -> "users/${screen.uuid}/edit"

@@ -17,7 +17,6 @@ import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.LabelledText
-import com.github.onotoliy.opposite.ui.components.transactions.view.TransactionInformationWebView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource

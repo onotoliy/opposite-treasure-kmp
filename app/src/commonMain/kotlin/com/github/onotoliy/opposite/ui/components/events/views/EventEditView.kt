@@ -15,10 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.ui.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.CancelButton
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
-import com.github.onotoliy.opposite.ui.components.events.EventEditForm
+import com.github.onotoliy.opposite.ui.components.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
 import kotlin.time.ExperimentalTime
@@ -45,7 +46,7 @@ fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
             }
         }
 
-        EventEditForm(
+        EventModificationLayout(
             name = name,
             onNameChange = { name = it },
             contribution = contribution,
@@ -71,7 +72,7 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
             modifier = Modifier.padding(horizontal = 4.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            EventEditForm(
+            EventModificationLayout(
                 name = name,
                 onNameChange = { name = it },
                 contribution = contribution,
@@ -87,7 +88,7 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
                         onSelect(Screen.EventViewScreen(it.uuid))
                     }
                 }
-                SaveButton {
+                CancelButton {
                     onSelect(Screen.EventsScreen)
                 }
             }

@@ -21,8 +21,9 @@ import kotlinx.coroutines.delay
 @Composable
 fun SwaggestBox(
     label: String,
+    enabled: Boolean,
     onSelected: (Option) -> Unit,
-    onQueryChanged: suspend (String) -> List<Option>
+    onQueryChanged: (String) -> List<Option>
 ) {
     var expanded by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
@@ -63,6 +64,47 @@ fun SwaggestBox(
                         expanded = false
 
                         onSelected(option)
+                    }
+                )
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropdownMenu(
+    label: String,
+    values: List<Option>,
+    enabled: Boolean,
+    onValueChange: (Option) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf("") }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        OutlinedTextField(
+            value = selectedOption,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            values.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option.name) },
+                    onClick = {
+                        onValueChange(option)
+                        expanded = false
                     }
                 )
             }

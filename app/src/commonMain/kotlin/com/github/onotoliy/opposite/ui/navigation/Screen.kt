@@ -36,5 +36,8 @@ sealed class Screen {
     data class TransactionViewScreen(val uuid: String) : Screen();
 
     @Serializable
+    object TransactionNewScreen : Screen();
+
+    @Serializable
     data class TransactionEditScreen(val uuid: String) : Screen();
 }

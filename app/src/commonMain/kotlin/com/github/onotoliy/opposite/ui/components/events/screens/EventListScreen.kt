@@ -14,7 +14,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EventListScreen(model: EventsListModel = koinViewModel(), onSelect: (Screen) -> Unit) {
     ApplicationScaffold(onSelect = onSelect) {
-        EventListView(model::load, onSelect)
+        EventListView(model, onSelect)
     }
 }
 

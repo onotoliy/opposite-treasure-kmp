@@ -6,7 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.github.onotoliy.opposite.viewmodel.UiState
 
 @Composable
-fun <T> UiStateScreen(state: UiState<*>, load: () -> Unit, content: @Composable (T) -> Unit) {
+fun <T> UiStateScreen(state: UiState<T>, load: () -> Unit, content: @Composable (T) -> Unit) {
     LaunchedEffect(Unit) {
         load()
     }
@@ -14,6 +14,6 @@ fun <T> UiStateScreen(state: UiState<*>, load: () -> Unit, content: @Composable 
     when(state) {
         is UiState.Error -> ErrorMessage(state.message)
         UiState.Loading -> LoadingSpinner()
-        is UiState.Success<*> -> content(state.data as T)
+        is UiState.Success<T> -> content(state.data)
     }
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
-import com.github.onotoliy.opposite.ui.components.events.EventEditForm
+import com.github.onotoliy.opposite.ui.components.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventNewViewModel
 import kotlin.time.Clock
@@ -40,7 +40,7 @@ fun EventCreateMobileView(viewModel: EventNewViewModel, onSelect: (Screen) -> Un
         }
     }
 
-    EventEditForm(
+    EventModificationLayout(
         name = name,
         onNameChange = { name = it },
         contribution = contribution,
@@ -62,7 +62,7 @@ fun EventCreateWebView(viewModel: EventNewViewModel, onSelect: (Screen) -> Unit)
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        EventEditForm(
+        EventModificationLayout(
             name = name,
             onNameChange = { name = it },
             contribution = contribution,

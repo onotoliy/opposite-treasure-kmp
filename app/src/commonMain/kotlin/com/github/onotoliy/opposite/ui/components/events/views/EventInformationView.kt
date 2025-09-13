@@ -59,7 +59,7 @@ fun EventInformationMobileView(event: Event, logo: DrawableResource, onSelect: (
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventInformationWebView(event: Event, logo: DrawableResource) {
+fun EventInformationWebView(event: Event, logo: DrawableResource, onSelect: (Screen) -> Unit) {
     Row(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),

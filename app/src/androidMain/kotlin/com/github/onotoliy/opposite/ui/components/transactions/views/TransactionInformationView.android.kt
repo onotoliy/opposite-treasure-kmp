@@ -5,4 +5,5 @@ import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
-expect fun TransactionListView(transactions: List<Transaction>, onSelect: (Screen) -> Unit)
+actual fun TransactionInformationView(transaction: Transaction, onSelect: (Screen) -> Unit) =
+    TransactionInformationMobileView(transaction, onSelect)

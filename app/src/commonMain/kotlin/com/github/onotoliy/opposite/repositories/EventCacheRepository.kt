@@ -13,9 +13,7 @@ import kotlin.time.Instant
 class EventCacheRepository : IEventRepository {
 
     companion object {
-        val EVENTS: MutableList<Event> = mutableListOf<Event>(
-            newEvent(1), newEvent(2), newEvent(3), newEvent(4)
-        )
+        val EVENTS: MutableList<Event> = (0..35).map { newEvent(it) }.toMutableList()
     }
 
     override suspend fun get(uuid: String): Event {
@@ -34,7 +32,16 @@ class EventCacheRepository : IEventRepository {
         numberOfRows: Int
     ): List<Event> {
         delay(1000)
-        return EVENTS
+
+        if (EVENTS.size < offset) {
+            return emptyList()
+        }
+
+        if (EVENTS.size < offset + numberOfRows) {
+            return EVENTS.subList(offset, EVENTS.size)
+        }
+
+        return EVENTS.subList(offset, offset + numberOfRows)
     }
 
     override suspend fun create(event: Event): Event {

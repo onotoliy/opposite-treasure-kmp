@@ -15,6 +15,8 @@ import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
 import com.github.onotoliy.opposite.viewmodel.events.EventNewViewModel
 import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
 import com.github.onotoliy.opposite.viewmodel.events.EventsListModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionEditModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionNewViewModel
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionViewModel
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionsListModel
 import com.github.onotoliy.opposite.viewmodel.users.UserViewModel
@@ -39,7 +41,10 @@ val viewModelModule = module {
     single { EventNewViewModel(get()) }
 
     factory { (id: String) -> TransactionViewModel(get(), get(), id) }
+    factory { (id: String) -> TransactionEditModel(get(), id) }
     single { TransactionsListModel(get()) }
+    single { TransactionNewViewModel(get()) }
+
     factory { (id: String) -> UserViewModel(get(), get(), get(), get(), id) }
     single { UsersListModel(get()) }
     single { CashboxViewModel(get()) }

@@ -15,7 +15,7 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun EventEditForm(
+fun EventModificationLayout(
     name: String,
     onNameChange: (String) -> Unit,
     contribution: String,
