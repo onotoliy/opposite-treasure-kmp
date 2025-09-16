@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.data
 
 import com.github.onotoliy.opposite.data.Option
+import com.github.onotoliy.opposite.treasure.model.Event
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -9,9 +10,9 @@ data class Event(
     val uuid: String,
     val name: String,
     val contribution: String,
-    val total: String,
     val deadline: Instant,
-    val creationDate: String,
+    val creationDate: Instant,
     val author: Option,
-    val deletionDate: String?
+    val deletionDate: Instant?
 )
+

@@ -1,11 +1,23 @@
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
 
 plugins {
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidLibrary)
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+}
+
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        url = uri("https://maven.pkg.github.com/onotoliy/opposite-treasure-api")
+        credentials {
+            username = project.findProperty("onotoliy.github.username") as String? ?: ""
+            password = project.findProperty("onotoliy.github.token") as String? ?: ""
+        }
+    }
 }
 
 version = "1.0-SNAPSHOT"
@@ -34,19 +46,20 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation("io.ktor:ktor-client-core:3.2.3")
-            implementation("io.insert-koin:koin-core:4.1.1")
-            implementation("io.insert-koin:koin-compose-viewmodel:4.1.1")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
-            implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-rc01")
-            implementation("io.github.windedge.table:table-m3:0.2.2")
+            implementation(libs.ktor.client.core)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.material.icons.extended)
+            implementation(libs.navigation.compose)
+            implementation(libs.table.m3)
+            implementation(libs.opposite.treasure.service.api)
         }
 
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.windows_x64)
-                implementation("org.jetbrains.skiko:skiko-awt-runtime-windows-x64:0.9.24")
+                implementation(libs.skiko.awt.runtime.windows.x64)
             }
         }
 
@@ -56,6 +69,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.uiTooling)
             implementation(compose.preview)
+            implementation(libs.ktor.client.okhttp)
         }
     }
 }

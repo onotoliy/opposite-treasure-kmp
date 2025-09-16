@@ -1,43 +1,46 @@
 package com.github.onotoliy.opposite.di
 
-import com.github.onotoliy.opposite.repositories.CashboxCacheRepository
-import com.github.onotoliy.opposite.repositories.DebtCacheRepository
-import com.github.onotoliy.opposite.repositories.UserCacheRepository
-import com.github.onotoliy.opposite.repositories.FileCacheRepository
 import com.github.onotoliy.opposite.repositories.ICashboxRepository
-import com.github.onotoliy.opposite.repositories.IDebtRepository
-import com.github.onotoliy.opposite.repositories.IUserRepository
+import com.github.onotoliy.opposite.repositories.IDepositeRepository
 import com.github.onotoliy.opposite.repositories.IFileRepository
 import com.github.onotoliy.opposite.repositories.ITransactionRepository
-import com.github.onotoliy.opposite.repositories.TransactionCacheRepository
+import com.github.onotoliy.opposite.treasure.api.CashboxResourceApi
+import com.github.onotoliy.opposite.treasure.api.DepositResourceApi
+import com.github.onotoliy.opposite.treasure.api.EventResourceApi
+import com.github.onotoliy.opposite.treasure.api.TransactionResourceApi
 import com.github.onotoliy.opposite.ui.components.events.models.EventTransactionListModel
 import com.github.onotoliy.opposite.ui.components.events.models.EventUserListModel
 import com.github.onotoliy.opposite.ui.components.users.models.UserEventListModel
 import com.github.onotoliy.opposite.ui.components.users.models.UserTransactionListModel
 import com.github.onotoliy.opposite.viewmodel.cashbox.CashboxViewModel
-import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
 import com.github.onotoliy.opposite.viewmodel.events.EventCreateModel
-import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
+import com.github.onotoliy.opposite.viewmodel.events.EventEditModel
 import com.github.onotoliy.opposite.viewmodel.events.EventListModel
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionEditModel
+import com.github.onotoliy.opposite.viewmodel.events.EventViewModel
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionCreateModel
-import com.github.onotoliy.opposite.viewmodel.transactions.TransactionViewModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionEditModel
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionListModel
-import com.github.onotoliy.opposite.viewmodel.users.UserEditModel
+import com.github.onotoliy.opposite.viewmodel.transactions.TransactionViewModel
 import com.github.onotoliy.opposite.viewmodel.users.UserCreateModel
-import com.github.onotoliy.opposite.viewmodel.users.UserViewModel
+import com.github.onotoliy.opposite.viewmodel.users.UserEditModel
 import com.github.onotoliy.opposite.viewmodel.users.UserListModel
-import com.github.opposite.treasure.shared.EventCacheRepository
+import com.github.onotoliy.opposite.viewmodel.users.UserViewModel
 import com.github.opposite.treasure.shared.IEventRepository
 import org.koin.dsl.module
 
+val networkModule = module {
+    single { CashboxResourceApi("http://91.201.41.66/api/treasure/v1", getHttpClient()) }
+    single { TransactionResourceApi("http://91.201.41.66/api/treasure/v1", getHttpClient()) }
+    single { EventResourceApi("http://91.201.41.66/api/treasure/v1", getHttpClient()) }
+    single { DepositResourceApi("http://91.201.41.66/api/treasure/v1", getHttpClient()) }
+}
+
 val repositoryModule = module {
-    single<ICashboxRepository> { CashboxCacheRepository() }
-    single<IUserRepository> { UserCacheRepository() }
-    single<IDebtRepository> { DebtCacheRepository() }
-    single<ITransactionRepository> { TransactionCacheRepository() }
-    single<IEventRepository> { EventCacheRepository() }
-    single<IFileRepository> { FileCacheRepository() }
+    single { ICashboxRepository(get()) }
+    single { IDepositeRepository(get()) }
+    single { ITransactionRepository(get()) }
+    single { IEventRepository(get()) }
+    single { IFileRepository() }
 }
 
 val viewModelModule = module {

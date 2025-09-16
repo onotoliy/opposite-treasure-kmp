@@ -1,54 +1,27 @@
 package com.github.onotoliy.opposite.repositories
 
-import com.github.onotoliy.opposite.data.Event
-import com.github.onotoliy.opposite.data.Option
-import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.data.TransactionType
-import com.github.onotoliy.opposite.data.User
-import kotlin.time.Clock
+import com.github.onotoliy.opposite.treasure.model.Deposit
+import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.treasure.model.Transaction
+import kotlinx.datetime.Clock
+import kotlinx.serialization.SerialName
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 fun newEvent(id: Int): Event {
-    return Event(
-        uuid = id.toString(),
-        name = "Event $id",
-        contribution = "1000",
-        total = "1000",
-        deadline = Clock.System.now(),
-        creationDate = "2025-09-04",
-        author = Option("1", "Author"),
-        deletionDate = null
-    )
+    return Event(uuid = "$id")
 }
 
 @OptIn(ExperimentalTime::class)
-fun newUser(id: Int): User {
-    return User(
-        uuid = "$id",
-        logo = "$id",
-        login = "user-$id",
-        name = "UserName $id",
-        deposit = "1000",
-        birthday = Clock.System.now(),
-        position = "Position $id",
-        joiningDate =  Clock.System.now()
-    )
+fun newUser(id: Int): Deposit {
+    return Deposit(uuid = "$id")
 }
+
 @OptIn(ExperimentalTime::class)
 fun newTransaction(id: Int, eventID: Int? = null, personID: Int? = null): Transaction {
-    return Transaction(
-        uuid = "$id",
-        name = "Transaction $id",
-        type = TransactionType.CONTRIBUTION,
-        cash = "10000",
-        person = personID?.let { Option("$id", "Event $id") },
-        event = eventID?.let { Option("$id", "User $id") },
-        author = Option("$id", "Author $id") ,
-        creationDate = Clock.System.now(),
-        transactionDate = Clock.System.now(),
-        deletionDate = null
-    )
+    return Transaction(uuid = "$id")
 }
 
 
