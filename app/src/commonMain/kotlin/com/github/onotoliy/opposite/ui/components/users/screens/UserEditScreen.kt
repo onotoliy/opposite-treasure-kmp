@@ -1,7 +1,6 @@
 package com.github.onotoliy.opposite.ui.components.users.screens
 
 import androidx.compose.runtime.Composable
-import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.components.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.components.events.views.EventEditView
 import com.github.onotoliy.opposite.ui.components.users.UserEditView

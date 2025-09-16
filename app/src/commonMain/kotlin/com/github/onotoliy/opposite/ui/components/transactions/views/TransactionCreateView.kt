@@ -12,17 +12,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Option
-import com.github.onotoliy.opposite.data.Transaction
-import com.github.onotoliy.opposite.data.TransactionType
+import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.transactions.TransactionCreateModel
-import kotlin.time.Clock
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -32,7 +31,7 @@ expect fun TransactionCreateView(viewModel: TransactionCreateModel, onSelect: (S
 @Composable
 @OptIn(ExperimentalTime::class)
 fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
-    var type by remember { mutableStateOf(TransactionType.NONE) }
+    var type by remember { mutableStateOf(Transaction.Type.NONE) }
     var name by remember { mutableStateOf("") }
     var cash by remember { mutableStateOf("") }
     var person by remember { mutableStateOf<Option?>(null) }
@@ -82,7 +81,7 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
 @Composable
 @OptIn(ExperimentalTime::class)
 fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
-    var type by remember { mutableStateOf(TransactionType.NONE) }
+    var type by remember { mutableStateOf(Transaction.Type.NONE) }
     var name by remember { mutableStateOf("") }
     var cash by remember { mutableStateOf("") }
     var person by remember { mutableStateOf<Option?>(null) }
@@ -140,7 +139,7 @@ fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Scree
 fun newTransaction(
     name: String,
     cash: String,
-    type: TransactionType,
+    type: Transaction.Type,
     person: Option?,
     event: Option?,
     transactionDate: Instant

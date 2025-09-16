@@ -1,7 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel.transactions
 
-import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.repositories.ITransactionRepository
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.viewmodel.AbstractInfinityListModel
 
 open class TransactionListModel(
@@ -9,6 +9,12 @@ open class TransactionListModel(
 ) : AbstractInfinityListModel<Transaction>() {
 
     override suspend fun getAll(offset: Int, numberOfRows: Int): List<Transaction> =
-        repository.getAll(null, null, offset, numberOfRows)
+        repository.getAll(
+            null,
+            null,
+            depositID = null,
+            offset = offset,
+            numberOfRows = numberOfRows
+        )
 
 }

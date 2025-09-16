@@ -1,7 +1,8 @@
 package com.github.onotoliy.opposite.viewmodel.events
 
-import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.repositories.IFileRepository
+import com.github.onotoliy.opposite.repositories.newEvent
+import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
 import com.github.opposite.treasure.shared.IEventRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,6 @@ class EventViewModel(
     }
 
     override val defaultValue: Event
-        get() = com.github.onotoliy.opposite.repositories.newEvent(-1000)
+        get() = newEvent()
 
 }

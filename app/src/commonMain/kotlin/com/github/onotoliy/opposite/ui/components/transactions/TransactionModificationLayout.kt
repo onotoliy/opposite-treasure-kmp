@@ -10,20 +10,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Option
-import com.github.onotoliy.opposite.data.TransactionType
+import com.github.onotoliy.opposite.repositories.lablel
+import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.DropdownMenu
 import com.github.onotoliy.opposite.ui.SwaggestBox
+import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionModificationLayout(
-    type: TransactionType,
+    type: Transaction.Type,
     isTypeEnable: Boolean,
-    onTypeChanged: (TransactionType) -> Unit,
+    onTypeChanged: (Transaction.Type) -> Unit,
 
     name: String,
     onNameChanged: (String) -> Unit,
@@ -52,8 +53,8 @@ fun TransactionModificationLayout(
         DropdownMenu(
             label = "Тип тразакции",
             enabled = isTypeEnable,
-            values = TransactionType.values().map { Option(it.name, it.label) },
-            onValueChange = { onTypeChanged(TransactionType.valueOf(it.uuid)) }
+            values = Transaction.Type.values().map { Option(it.name, it.lablel) },
+            onValueChange = { onTypeChanged(Transaction.Type.valueOf(it.uuid)) }
         )
 
         OutlinedTextField(

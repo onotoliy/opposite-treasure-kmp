@@ -14,7 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.github.onotoliy.opposite.data.Option
+import com.github.onotoliy.opposite.treasure.model.Option
 import kotlinx.coroutines.delay
 
 @ExperimentalMaterial3Api

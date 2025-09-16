@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.User
+import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.components.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
@@ -27,16 +27,16 @@ import org.jetbrains.compose.resources.painterResource
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun UserInformationView(user: User, logo: DrawableResource, onSelect: (Screen) -> Unit)
+expect fun UserInformationView(deposit: Deposit, logo: DrawableResource, onSelect: (Screen) -> Unit)
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun UserInformationMobileView(user: User, logo: DrawableResource, onSelect: (Screen) -> Unit) {
-    LocalMobileScafoldState.current.topBar = { Text(user.name) }
+fun UserInformationMobileView(deposit: Deposit, logo: DrawableResource, onSelect: (Screen) -> Unit) {
+    LocalMobileScafoldState.current.topBar = { Text(deposit.name) }
     LocalMobileScafoldState.current.floatingActionButton = {
         EditFloatingActionButton {
             onSelect(
-                Screen.UserEditScreen(user.uuid)
+                Screen.UserEditScreen(deposit.uuid)
             )
         }
     }
@@ -46,12 +46,12 @@ fun UserInformationMobileView(user: User, logo: DrawableResource, onSelect: (Scr
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        LabelledText("ФИО", user.name)
-        LabelledText("Депозит", user.deposit)
-        LabelledText("Номер телефона", user.login)
-        LabelledText("День рождения", user.birthday)
-        LabelledText("День вступления", user.joiningDate)
-        LabelledText("Должность", user.position)
+        LabelledText("ФИО", deposit.name)
+        LabelledText("Депозит", deposit.deposit)
+        LabelledText("Номер телефона", deposit.username)
+        LabelledText("День рождения", deposit.birthday)
+        LabelledText("День вступления", deposit.joiningDate)
+        LabelledText("Должность", deposit.position)
 
         ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Image(
@@ -66,7 +66,7 @@ fun UserInformationMobileView(user: User, logo: DrawableResource, onSelect: (Scr
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun UserInformationWebView(user: User, logo: DrawableResource) {
+fun UserInformationWebView(deposit: Deposit, logo: DrawableResource) {
     Row(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -83,10 +83,10 @@ fun UserInformationWebView(user: User, logo: DrawableResource) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            LabelledText("Название", user.name)
-            LabelledText("Депозит", user.deposit)
-            LabelledText("Номер телефона", user.login)
-            LabelledText("День рождения", user.birthday)
+            LabelledText("Название", deposit.name)
+            LabelledText("Депозит", deposit.deposit)
+            LabelledText("Номер телефона", deposit.login)
+            LabelledText("День рождения", deposit.birthday)
 
             Button(
                 onClick = { /* обработка */ },

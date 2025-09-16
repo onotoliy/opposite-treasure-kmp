@@ -1,7 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel.events
 
-import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.repositories.newEvent
+import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractEditModel
 import com.github.opposite.treasure.shared.IEventRepository
 
@@ -14,6 +14,6 @@ class EventEditModel(
 
     override suspend fun update(value: Event): Event = repository.update(value)
     override val defaultValue: Event
-        get() = newEvent(-1000)
+        get() = newEvent()
 
 }

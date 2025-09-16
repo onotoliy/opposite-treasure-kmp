@@ -19,7 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.User
+import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
@@ -49,7 +49,7 @@ fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
 }
 
 @Composable
-private fun UserMobileItem(user: User, onSelect: (Screen) -> Unit) {
+private fun UserMobileItem(user: Deposit, onSelect: (Screen) -> Unit) {
     Row(
         modifier = Modifier
             .padding(horizontal = 4.dp)

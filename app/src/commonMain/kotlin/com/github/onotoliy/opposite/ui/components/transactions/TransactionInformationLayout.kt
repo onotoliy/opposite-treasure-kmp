@@ -7,7 +7,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Transaction
+import com.github.onotoliy.opposite.repositories.lablel
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import kotlin.time.ExperimentalTime
@@ -19,7 +20,7 @@ fun TransactionInformationLayout(transaction: Transaction, onSelect: (Screen) ->
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        LabelledText("Тип", transaction.type.label)
+        LabelledText("Тип", transaction.type.lablel)
         LabelledText("Название", transaction.name)
         LabelledText("Сумма", transaction.cash)
         transaction.person?.let {

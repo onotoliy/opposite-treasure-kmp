@@ -1,6 +1,6 @@
 package com.github.onotoliy.opposite.ui.components.users.models
 
-import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.events.EventListModel
 import com.github.opposite.treasure.shared.IEventRepository
 

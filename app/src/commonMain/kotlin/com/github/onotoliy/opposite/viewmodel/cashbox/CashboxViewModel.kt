@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel.cashbox
 
 import com.github.onotoliy.opposite.repositories.IDepositeRepository
+import com.github.onotoliy.opposite.repositories.newDeposit
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
 
@@ -14,6 +15,6 @@ open class CashboxViewModel(
     }
 
     override val defaultValue: Deposit
-        get() = com.github.onotoliy.opposite.repositories.newUser(-1000)
+        get() = newDeposit()
 
 }

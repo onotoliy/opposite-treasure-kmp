@@ -1,6 +1,6 @@
 package com.github.onotoliy.opposite.viewmodel.events
 
-import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractCreateModel
 import com.github.opposite.treasure.shared.IEventRepository
 

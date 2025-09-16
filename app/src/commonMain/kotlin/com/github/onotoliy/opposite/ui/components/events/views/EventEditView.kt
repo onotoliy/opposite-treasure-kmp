@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Event
 import com.github.onotoliy.opposite.ui.UiStateScreen
 import com.github.onotoliy.opposite.ui.components.CancelButton
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState

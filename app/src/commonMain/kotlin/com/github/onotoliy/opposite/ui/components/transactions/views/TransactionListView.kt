@@ -22,8 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Transaction
-import com.github.onotoliy.opposite.data.TransactionType
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
@@ -63,20 +62,20 @@ private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -
         verticalAlignment = Alignment.CenterVertically
     ) {
         val icon = when (transaction.type) {
-            TransactionType.NONE -> Icons.AutoMirrored.Outlined.ArrowForward
-            TransactionType.COST -> Icons.Outlined.ArrowDownward
-            TransactionType.CONTRIBUTION -> Icons.Outlined.ArrowOutward
-            TransactionType.WRITE_OFF -> Icons.AutoMirrored.Outlined.ArrowForward
-            TransactionType.PAID -> Icons.AutoMirrored.Outlined.ArrowForward
-            TransactionType.EARNED -> Icons.Outlined.ArrowOutward
+            Transaction.Type.NONE -> Icons.AutoMirrored.Outlined.ArrowForward
+            Transaction.Type.COST -> Icons.Outlined.ArrowDownward
+            Transaction.Type.CONTRIBUTION -> Icons.Outlined.ArrowOutward
+            Transaction.Type.WRITE_OFF -> Icons.AutoMirrored.Outlined.ArrowForward
+            Transaction.Type.PAID -> Icons.AutoMirrored.Outlined.ArrowForward
+            Transaction.Type.EARNED -> Icons.Outlined.ArrowOutward
         }
         val color = when (transaction.type) {
-            TransactionType.NONE -> Color.Black
-            TransactionType.COST -> Color.Red
-            TransactionType.CONTRIBUTION -> Color.Green
-            TransactionType.WRITE_OFF -> Color.Black
-            TransactionType.PAID -> Color.Red
-            TransactionType.EARNED -> Color.Green
+            Transaction.Type.NONE -> Color.Black
+            Transaction.Type.COST -> Color.Red
+            Transaction.Type.CONTRIBUTION -> Color.Green
+            Transaction.Type.WRITE_OFF -> Color.Black
+            Transaction.Type.PAID -> Color.Red
+            Transaction.Type.EARNED -> Color.Green
         }
         Icon(imageVector = icon, contentDescription = null)
 

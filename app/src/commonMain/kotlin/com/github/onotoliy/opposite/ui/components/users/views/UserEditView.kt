@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.User
 import com.github.onotoliy.opposite.ui.UiStateScreen
 import com.github.onotoliy.opposite.ui.components.CancelButton
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
@@ -34,7 +33,7 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
 
     UiStateScreen(state, load = viewModel::load) {
         var name by remember { mutableStateOf(data.name) }
-        var login by remember { mutableStateOf(data.login) }
+        var login by remember { mutableStateOf(data.username) }
         var birthday by remember { mutableStateOf(data.birthday) }
         var joiningDate by remember { mutableStateOf(data.joiningDate) }
         var position by remember { mutableStateOf(data.position) }
@@ -59,8 +58,8 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
         UserModificationLayout(
             name = name,
             onNameChanged = { name = it },
-            login = login,
-            onLoginChanged = { login = it },
+            username = login,
+            onUsernameChanged = { login = it },
             birthday = birthday,
             onBirthdayChanged = { birthday = it },
             joiningDate = joiningDate,
@@ -91,8 +90,8 @@ fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
             UserModificationLayout(
                 name = name,
                 onNameChanged = { name = it },
-                login = login,
-                onLoginChanged = { login = it },
+                username = login,
+                onUsernameChanged = { login = it },
                 birthday = birthday,
                 onBirthdayChanged = { birthday = it },
                 joiningDate = joiningDate,

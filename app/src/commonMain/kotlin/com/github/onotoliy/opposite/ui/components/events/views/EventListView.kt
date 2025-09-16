@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Event
+import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState

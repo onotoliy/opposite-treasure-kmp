@@ -10,22 +10,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Option
-import com.github.onotoliy.opposite.data.TransactionType
+import com.github.onotoliy.opposite.repositories.label
+import com.github.onotoliy.opposite.repositories.lablel
+import com.github.onotoliy.opposite.treasure.model.Deposit
+import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.DropdownMenu
-import com.github.onotoliy.opposite.ui.SwaggestBox
+import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 @Composable
 fun UserModificationLayout(
-    name: String,
-    onNameChanged: (String) -> Unit,
+    firstName: String,
+    onFirstNameChanged: (String) -> Unit,
 
-    login: String,
-    onLoginChanged: (String) -> Unit,
+    lastName: String,
+    onLastNameChanged: (String) -> Unit,
+
+    patronymic: String,
+    onPatronymicChanged: (String) -> Unit,
+
+    email: String,
+    onUEmailChanged: (String) -> Unit,
+
+    username: String,
+    onUsernameChanged: (String) -> Unit,
 
     birthday: Instant,
     onBirthdayChanged: (Instant) -> Unit,
@@ -33,8 +44,8 @@ fun UserModificationLayout(
     joiningDate: Instant,
     onJoiningDateChanged: (Instant) -> Unit,
 
-    position: String,
-    onPositionChanged: (String) -> Unit
+    position: Deposit.Position,
+    onPositionChanged: (Deposit.Position) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 4.dp),
@@ -42,25 +53,43 @@ fun UserModificationLayout(
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("ФИО") },
-            value = name,
-            onValueChange = onNameChanged
+            label = { Text("Фамилия") },
+            value = lastName,
+            onValueChange = onLastNameChanged
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Имя") },
+            value = firstName,
+            onValueChange = onFirstNameChanged
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Отчество") },
+            value = patronymic,
+            onValueChange = onPatronymicChanged
         )
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Логин") },
-            value = login,
-            onValueChange = onLoginChanged
+            label = { Text("Номер телефона") },
+            value = username,
+            onValueChange = onUsernameChanged
         )
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Должность") },
-            value = position,
-            onValueChange = onPositionChanged
+            label = { Text("Электронная почтв") },
+            value = email,
+            onValueChange = onUEmailChanged
         )
 
+        DropdownMenu(
+            label = "Должность",
+            enabled = true,
+            values = Deposit.Position.values().map { Option(it.name, it.label) },
+            onValueChange = { onPositionChanged(Deposit.Position.valueOf(it.uuid)) }
+        )
 
         CalendarField(
             label = "День рождение",

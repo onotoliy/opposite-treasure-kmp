@@ -1,7 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel.transactions
 
-import com.github.onotoliy.opposite.data.Transaction
 import com.github.onotoliy.opposite.repositories.ITransactionRepository
+import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.viewmodel.AbstractCreateModel
 
 class TransactionCreateModel(

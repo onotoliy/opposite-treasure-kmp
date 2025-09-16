@@ -12,17 +12,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.data.Event
-import com.github.onotoliy.opposite.data.Option
+import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.events.EventCreateModel
-import kotlin.time.Clock
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -95,9 +95,8 @@ fun newEvent(name: String, contribution: String, deadline: Instant): Event = Eve
     uuid = Uuid.random().toString(),
     name = name,
     contribution = contribution,
-    total = contribution,
     deadline = deadline,
-    creationDate = Clock.System.now().toString(),
+    creationDate = Clock.System.now(),
     author = Option("", ""),
     deletionDate = null
 )

@@ -1,7 +1,7 @@
 package com.github.onotoliy.opposite.ui.components.events.models
 
-import com.github.onotoliy.opposite.data.Deposit
 import com.github.onotoliy.opposite.repositories.IDepositeRepository
+import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.viewmodel.users.UserListModel
 
 class EventUserListModel(
