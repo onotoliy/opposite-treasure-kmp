@@ -13,10 +13,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,11 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.ui.components.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.scaffold.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.transactions.views.TransactionInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionViewModel
+import com.github.onotoliy.opposite.viewmodel.UiState
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,50 +41,57 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun TransactionViewScreen(
     uuid: String,
-    model: TransactionViewModel = koinViewModel { parametersOf(uuid) },
+    viewModel: TransactionViewModel = koinViewModel { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
-    val state by model.loadState.collectAsState()
+    val state by viewModel.loadState.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Информация", "Фотографии")
     val icons = listOf(Icons.Filled.Info, Icons.Outlined.Photo)
 
-    UiStateScreen(state, load = model::load) {
-        ApplicationScaffold(
-            onSelect = onSelect
-        ) {
-            Column {
-                ScrollableTabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    edgePadding = 0.dp
-                ) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(
-                            selected = selectedTabIndex == index,
-                            onClick = { selectedTabIndex = index }
+    LaunchedEffect(Unit) {
+        viewModel.load()
+    }
+
+    ApplicationScaffold(
+        onSelect = onSelect
+    ) {
+        Column {
+            when (state) {
+                is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+                UiState.Loading -> LinearProgressIndicator()
+                is UiState.Success -> {}
+            }
+
+            ScrollableTabRow(
+                selectedTabIndex = selectedTabIndex,
+                edgePadding = 0.dp
+            ) {
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = index }
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp)
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                Icon(imageVector = icons[index], contentDescription = title)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = title)
-                            }
+                            Icon(imageVector = icons[index], contentDescription = title)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = title)
                         }
                     }
                 }
+            }
 
-                when (selectedTabIndex) {
-                    0 -> TransactionInformationView(model.info.value, onSelect)
-                    1 -> FilesTab(model.receipts.value)
-                }
+            when (selectedTabIndex) {
+                0 -> TransactionInformationView(viewModel.info.value, onSelect)
+                1 -> FilesTab(viewModel.receipts.value)
             }
         }
     }
 }
-
 
 
 @Composable

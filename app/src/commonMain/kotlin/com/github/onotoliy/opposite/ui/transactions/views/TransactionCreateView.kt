@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,14 +14,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.newTransaction
 import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.treasure.model.Transaction
+import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.transactions.TransactionModificationLayout
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionCreateModel
+import com.github.onotoliy.opposite.viewmodel.UiState
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
@@ -33,6 +37,8 @@ expect fun TransactionCreateView(viewModel: TransactionCreateModel, onSelect: (S
 @Composable
 @OptIn(ExperimentalTime::class)
 fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
+    val state by viewModel.loadState.collectAsState()
+
     var type by remember { mutableStateOf(Transaction.Type.NONE) }
     var name by remember { mutableStateOf("") }
     var cash by remember { mutableStateOf("") }
@@ -61,37 +67,47 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
     val events by viewModel.events.collectAsState()
     val deposits by viewModel.deposits.collectAsState()
 
-    TransactionModificationLayout(
-        type = type,
-        isTypeEnable = true,
-        onTypeChanged = { type = it },
-        cash = cash,
-        isCashEnable = true,
-        onCashChanged = { cash = it },
-        user = person,
-        isUserEnable = true,
-        onUserChanged = { person = it },
-        onUserQueryChanged = {
-            viewModel.getDeposits(it, type)
-            deposits
-        },
-        event = event,
-        isEventEnable = true,
-        onEventChanged = { event = it },
-        onEventQueryChanged = {
-            viewModel.getEvents(it, type)
-            events
-        },
-        transactionDate = transactionDate,
-        onTransactionDateChange = { transactionDate = it },
-        name = name,
-        onNameChanged = { name = it }
-    )
+    Column {
+        when (state) {
+            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            UiState.Loading -> LinearProgressIndicator()
+            is UiState.Success -> {}
+        }
+
+        TransactionModificationLayout(
+            type = type,
+            isTypeEnable = true,
+            onTypeChanged = { type = it },
+            cash = cash,
+            isCashEnable = true,
+            onCashChanged = { cash = it },
+            user = person,
+            isUserEnable = true,
+            onUserChanged = { person = it },
+            onUserQueryChanged = {
+                viewModel.getDeposits(it, type)
+                deposits
+            },
+            event = event,
+            isEventEnable = true,
+            onEventChanged = { event = it },
+            onEventQueryChanged = {
+                viewModel.getEvents(it, type)
+                events
+            },
+            transactionDate = transactionDate,
+            onTransactionDateChange = { transactionDate = it },
+            name = name,
+            onNameChanged = { name = it }
+        )
+    }
 }
 
 @Composable
 @OptIn(ExperimentalTime::class)
 fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
+    val state by viewModel.loadState.collectAsState()
+
     var type by remember { mutableStateOf(Transaction.Type.NONE) }
     var name by remember { mutableStateOf("") }
     var cash by remember { mutableStateOf("") }
@@ -103,6 +119,12 @@ fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Scree
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        when (state) {
+            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            UiState.Loading -> LinearProgressIndicator()
+            is UiState.Success -> {}
+        }
+
         TransactionModificationLayout(
             type = type,
             isTypeEnable = true,
@@ -144,27 +166,4 @@ fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Scree
             }
         }
     }
-}
-
-@OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
-fun newTransaction(
-    name: String,
-    cash: String,
-    type: Transaction.Type,
-    person: Option?,
-    event: Option?,
-    transactionDate: Instant
-): Transaction {
-    return Transaction(
-        uuid = Uuid.random().toString(),
-        name = name,
-        cash = cash,
-        type = type,
-        person = person,
-        event = event,
-        transactionDate = transactionDate,
-        creationDate = Clock.System.now(),
-        author = Option("", ""),
-        deletionDate = null
-    )
 }

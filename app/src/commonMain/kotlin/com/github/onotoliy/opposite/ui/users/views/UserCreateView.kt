@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,13 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.newDeposit
 import com.github.onotoliy.opposite.treasure.model.Deposit
-import com.github.onotoliy.opposite.ui.components.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.users.UserModificationLayout
 import com.github.onotoliy.opposite.ui.users.models.UserCreateModel
+import com.github.onotoliy.opposite.viewmodel.UiState
 import kotlinx.datetime.Clock
 import kotlin.time.ExperimentalTime
 
@@ -33,34 +35,40 @@ expect fun UserCreateView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit
 fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
 
-    UiStateScreen(state) {
-        var username by remember { mutableStateOf("") }
-        var firstName by remember { mutableStateOf("") }
-        var lastName by remember { mutableStateOf("") }
-        var patronymic by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var birthday by remember { mutableStateOf(Clock.System.now()) }
-        var joiningDate by remember { mutableStateOf(Clock.System.now()) }
-        var position by remember { mutableStateOf(Deposit.Position.NONE) }
+    var username by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var patronymic by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var birthday by remember { mutableStateOf(Clock.System.now()) }
+    var joiningDate by remember { mutableStateOf(Clock.System.now()) }
+    var position by remember { mutableStateOf(Deposit.Position.NONE) }
 
-        LocalMobileScafoldState.current.topBar = { Text("Создание пользователя") }
-        LocalMobileScafoldState.current.floatingActionButton = {
-            SaveFloatingActionButton {
-                viewModel.onSave(
-                    newDeposit(
-                        firstName = firstName,
-                        lastName = lastName,
-                        patronymic = patronymic,
-                        email = email,
-                        username = username,
-                        birthday = birthday,
-                        joiningDate = joiningDate,
-                        position = position
-                    )
-                ) {
-                    onSelect(Screen.UserViewScreen(it.uuid))
-                }
+    LocalMobileScafoldState.current.topBar = { Text("Создание пользователя") }
+    LocalMobileScafoldState.current.floatingActionButton = {
+        SaveFloatingActionButton {
+            viewModel.onSave(
+                newDeposit(
+                    firstName = firstName,
+                    lastName = lastName,
+                    patronymic = patronymic,
+                    email = email,
+                    username = username,
+                    birthday = birthday,
+                    joiningDate = joiningDate,
+                    position = position
+                )
+            ) {
+                onSelect(Screen.UserViewScreen(it.uuid))
             }
+        }
+    }
+
+    Column {
+        when (state) {
+            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            UiState.Loading -> LinearProgressIndicator()
+            is UiState.Success -> {}
         }
 
         UserModificationLayout(
@@ -88,6 +96,8 @@ fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit)
 @Composable
 @OptIn(ExperimentalTime::class)
 fun UserCreateWebView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit) {
+    val state by viewModel.loadState.collectAsState()
+
     var username by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -101,6 +111,12 @@ fun UserCreateWebView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit) {
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        when (state) {
+            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            UiState.Loading -> LinearProgressIndicator()
+            is UiState.Success -> {}
+        }
+
         UserModificationLayout(
             firstName = firstName,
             onFirstNameChanged = { firstName = it },

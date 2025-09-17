@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,13 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.treasure.model.Option
-import com.github.onotoliy.opposite.ui.components.UiStateScreen
+import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.events.models.EventCreateModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.viewmodel.UiState
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
@@ -36,19 +38,24 @@ expect fun EventCreateView(viewModel: EventCreateModel, onSelect: (Screen) -> Un
 fun EventCreateMobileView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
 
-    UiStateScreen(state) {
-        var name by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var contribution by remember { mutableStateOf("") }
+    var deadline by remember { mutableStateOf(Clock.System.now()) }
 
-        var contribution by remember { mutableStateOf("") }
-        var deadline by remember { mutableStateOf(Clock.System.now()) }
-
-        LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
-        LocalMobileScafoldState.current.floatingActionButton = {
-            SaveFloatingActionButton {
-                viewModel.onSave(newEvent(name, contribution, deadline)) {
-                    onSelect(Screen.EventViewScreen(it.uuid))
-                }
+    LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
+    LocalMobileScafoldState.current.floatingActionButton = {
+        SaveFloatingActionButton {
+            viewModel.onSave(newEvent(name, contribution, deadline)) {
+                onSelect(Screen.EventViewScreen(it.uuid))
             }
+        }
+    }
+
+    Column {
+        when (state) {
+            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            UiState.Loading -> LinearProgressIndicator()
+            is UiState.Success -> {}
         }
 
         EventModificationLayout(
@@ -66,6 +73,7 @@ fun EventCreateMobileView(viewModel: EventCreateModel, onSelect: (Screen) -> Uni
 @Composable
 @OptIn(ExperimentalTime::class)
 fun EventCreateWebView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
+    val state by viewModel.loadState.collectAsState()
     var name by remember { mutableStateOf("") }
     var contribution by remember { mutableStateOf("") }
     var deadline by remember { mutableStateOf(Clock.System.now()) }
@@ -74,6 +82,12 @@ fun EventCreateWebView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) 
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        when (state) {
+            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            UiState.Loading -> LinearProgressIndicator()
+            is UiState.Success -> {}
+        }
+
         EventModificationLayout(
             name = name,
             onNameChange = { name = it },

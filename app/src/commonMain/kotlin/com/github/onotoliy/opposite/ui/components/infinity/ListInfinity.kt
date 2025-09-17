@@ -20,13 +20,14 @@ fun <T> ListInfinity(
     loadingState: UiState,
     values: List<T>,
     canLoadMore: Boolean,
-    onLoadMore: () -> Unit,
+    onLoadMore: (reload: Boolean) -> Unit,
     content: @Composable (T) -> Unit
 ) {
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        onLoadMore()
+        println("=== First Start ")
+        onLoadMore(true)
     }
 
     LaunchedEffect(listState, values, canLoadMore, loadingState) {
@@ -35,7 +36,9 @@ fun <T> ListInfinity(
                 val lvx = lastVisibleIndex ?: return@collect
 
                 if (loadingState is UiState.Success && lvx >= values.lastIndex - 3) {
-                        onLoadMore()
+                    println("=== New Load ")
+
+                    onLoadMore(false)
                 }
             }
     }
