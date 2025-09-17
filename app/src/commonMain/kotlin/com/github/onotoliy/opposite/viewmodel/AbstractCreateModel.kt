@@ -13,8 +13,8 @@ import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class, ExperimentalTime::class, ExperimentalTime::class)
 abstract class AbstractCreateModel<T>: ViewModel() {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val _loadState = MutableStateFlow<UiState>(UiState.Success)
+    protected val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    protected val _loadState = MutableStateFlow<UiState>(UiState.Success)
 
     val loadState: StateFlow<UiState> = _loadState
 

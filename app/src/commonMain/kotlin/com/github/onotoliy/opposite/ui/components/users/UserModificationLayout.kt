@@ -11,10 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.label
-import com.github.onotoliy.opposite.repositories.lablel
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Option
-import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.DropdownMenu
 import kotlinx.datetime.Instant
@@ -33,9 +31,10 @@ fun UserModificationLayout(
     onPatronymicChanged: (String) -> Unit,
 
     email: String,
-    onUEmailChanged: (String) -> Unit,
+    onEmailChanged: (String) -> Unit,
 
     username: String,
+    isUsernameEnable: Boolean,
     onUsernameChanged: (String) -> Unit,
 
     birthday: Instant,
@@ -74,20 +73,22 @@ fun UserModificationLayout(
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Номер телефона") },
             value = username,
+            enabled = isUsernameEnable,
             onValueChange = onUsernameChanged
         )
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Электронная почтв") },
+            label = { Text("Электронная почта") },
             value = email,
-            onValueChange = onUEmailChanged
+            onValueChange = onEmailChanged
         )
 
         DropdownMenu(
             label = "Должность",
             enabled = true,
-            values = Deposit.Position.values().map { Option(it.name, it.label) },
+            value = Option(position.name, position.label),
+            options = Deposit.Position.values().map { Option(it.name, it.label) },
             onValueChange = { onPositionChanged(Deposit.Position.valueOf(it.uuid)) }
         )
 

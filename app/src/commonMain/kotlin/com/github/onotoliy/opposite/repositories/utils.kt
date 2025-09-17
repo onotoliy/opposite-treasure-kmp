@@ -1,17 +1,41 @@
 package com.github.onotoliy.opposite.repositories
 
+import com.github.onotoliy.opposite.treasure.client.infrastructure.HttpResponse
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.treasure.model.ExceptionInformation
 import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.treasure.model.Transaction
-import com.github.onotoliy.opposite.treasure.model.Transaction.*
+import com.github.onotoliy.opposite.treasure.model.Transaction.Type
+import io.ktor.utils.io.InternalAPI
+import io.ktor.utils.io.readRemaining
+import io.ktor.utils.io.readText
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.serialization.Required
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+
+class HttpException(public val status: String, public override val message: String): Exception(message)
+
+@OptIn(InternalAPI::class)
+suspend fun <T : Any> HttpResponse<T>.toRespose(): T {
+    if (success) {
+        return body()
+    } else {
+        val body = response.rawContent.readRemaining().readText()
+
+        try {
+            val info = Json { ignoreUnknownKeys = true }
+                .decodeFromString(ExceptionInformation.serializer(), body)
+            throw HttpException(info.status.name, info.message)
+        } catch (e: SerializationException) {
+            throw HttpException("INTERNAL_SERVER_ERROR", body)
+        }
+    }
+}
 
 @OptIn(ExperimentalTime::class)
 fun newEvent(
@@ -22,7 +46,7 @@ fun newEvent(
     creationDate: Instant = Clock.System.now(),
     author: Option = Option("", ""),
     deletionDate: Instant? = null
-) = Event( /* Уникальный иденитификатор */
+) = Event(
     uuid = uuid,
     name = name,
     contribution = contribution,
@@ -33,9 +57,29 @@ fun newEvent(
 )
 
 @OptIn(ExperimentalTime::class)
-fun newTransaction(id: Int, eventID: Int? = null, personID: Int? = null): Transaction {
-    return Transaction(uuid = "$id")
-}
+fun newTransaction(
+    uuid: String = "",
+    name: String = "",
+    cash: String = "",
+    type: Transaction.Type = Transaction.Type.NONE,
+    transactionDate: kotlinx.datetime.Instant = Clock.System.now(),
+    creationDate: kotlinx.datetime.Instant = Clock.System.now(),
+    author: Option = Option("", ""),
+    person: Option? = null,
+    event: Option? = null,
+    deletionDate: kotlinx.datetime.Instant? = null
+) = Transaction(
+    uuid = uuid,
+    name = name,
+    cash = cash,
+    type = type,
+    transactionDate = transactionDate,
+    creationDate = creationDate,
+    author = author,
+    person = person,
+    event = event,
+    deletionDate = deletionDate
+)
 
 @OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
 fun newDeposit(
@@ -73,6 +117,9 @@ val Type.lablel: String
         Type.PAID -> "Платеж"
         Type.EARNED -> "Заработано"
     }
+
+val Deposit.name: String
+    get() = firstName + " " + patronymic + " " + lastName
 
 val Deposit.Position.label: String
     get() = when (this) {

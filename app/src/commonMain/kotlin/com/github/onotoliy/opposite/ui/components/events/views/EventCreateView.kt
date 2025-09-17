@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.ui.UiStateScreen
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
@@ -32,28 +34,33 @@ expect fun EventCreateView(viewModel: EventCreateModel, onSelect: (Screen) -> Un
 @Composable
 @OptIn(ExperimentalTime::class)
 fun EventCreateMobileView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
-    var name by remember { mutableStateOf("") }
-    var contribution by remember { mutableStateOf("") }
-    var deadline by remember { mutableStateOf(Clock.System.now()) }
+    val state by viewModel.loadState.collectAsState()
 
-    LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
-    LocalMobileScafoldState.current.floatingActionButton = {
-        SaveFloatingActionButton {
-            viewModel.onSave(newEvent(name, contribution, deadline)) {
-                onSelect(Screen.EventViewScreen(it.uuid))
+    UiStateScreen(state) {
+        var name by remember { mutableStateOf("") }
+
+        var contribution by remember { mutableStateOf("") }
+        var deadline by remember { mutableStateOf(Clock.System.now()) }
+
+        LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
+        LocalMobileScafoldState.current.floatingActionButton = {
+            SaveFloatingActionButton {
+                viewModel.onSave(newEvent(name, contribution, deadline)) {
+                    onSelect(Screen.EventViewScreen(it.uuid))
+                }
             }
         }
-    }
 
-    EventModificationLayout(
-        name = name,
-        onNameChange = { name = it },
-        contribution = contribution,
-        onContributionChange = { contribution = it },
-        isContributionEnable = true,
-        deadline = deadline,
-        onDeadlineChange = { deadline = it }
-    )
+        EventModificationLayout(
+            name = name,
+            onNameChange = { name = it },
+            contribution = contribution,
+            onContributionChange = { contribution = it },
+            isContributionEnable = true,
+            deadline = deadline,
+            onDeadlineChange = { deadline = it }
+        )
+    }
 }
 
 @Composable

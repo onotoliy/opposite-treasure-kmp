@@ -75,7 +75,7 @@ fun EventViewScreen(
                 }
 
                 when (selectedTabIndex) {
-                    0 -> EventInformationView(model.info.value!!, model.logo.value!!, onSelect)
+                    0 -> EventInformationView(model.info.value, model.logo.value, onSelect)
                     1 -> TransactionListView(transactions, onSelect = onSelect)
                     2 -> UserListView(users, onSelect = onSelect)
                 }

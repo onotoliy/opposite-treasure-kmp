@@ -3,12 +3,12 @@ package com.github.onotoliy.opposite.repositories
 import com.github.onotoliy.opposite.treasure.api.TransactionResourceApi
 import com.github.onotoliy.opposite.treasure.model.Transaction
 
-class ITransactionRepository(
+class TransactionRepository(
     private val api: TransactionResourceApi
 ) {
 
     suspend fun get(uuid: String): Transaction {
-        return api.getTransactionResource(uuid).body()
+        return api.getTransactionResource(uuid).toRespose()
     }
 
     suspend fun getAll(
@@ -22,15 +22,15 @@ class ITransactionRepository(
                 offset = offset,
                 numberOfRows = numberOfRows
             )
-            .body().context ?: listOf()
+            .toRespose().context
     }
 
     suspend fun create(transaction: Transaction): Transaction {
-        return api.createTransactionResource(transaction).body()
+        return api.createTransactionResource(transaction).toRespose()
     }
 
     suspend fun update(transaction: Transaction): Transaction {
-        return api.updateTransactionResource(transaction).body()
+        return api.updateTransactionResource(transaction).toRespose()
     }
 
     suspend fun delete(uuid: String) {

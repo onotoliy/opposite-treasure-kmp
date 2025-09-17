@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity

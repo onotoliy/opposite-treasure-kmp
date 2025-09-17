@@ -53,7 +53,7 @@ fun TransactionModificationLayout(
         DropdownMenu(
             label = "Тип тразакции",
             enabled = isTypeEnable,
-            values = Transaction.Type.values().map { Option(it.name, it.lablel) },
+            options = Transaction.Type.values().map { Option(it.name, it.lablel) },
             onValueChange = { onTypeChanged(Transaction.Type.valueOf(it.uuid)) }
         )
 

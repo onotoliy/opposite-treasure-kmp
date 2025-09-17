@@ -6,7 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.github.onotoliy.opposite.viewmodel.UiState
 
 @Composable
-fun UiStateScreen(state: UiState, load: () -> Unit, content: @Composable () -> Unit) {
+fun UiStateScreen(state: UiState, load: () -> Unit = {}, content: @Composable () -> Unit) {
     LaunchedEffect(Unit) {
         load()
     }

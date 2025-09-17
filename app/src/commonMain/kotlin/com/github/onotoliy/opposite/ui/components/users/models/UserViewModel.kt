@@ -1,7 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel.users
 
-import com.github.onotoliy.opposite.repositories.IDepositeRepository
-import com.github.onotoliy.opposite.repositories.IFileRepository
+import com.github.onotoliy.opposite.repositories.DepositeRepository
+import com.github.onotoliy.opposite.repositories.FileRepository
 import com.github.onotoliy.opposite.repositories.newDeposit
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
@@ -12,8 +12,8 @@ import opposite_treasure_kmp.app.generated.resources._29a98ff153997867b0760fd8d8
 import org.jetbrains.compose.resources.DrawableResource
 
 class UserViewModel(
-    private val users: IDepositeRepository,
-    private val files: IFileRepository,
+    private val users: DepositeRepository,
+    private val files: FileRepository,
     private val uuid: String
 ) : AbstractViewModel<Deposit>(){
     private val _logo = MutableStateFlow<DrawableResource>(Res.drawable._29a98ff153997867b0760fd8d812f12478e180a3)

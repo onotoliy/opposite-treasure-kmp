@@ -39,7 +39,7 @@ fun EventModificationLayout(
             enabled = isContributionEnable,
             label = { Text("Сумма") },
             value = contribution,
-            onValueChange = {}
+            onValueChange = onContributionChange
         )
         CalendarField(
             label = "Сдать до",

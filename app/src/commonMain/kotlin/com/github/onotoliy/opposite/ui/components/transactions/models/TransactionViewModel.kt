@@ -1,7 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel.transactions
 
-import com.github.onotoliy.opposite.repositories.IFileRepository
-import com.github.onotoliy.opposite.repositories.ITransactionRepository
+import com.github.onotoliy.opposite.repositories.FileRepository
+import com.github.onotoliy.opposite.repositories.TransactionRepository
 import com.github.onotoliy.opposite.repositories.newTransaction
 import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.DrawableResource
 
 class TransactionViewModel(
-    private val files: IFileRepository,
-    private val transactions: ITransactionRepository,
+    private val files: FileRepository,
+    private val transactions: TransactionRepository,
     private val uuid: String
 ) : AbstractViewModel<Transaction>() {
 
@@ -26,6 +26,6 @@ class TransactionViewModel(
     }
 
     override val defaultValue: Transaction
-        get() = newTransaction(-1000, -1000, -1000)
+        get() = newTransaction()
 
 }

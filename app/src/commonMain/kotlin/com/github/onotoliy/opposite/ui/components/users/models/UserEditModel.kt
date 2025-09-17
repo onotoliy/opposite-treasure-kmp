@@ -1,12 +1,12 @@
 package com.github.onotoliy.opposite.viewmodel.users
 
-import com.github.onotoliy.opposite.repositories.IDepositeRepository
+import com.github.onotoliy.opposite.repositories.DepositeRepository
 import com.github.onotoliy.opposite.repositories.newDeposit
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.viewmodel.AbstractEditModel
 
 class UserEditModel(
-    private val repository: IDepositeRepository,
+    private val repository: DepositeRepository,
     private val uuid: String
 ): AbstractEditModel<Deposit>(uuid) {
 

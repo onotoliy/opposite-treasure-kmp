@@ -1,10 +1,10 @@
 package com.github.onotoliy.opposite.viewmodel.events
 
-import com.github.onotoliy.opposite.repositories.IFileRepository
+import com.github.onotoliy.opposite.repositories.FileRepository
 import com.github.onotoliy.opposite.repositories.newEvent
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
-import com.github.opposite.treasure.shared.IEventRepository
+import com.github.opposite.treasure.shared.EventRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import opposite_treasure_kmp.app.generated.resources.Res
@@ -12,8 +12,8 @@ import opposite_treasure_kmp.app.generated.resources._29a98ff153997867b0760fd8d8
 import org.jetbrains.compose.resources.DrawableResource
 
 class EventViewModel(
-    private val events: IEventRepository,
-    private val files: IFileRepository,
+    private val events: EventRepository,
+    private val files: FileRepository,
     private val uuid: String
 ) : AbstractViewModel<Event>() {
 

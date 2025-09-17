@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.UiStateScreen
 import com.github.onotoliy.opposite.ui.components.CancelButton
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
@@ -20,6 +21,7 @@ import com.github.onotoliy.opposite.ui.components.SaveButton
 import com.github.onotoliy.opposite.ui.components.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.viewmodel.users.UserEditModel
+import kotlinx.datetime.Clock
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -32,8 +34,11 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
     val data by viewModel.info.collectAsState()
 
     UiStateScreen(state, load = viewModel::load) {
-        var name by remember { mutableStateOf(data.name) }
-        var login by remember { mutableStateOf(data.username) }
+        var username by remember { mutableStateOf(data.username) }
+        var firstName by remember { mutableStateOf(data.firstName) }
+        var lastName by remember { mutableStateOf(data.lastName) }
+        var patronymic by remember { mutableStateOf(data.patronymic) }
+        var email by remember { mutableStateOf(data.email) }
         var birthday by remember { mutableStateOf(data.birthday) }
         var joiningDate by remember { mutableStateOf(data.joiningDate) }
         var position by remember { mutableStateOf(data.position) }
@@ -43,8 +48,11 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
             SaveFloatingActionButton {
                 viewModel.onSave(
                     data.copy(
-                        name = name,
-                        login = login,
+                        username = username,
+                        firstName = firstName,
+                        lastName = lastName,
+                        patronymic = patronymic,
+                        email = email,
                         birthday = birthday,
                         joiningDate = joiningDate,
                         position = position
@@ -56,16 +64,23 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
         }
 
         UserModificationLayout(
-            name = name,
-            onNameChanged = { name = it },
-            username = login,
-            onUsernameChanged = { login = it },
+            firstName = firstName,
+            onFirstNameChanged = { firstName = it },
+            lastName = lastName,
+            onLastNameChanged = { lastName = it },
+            patronymic = patronymic,
+            onPatronymicChanged = { patronymic = it },
+            email = email,
+            onEmailChanged = { email = it },
+            username = username,
+            onUsernameChanged = { username = it },
+            isUsernameEnable = false,
             birthday = birthday,
             onBirthdayChanged = { birthday = it },
             joiningDate = joiningDate,
             onJoiningDateChanged = { joiningDate = it },
             position = position,
-            onPositionChanged = { position = it },
+            onPositionChanged = { position = it }
         )
     }
 }
@@ -77,8 +92,11 @@ fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
     val data by viewModel.info.collectAsState()
 
     UiStateScreen(state, load = viewModel::load) {
-        var name by remember { mutableStateOf(data.name) }
-        var login by remember { mutableStateOf(data.login) }
+        var username by remember { mutableStateOf(data.username) }
+        var firstName by remember { mutableStateOf(data.firstName) }
+        var lastName by remember { mutableStateOf(data.lastName) }
+        var patronymic by remember { mutableStateOf(data.patronymic) }
+        var email by remember { mutableStateOf(data.email) }
         var birthday by remember { mutableStateOf(data.birthday) }
         var joiningDate by remember { mutableStateOf(data.joiningDate) }
         var position by remember { mutableStateOf(data.position) }
@@ -88,24 +106,34 @@ fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             UserModificationLayout(
-                name = name,
-                onNameChanged = { name = it },
-                username = login,
-                onUsernameChanged = { login = it },
+                firstName = firstName,
+                onFirstNameChanged = { firstName = it },
+                lastName = lastName,
+                onLastNameChanged = { lastName = it },
+                patronymic = patronymic,
+                onPatronymicChanged = { patronymic = it },
+                email = email,
+                onEmailChanged = { email = it },
+                username = username,
+                isUsernameEnable = false,
+                onUsernameChanged = { username = it },
                 birthday = birthday,
                 onBirthdayChanged = { birthday = it },
                 joiningDate = joiningDate,
                 onJoiningDateChanged = { joiningDate = it },
                 position = position,
-                onPositionChanged = { position = it },
+                onPositionChanged = { position = it }
             )
 
             Row {
                 SaveButton {
                     viewModel.onSave(
                         data.copy(
-                            name = name,
-                            login = login,
+                            username = username,
+                            firstName = firstName,
+                            lastName = lastName,
+                            patronymic = patronymic,
+                            email = email,
                             birthday = birthday,
                             joiningDate = joiningDate,
                             position = position

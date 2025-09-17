@@ -2,10 +2,10 @@ package com.github.onotoliy.opposite.viewmodel.events
 
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractCreateModel
-import com.github.opposite.treasure.shared.IEventRepository
+import com.github.opposite.treasure.shared.EventRepository
 
 class EventCreateModel(
-    private val repository: IEventRepository
+    private val repository: EventRepository
 ) : AbstractCreateModel<Event>() {
 
     override suspend fun create(value: Event): Event = repository.create(value)

@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.components.EditFloatingActionButton
@@ -46,12 +47,7 @@ fun UserInformationMobileView(deposit: Deposit, logo: DrawableResource, onSelect
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        LabelledText("ФИО", deposit.name)
-        LabelledText("Депозит", deposit.deposit)
-        LabelledText("Номер телефона", deposit.username)
-        LabelledText("День рождения", deposit.birthday)
-        LabelledText("День вступления", deposit.joiningDate)
-        LabelledText("Должность", deposit.position)
+        UserModificationLayout(deposit)
 
         ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Image(
@@ -83,10 +79,7 @@ fun UserInformationWebView(deposit: Deposit, logo: DrawableResource) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            LabelledText("Название", deposit.name)
-            LabelledText("Депозит", deposit.deposit)
-            LabelledText("Номер телефона", deposit.login)
-            LabelledText("День рождения", deposit.birthday)
+            UserModificationLayout(deposit)
 
             Button(
                 onClick = { /* обработка */ },

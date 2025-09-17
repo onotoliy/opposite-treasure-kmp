@@ -1,12 +1,21 @@
 package com.github.onotoliy.opposite.ui
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.onFocusedBoundsChanged
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,6 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.onFocusEvent
 import com.github.onotoliy.opposite.treasure.model.Option
 import kotlinx.coroutines.delay
 
@@ -76,34 +87,41 @@ fun SwaggestBox(
 @Composable
 fun DropdownMenu(
     label: String,
-    values: List<Option>,
+    value: Option = Option("", ""),
+    options: List<Option>,
     enabled: Boolean,
     onValueChange: (Option) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf("") }
+    var selectedOption by remember { mutableStateOf(value) }
 
     ExposedDropdownMenuBox(
+        modifier = Modifier.clickable(onClick = { expanded = !expanded }),
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
-        OutlinedTextField(
-            value = selectedOption,
-            onValueChange = {},
-            readOnly = true,
-            label = { Text(label) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            modifier = Modifier.fillMaxWidth()
-        )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = selectedOption.name,
+                onValueChange = {},
+                label = { Text(label) },
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Box(modifier = Modifier.matchParentSize().clickable { expanded = true })
+        }
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            values.forEach { option ->
+            options.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option.name) },
                     onClick = {
                         onValueChange(option)
+                        selectedOption = option
                         expanded = false
                     }
                 )
