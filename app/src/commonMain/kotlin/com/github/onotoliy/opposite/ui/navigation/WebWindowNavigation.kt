@@ -9,19 +9,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.github.onotoliy.opposite.ui.cashbox.CashboxScreen
-import com.github.onotoliy.opposite.ui.components.events.screens.EventEditScreen
-import com.github.onotoliy.opposite.ui.components.events.screens.EventCreateScreen
-import com.github.onotoliy.opposite.ui.components.events.screens.EventListScreen
-import com.github.onotoliy.opposite.ui.components.events.screens.EventViewScreen
-import com.github.onotoliy.opposite.ui.components.users.screens.UserEditScreen
-import com.github.onotoliy.opposite.ui.components.users.screens.UserCreateScreen
-import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionCreateScreen
-import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionEditScreen
-import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionViewScreen
-import com.github.onotoliy.opposite.ui.components.transactions.screens.TransactionsTableScreen
-import com.github.onotoliy.opposite.ui.users.UserViewScreen
-import com.github.onotoliy.opposite.ui.users.UserListScreen
+import com.github.onotoliy.opposite.ui.cashbox.screens.CashboxScreen
+import com.github.onotoliy.opposite.ui.events.screens.EventCreateScreen
+import com.github.onotoliy.opposite.ui.events.screens.EventEditScreen
+import com.github.onotoliy.opposite.ui.events.screens.EventListScreen
+import com.github.onotoliy.opposite.ui.events.screens.EventViewScreen
+import com.github.onotoliy.opposite.ui.transactions.screens.TransactionCreateScreen
+import com.github.onotoliy.opposite.ui.transactions.screens.TransactionEditScreen
+import com.github.onotoliy.opposite.ui.transactions.screens.TransactionViewScreen
+import com.github.onotoliy.opposite.ui.transactions.screens.TransactionsTableScreen
+import com.github.onotoliy.opposite.ui.users.screens.UserCreateScreen
+import com.github.onotoliy.opposite.ui.users.screens.UserEditScreen
+import com.github.onotoliy.opposite.ui.users.screens.UserListScreen
+import com.github.onotoliy.opposite.ui.users.screens.UserViewScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

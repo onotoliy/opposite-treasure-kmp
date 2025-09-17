@@ -1,4 +1,4 @@
-package com.github.opposite.treasure.shared
+package com.github.opposite.treasure.repositories
 
 import com.github.onotoliy.opposite.repositories.toRespose
 import com.github.onotoliy.opposite.treasure.api.EventResourceApi
