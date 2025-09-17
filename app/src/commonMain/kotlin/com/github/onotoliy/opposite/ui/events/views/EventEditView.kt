@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.buttons.CancelButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
@@ -30,13 +31,20 @@ import kotlin.time.ExperimentalTime
 expect fun EventEditView(viewModel: EventEditModel, onSelect: (Screen) -> Unit)
 
 @Composable
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
     val data by viewModel.info.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     LaunchedEffect(Unit) {
         viewModel.load()
+    }
+
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
     }
 
     var name by remember { mutableStateOf(data.name) }
@@ -54,7 +62,7 @@ fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
 
     Column {
         when (state) {
-            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            is UiState.Error -> {}
             UiState.Loading -> LinearProgressIndicator()
             is UiState.Success -> {}
         }
@@ -72,13 +80,20 @@ fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
 }
 
 @Composable
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
     val data by viewModel.info.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     LaunchedEffect(Unit) {
         viewModel.load()
+    }
+
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
     }
 
     var name by remember { mutableStateOf(data.name) }
@@ -90,7 +105,7 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         when (state) {
-            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            is UiState.Error -> {}
             UiState.Loading -> LinearProgressIndicator()
             is UiState.Success -> {}
         }

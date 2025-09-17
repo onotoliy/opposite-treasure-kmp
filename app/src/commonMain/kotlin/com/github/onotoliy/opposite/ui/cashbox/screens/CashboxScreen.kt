@@ -2,12 +2,12 @@ package com.github.onotoliy.opposite.ui.cashbox.screens
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.github.onotoliy.opposite.ui.cashbox.models.CashboxViewModel
-import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.users.screens.UserViewScreen
 import com.github.onotoliy.opposite.viewmodel.UiState
@@ -18,14 +18,21 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun CashboxScreen(viewModel: CashboxViewModel = koinViewModel(), onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
     val data by viewModel.info.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.load()
     }
 
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
+    }
+
     when (state) {
-        is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+        is UiState.Error -> { }
         UiState.Loading -> LinearProgressIndicator()
         is UiState.Success -> UserViewScreen(data.uuid, onSelect = onSelect)
     }

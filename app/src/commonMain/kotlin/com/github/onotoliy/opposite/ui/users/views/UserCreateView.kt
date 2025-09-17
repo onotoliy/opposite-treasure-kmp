@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.newDeposit
 import com.github.onotoliy.opposite.treasure.model.Deposit
-import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
@@ -31,9 +33,10 @@ import kotlin.time.ExperimentalTime
 expect fun UserCreateView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit)
 
 @Composable
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     var username by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
@@ -43,6 +46,12 @@ fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit)
     var birthday by remember { mutableStateOf(Clock.System.now()) }
     var joiningDate by remember { mutableStateOf(Clock.System.now()) }
     var position by remember { mutableStateOf(Deposit.Position.NONE) }
+
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
+    }
 
     LocalMobileScafoldState.current.topBar = { Text("Создание пользователя") }
     LocalMobileScafoldState.current.floatingActionButton = {
@@ -66,7 +75,7 @@ fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit)
 
     Column {
         when (state) {
-            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            is UiState.Error -> {}
             UiState.Loading -> LinearProgressIndicator()
             is UiState.Success -> {}
         }
@@ -94,9 +103,10 @@ fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit)
 }
 
 @Composable
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun UserCreateWebView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     var username by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
@@ -107,12 +117,18 @@ fun UserCreateWebView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit) {
     var joiningDate by remember { mutableStateOf(Clock.System.now()) }
     var position by remember { mutableStateOf(Deposit.Position.NONE) }
 
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
+    }
+
     Column(
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         when (state) {
-            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            is UiState.Error -> {}
             UiState.Loading -> LinearProgressIndicator()
             is UiState.Success -> {}
         }

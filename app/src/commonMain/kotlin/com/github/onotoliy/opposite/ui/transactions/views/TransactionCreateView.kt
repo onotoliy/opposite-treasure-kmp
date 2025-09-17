@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.newTransaction
 import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.treasure.model.Transaction
-import com.github.onotoliy.opposite.ui.components.ErrorMessage
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
@@ -35,9 +37,16 @@ import kotlin.uuid.Uuid
 expect fun TransactionCreateView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit)
 
 @Composable
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
+
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
+    }
 
     var type by remember { mutableStateOf(Transaction.Type.NONE) }
     var name by remember { mutableStateOf("") }
@@ -69,7 +78,7 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
 
     Column {
         when (state) {
-            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            is UiState.Error -> {}
             UiState.Loading -> LinearProgressIndicator()
             is UiState.Success -> {}
         }
@@ -104,9 +113,16 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
 }
 
 @Composable
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
+    val scaffoldState = rememberBottomSheetScaffoldState()
+
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
+    }
 
     var type by remember { mutableStateOf(Transaction.Type.NONE) }
     var name by remember { mutableStateOf("") }
@@ -120,7 +136,7 @@ fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Scree
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         when (state) {
-            is UiState.Error -> ErrorMessage((state as UiState.Error).message)
+            is UiState.Error -> {}
             UiState.Loading -> LinearProgressIndicator()
             is UiState.Success -> {}
         }
