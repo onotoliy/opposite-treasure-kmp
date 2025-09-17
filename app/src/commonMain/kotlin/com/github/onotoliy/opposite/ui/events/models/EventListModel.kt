@@ -2,7 +2,7 @@ package com.github.onotoliy.opposite.ui.events.models
 
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractInfinityListModel
-import com.github.opposite.treasure.repositories.EventRepository
+import com.github.onotoliy.opposite.repositories.EventRepository
 
 open class EventListModel(
     private val repository: EventRepository

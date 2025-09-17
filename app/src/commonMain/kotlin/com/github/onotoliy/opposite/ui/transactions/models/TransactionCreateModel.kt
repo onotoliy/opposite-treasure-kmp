@@ -9,7 +9,7 @@ import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.viewmodel.AbstractCreateModel
 import com.github.onotoliy.opposite.viewmodel.UiState
-import com.github.opposite.treasure.repositories.EventRepository
+import com.github.onotoliy.opposite.repositories.EventRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

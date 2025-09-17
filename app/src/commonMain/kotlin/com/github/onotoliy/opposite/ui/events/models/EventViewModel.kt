@@ -4,7 +4,7 @@ import com.github.onotoliy.opposite.repositories.FileRepository
 import com.github.onotoliy.opposite.repositories.newEvent
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.viewmodel.AbstractViewModel
-import com.github.opposite.treasure.repositories.EventRepository
+import com.github.onotoliy.opposite.repositories.EventRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import opposite_treasure_kmp.app.generated.resources.Res

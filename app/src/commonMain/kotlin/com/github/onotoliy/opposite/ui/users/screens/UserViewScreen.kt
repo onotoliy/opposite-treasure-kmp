@@ -24,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.components.UiStateScreen
 import com.github.onotoliy.opposite.ui.components.scaffold.ApplicationScaffold
-import com.github.onotoliy.opposite.ui.components.transactions.views.TransactionListView
 import com.github.onotoliy.opposite.ui.events.views.EventListView
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.transactions.views.TransactionListView
 import com.github.onotoliy.opposite.ui.users.models.UserEventListModel
 import com.github.onotoliy.opposite.ui.users.models.UserTransactionListModel
 import com.github.onotoliy.opposite.ui.users.models.UserViewModel

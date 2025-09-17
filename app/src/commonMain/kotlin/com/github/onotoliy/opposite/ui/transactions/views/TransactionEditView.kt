@@ -1,4 +1,4 @@
-package com.github.onotoliy.opposite.ui.components.transactions.views
+package com.github.onotoliy.opposite.ui.transactions.views
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
