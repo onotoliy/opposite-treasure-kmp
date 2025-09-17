@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
+import com.github.onotoliy.opposite.repositories.toPrettyString
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
@@ -73,8 +75,8 @@ fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Сумма: ${event.contribution}")
-                    Text(text = "Сдать до: ${event.deadline.toString()}")
+                    Text(text = "Сумма: ${event.contribution.toMoneyPrettyString()}")
+                    Text(text = "Сдать до: ${event.deadline.toPrettyString()}")
                 }
 
                 HorizontalDivider()

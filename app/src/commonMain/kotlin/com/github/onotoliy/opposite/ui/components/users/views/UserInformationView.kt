@@ -7,11 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.treasure.model.Deposit
-import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.components.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
@@ -47,7 +43,7 @@ fun UserInformationMobileView(deposit: Deposit, logo: DrawableResource, onSelect
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        UserModificationLayout(deposit)
+        UserInformationLayout(deposit)
 
         ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Image(
@@ -79,7 +75,7 @@ fun UserInformationWebView(deposit: Deposit, logo: DrawableResource) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            UserModificationLayout(deposit)
+            UserInformationLayout(deposit)
 
             Button(
                 onClick = { /* обработка */ },

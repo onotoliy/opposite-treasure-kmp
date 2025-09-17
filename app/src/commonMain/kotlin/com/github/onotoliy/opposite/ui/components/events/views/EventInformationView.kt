@@ -42,9 +42,7 @@ fun EventInformationMobileView(event: Event, logo: DrawableResource, onSelect: (
         modifier = Modifier.padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        LabelledText("Название", event.name)
-        LabelledText("Сумма", event.contribution)
-        LabelledText("Сдать до", event.deadline.toString())
+        EventInformationLayout(event, onSelect)
 
         ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Image(
@@ -76,11 +74,7 @@ fun EventInformationWebView(event: Event, logo: DrawableResource, onSelect: (Scr
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            LabelledText("Название", event.name)
-            LabelledText("Сумма", event.contribution)
-            LabelledText("Сдать до", event.deadline.toString())
-            LabelledText("Автор", event.author.name)
-            LabelledText("Дата создания", event.creationDate)
+            EventInformationLayout(event, onSelect)
 
             Button(
                 onClick = { /* обработка */ },

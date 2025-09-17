@@ -16,6 +16,7 @@ import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.DropdownMenu
 import com.github.onotoliy.opposite.ui.SwaggestBox
+import com.github.onotoliy.opposite.ui.components.MoneyField
 import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
 
@@ -64,10 +65,10 @@ fun TransactionModificationLayout(
             onValueChange = onNameChanged
         )
 
-        OutlinedTextField(
+        MoneyField(
             modifier = Modifier.fillMaxWidth(),
             enabled = isCashEnable,
-            label = { Text("Сумма") },
+            label = "Сумма",
             value = cash,
             onValueChange = onCashChanged
         )

@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.name
+import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
@@ -68,7 +69,7 @@ private fun UserMobileItem(user: Deposit, onSelect: (Screen) -> Unit) {
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Text(text = user.deposit)
+                Text(text = user.deposit.toMoneyPrettyString())
             }
 
             HorizontalDivider()

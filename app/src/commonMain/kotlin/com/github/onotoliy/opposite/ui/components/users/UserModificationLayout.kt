@@ -4,17 +4,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.label
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.ui.CalendarField
 import com.github.onotoliy.opposite.ui.DropdownMenu
+import com.github.onotoliy.opposite.ui.components.PhoneField
 import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
 
@@ -69,9 +73,9 @@ fun UserModificationLayout(
             onValueChange = onPatronymicChanged
         )
 
-        OutlinedTextField(
+        PhoneField(
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Номер телефона") },
+            label = "Номер телефона",
             value = username,
             enabled = isUsernameEnable,
             onValueChange = onUsernameChanged
@@ -81,7 +85,13 @@ fun UserModificationLayout(
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Электронная почта") },
             value = email,
-            onValueChange = onEmailChanged
+            onValueChange = onEmailChanged,
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Done,
+                autoCorrect = false
+            )
         )
 
         DropdownMenu(

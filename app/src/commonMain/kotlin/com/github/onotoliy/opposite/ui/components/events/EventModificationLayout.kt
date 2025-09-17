@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.CalendarField
+import com.github.onotoliy.opposite.ui.components.MoneyField
 import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
 
@@ -34,10 +35,10 @@ fun EventModificationLayout(
             value = name,
             onValueChange = onNameChange
         )
-        OutlinedTextField(
+        MoneyField(
             modifier = Modifier.fillMaxWidth(),
             enabled = isContributionEnable,
-            label = { Text("Сумма") },
+            label = "Сумма",
             value = contribution,
             onValueChange = onContributionChange
         )

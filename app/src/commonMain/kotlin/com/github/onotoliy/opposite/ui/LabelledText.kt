@@ -4,17 +4,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.toPrettyString
+import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.ui.navigation.Screen
 import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
+
 
 @OptIn(ExperimentalTime::class)
 @Composable
@@ -22,7 +23,7 @@ fun LabelledText(
     label: String,
     text: Instant,
     onTextClick: (() -> Unit)? = null,
-) = LabelledText(label, text.toString(), onTextClick)
+) = LabelledText(label, text.toPrettyString(), onTextClick)
 
 @Composable
 fun LabelledText(

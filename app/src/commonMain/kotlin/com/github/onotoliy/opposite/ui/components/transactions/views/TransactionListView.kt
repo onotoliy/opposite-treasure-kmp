@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
+import com.github.onotoliy.opposite.repositories.toPrettyString
 import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.components.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.ListInfinity
@@ -85,7 +87,7 @@ private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = transaction.name)
-                Text(color = color, text = transaction.cash)
+                Text(color = color, text = transaction.cash.toMoneyPrettyString())
             }
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -95,7 +97,7 @@ private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = transaction.person?.name ?: "")
-                Text(text = transaction.transactionDate.toString())
+                Text(text = transaction.transactionDate.toPrettyString())
             }
 
             HorizontalDivider()

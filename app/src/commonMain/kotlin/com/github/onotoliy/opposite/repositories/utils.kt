@@ -37,6 +37,44 @@ suspend fun <T : Any> HttpResponse<T>.toRespose(): T {
     }
 }
 
+fun Instant?.toPrettyString(): String {
+    return this?.toString()?.substring(0, 10) ?: ""
+}
+
+fun String.toMoneyPrettyString(): String {
+    if (isBlank()) {
+        return ""
+    }
+
+    val parts = split(".")
+    val whole = parts[0]
+    val fraction = parts.getOrNull(1)
+    val grouped = whole
+        .reversed()
+        .chunked(3)
+        .joinToString(" ") { it }
+        .reversed()
+
+    return if (fraction != null) {
+        "$grouped.$fraction"
+    } else {
+        grouped
+    }
+}
+
+fun String.toPhonePrettyString(): String {
+    val trimmed = if (length >= 10) substring(0..9) else this
+    var out = if (trimmed.isNotEmpty()) "(" else ""
+
+    for (i in trimmed.indices) {
+        if (i == 3) out += ") "
+        if (i == 6) out += " "
+        out += trimmed[i]
+    }
+
+    return out
+}
+
 @OptIn(ExperimentalTime::class)
 fun newEvent(
     uuid: String = "",
@@ -119,7 +157,17 @@ val Type.lablel: String
     }
 
 val Deposit.name: String
-    get() = firstName + " " + patronymic + " " + lastName
+    get() {
+        val f = firstName.firstOrNull()?.uppercase() ?: ""
+        val p = patronymic.firstOrNull()?.uppercase() ?: ""
+        val l = lastName
+
+        return buildString {
+            append(l)
+            if (f.isNotEmpty()) append(" $f.")
+            if (p.isNotEmpty()) append(" $p.")
+        }
+    }
 
 val Deposit.Position.label: String
     get() = when (this) {

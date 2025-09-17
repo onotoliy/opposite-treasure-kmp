@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.lablel
+import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.LabelledText
 import com.github.onotoliy.opposite.ui.navigation.Screen
@@ -22,7 +23,7 @@ fun TransactionInformationLayout(transaction: Transaction, onSelect: (Screen) ->
     ) {
         LabelledText("Тип", transaction.type.lablel)
         LabelledText("Название", transaction.name)
-        LabelledText("Сумма", transaction.cash)
+        LabelledText("Сумма", transaction.cash.toMoneyPrettyString())
         transaction.person?.let {
             LabelledText("Пользователь", it.name) {
                 onSelect(Screen.UserViewScreen(it.uuid))
@@ -33,8 +34,10 @@ fun TransactionInformationLayout(transaction: Transaction, onSelect: (Screen) ->
                 onSelect(Screen.EventViewScreen(it.uuid))
             }
         }
-        LabelledText("Дата транзакции", transaction.transactionDate.toString())
-        LabelledText("Автор", transaction.author.name)
-        LabelledText("Дата создания", transaction.creationDate.toString())
+        LabelledText("Дата транзакции", transaction.transactionDate)
+        LabelledText("Автор", transaction.author.name) {
+            onSelect(Screen.UserViewScreen(transaction.author.uuid))
+        }
+        LabelledText("Дата создания", transaction.creationDate)
     }
 }
