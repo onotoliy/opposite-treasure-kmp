@@ -59,7 +59,7 @@ fun UserInformationMobileView(deposit: Deposit, logo: DrawableResource, onSelect
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun UserInformationWebView(deposit: Deposit, logo: DrawableResource) {
+fun UserInformationWebView(deposit: Deposit, logo: DrawableResource, onSelect: (Screen) -> Unit) {
     Row(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
