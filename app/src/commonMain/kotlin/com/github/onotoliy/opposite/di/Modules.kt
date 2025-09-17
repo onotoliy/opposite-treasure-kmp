@@ -2,6 +2,7 @@ package com.github.onotoliy.opposite.di
 
 import com.github.onotoliy.opposite.repositories.CashboxRepository
 import com.github.onotoliy.opposite.repositories.DepositeRepository
+import com.github.onotoliy.opposite.repositories.EventRepository
 import com.github.onotoliy.opposite.repositories.FileRepository
 import com.github.onotoliy.opposite.repositories.TransactionRepository
 import com.github.onotoliy.opposite.treasure.api.CashboxResourceApi
@@ -25,7 +26,6 @@ import com.github.onotoliy.opposite.ui.users.models.UserEventListModel
 import com.github.onotoliy.opposite.ui.users.models.UserListModel
 import com.github.onotoliy.opposite.ui.users.models.UserTransactionListModel
 import com.github.onotoliy.opposite.ui.users.models.UserViewModel
-import com.github.opposite.treasure.repositories.EventRepository
 import org.koin.dsl.module
 
 val networkModule = module {

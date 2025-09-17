@@ -173,7 +173,7 @@ val Deposit.Position.label: String
     get() = when (this) {
         Deposit.Position.PRESIDENT -> "Президент"
         Deposit.Position.VICE_PRESIDENT -> "Вице президент"
-        Deposit.Position.TREASURER -> "Казнаяей"
+        Deposit.Position.TREASURER -> "Казначей"
         Deposit.Position.SECRETARY -> "Секретарь"
         Deposit.Position.MEMBER -> "Член клуба"
         Deposit.Position.FRIEND -> "Друг клуба"
