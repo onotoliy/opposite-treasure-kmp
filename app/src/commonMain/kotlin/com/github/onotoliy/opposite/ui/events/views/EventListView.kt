@@ -110,7 +110,7 @@ fun EventTableWebView(viewModel: EventTableModel, onSelect: (Screen) -> Unit) {
             }
 
             is UiState.Loading -> {
-                LinearProgressIndicator()
+                LinearProgressIndicator(Modifier.fillMaxWidth())
             }
 
             is UiState.Success -> {

@@ -128,7 +128,7 @@ fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) ->
             }
 
             is UiState.Loading -> {
-                LinearProgressIndicator()
+                LinearProgressIndicator(Modifier.fillMaxWidth())
             }
 
             is UiState.Success -> {

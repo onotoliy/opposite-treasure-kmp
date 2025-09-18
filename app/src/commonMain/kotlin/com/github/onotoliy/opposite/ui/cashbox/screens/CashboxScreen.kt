@@ -1,5 +1,6 @@
 package com.github.onotoliy.opposite.ui.cashbox.screens
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import com.github.onotoliy.opposite.ui.cashbox.models.CashboxViewModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.users.screens.UserViewScreen
@@ -33,7 +35,7 @@ fun CashboxScreen(viewModel: CashboxViewModel = koinViewModel(), onSelect: (Scre
 
     when (state) {
         is UiState.Error -> { }
-        UiState.Loading -> LinearProgressIndicator()
+        UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
         is UiState.Success -> UserViewScreen(data.uuid, onSelect = onSelect)
     }
 }

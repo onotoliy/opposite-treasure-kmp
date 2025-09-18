@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.ui.components.buttons.EditFloatingActionButton
-import com.github.onotoliy.opposite.ui.components.events.EventInformationLayout
+import com.github.onotoliy.opposite.ui.events.EventInformationLayout
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import org.jetbrains.compose.resources.DrawableResource

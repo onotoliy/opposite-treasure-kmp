@@ -3,6 +3,7 @@ package com.github.onotoliy.opposite.ui.components.infinity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,7 +47,7 @@ fun <T> ListInfinity(
                 Text("Ошибка: ${loadingState.message}")
             }
             is UiState.Loading -> {
-                LinearProgressIndicator()
+                LinearProgressIndicator(Modifier.fillMaxWidth())
             }
             is UiState.Success -> {
 

@@ -3,6 +3,7 @@ package com.github.onotoliy.opposite.ui.events.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -73,7 +74,7 @@ fun EventViewScreen(
         Column {
             when (state) {
                 is UiState.Error -> {}
-                UiState.Loading -> LinearProgressIndicator()
+                UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
                 is UiState.Success -> {}
             }
 

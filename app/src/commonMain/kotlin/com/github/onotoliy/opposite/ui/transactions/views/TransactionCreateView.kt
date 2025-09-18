@@ -3,6 +3,7 @@ package com.github.onotoliy.opposite.ui.transactions.views
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
@@ -79,7 +80,7 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
     Column {
         when (state) {
             is UiState.Error -> {}
-            UiState.Loading -> LinearProgressIndicator()
+            UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
             is UiState.Success -> {}
         }
 
@@ -137,7 +138,7 @@ fun TransactionCreateWebView(viewModel: TransactionCreateModel, onSelect: (Scree
     ) {
         when (state) {
             is UiState.Error -> {}
-            UiState.Loading -> LinearProgressIndicator()
+            UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
             is UiState.Success -> {}
         }
 
