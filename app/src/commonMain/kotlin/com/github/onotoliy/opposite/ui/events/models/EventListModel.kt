@@ -9,5 +9,5 @@ open class EventListModel(
 ) : AbstractInfinityListModel<Event>() {
 
     override suspend fun getAll(offset: Int, numberOfRows: Int): List<Event> =
-        repository.getAll(null, offset, numberOfRows)
+        repository.getAll(null, offset, numberOfRows).context
 }

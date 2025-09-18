@@ -10,6 +10,8 @@ class UserTransactionListModel(
 ) : TransactionListModel(repository) {
 
     override suspend fun getAll(offset: Int, numberOfRows: Int): List<Transaction> =
-        repository.getAll(null, eventID = null, depositID = userID,  offset, numberOfRows)
+        repository
+            .getAll(q = null, eventID = null, depositID = userID,  offset, numberOfRows)
+            .context
 
 }

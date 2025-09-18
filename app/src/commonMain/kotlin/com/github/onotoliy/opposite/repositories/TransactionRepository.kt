@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.repositories
 
 import com.github.onotoliy.opposite.treasure.api.TransactionResourceApi
+import com.github.onotoliy.opposite.treasure.model.PageTransaction
 import com.github.onotoliy.opposite.treasure.model.Transaction
 
 class TransactionRepository(
@@ -13,7 +14,7 @@ class TransactionRepository(
 
     suspend fun getAll(
         q: String?, eventID: String?, depositID: String?, offset: Int, numberOfRows: Int
-    ): List<Transaction> {
+    ): PageTransaction {
         return api
             .getAllTransactionResource(
                 name = q,
@@ -22,7 +23,7 @@ class TransactionRepository(
                 offset = offset,
                 numberOfRows = numberOfRows
             )
-            .toRespose().context
+            .toRespose()
     }
 
     suspend fun create(transaction: Transaction): Transaction {

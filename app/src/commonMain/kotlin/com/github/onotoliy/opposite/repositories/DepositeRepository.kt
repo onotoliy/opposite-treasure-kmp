@@ -3,6 +3,9 @@ package com.github.onotoliy.opposite.repositories
 import com.github.onotoliy.opposite.treasure.api.DepositResourceApi
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.treasure.model.PageDeposit
+import com.github.onotoliy.opposite.treasure.model.PageEvent
+import com.github.onotoliy.opposite.viewmodel.Page
 import io.ktor.utils.io.InternalAPI
 import kotlin.String
 
@@ -23,22 +26,20 @@ class DepositeRepository(
         q: String?,
         offset: Int,
         numberOfRows: Int
-    ): List<Deposit> {
+    ): PageDeposit {
         return api
             .getAllDepositResource(q = q, enable = null, offset = offset, numberOfRows = numberOfRows)
             .toRespose()
-            .context
     }
 
     suspend fun getDebts(
         user: String,
         offset: Int,
         numberOfRows: Int
-    ): List<Event> {
+    ): PageEvent {
         return api
             .getDebtsDepositResource(uuid = user, offset = offset, numberOfRows = numberOfRows)
             .toRespose()
-            .context
     }
 
     suspend fun create(deposit: Deposit): Deposit {

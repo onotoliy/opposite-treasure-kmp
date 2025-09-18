@@ -2,10 +2,11 @@ package com.github.onotoliy.opposite.ui.transactions.views
 
 import androidx.compose.runtime.Composable
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.transactions.models.TransactionListAdapter
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionListModel
 
 @Composable
 actual fun TransactionListView(
-    viewModel: TransactionListModel,
+    listAdapter: TransactionListAdapter,
     onSelect: (Screen) -> Unit
-) = TransactionTableView(viewModel, onSelect)
+) = TransactionTableView(listAdapter.table, onSelect)

@@ -27,14 +27,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.components.scaffold.ApplicationScaffold
+import com.github.onotoliy.opposite.ui.events.models.EventTransactionListAdapter
 import com.github.onotoliy.opposite.ui.events.views.EventListView
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.transactions.views.TransactionListView
+import com.github.onotoliy.opposite.ui.users.models.UserEventListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserEventListModel
+import com.github.onotoliy.opposite.ui.users.models.UserTransactionListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserTransactionListModel
 import com.github.onotoliy.opposite.ui.users.models.UserViewModel
 import com.github.onotoliy.opposite.ui.users.views.UserInformationView
 import com.github.onotoliy.opposite.viewmodel.UiState
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -43,8 +47,8 @@ import org.koin.core.parameter.parametersOf
 fun UserViewScreen(
     uuid: String,
     viewModel: UserViewModel = koinViewModel { parametersOf(uuid) },
-    transactions: UserTransactionListModel = koinViewModel { parametersOf(uuid) },
-    users: UserEventListModel = koinViewModel { parametersOf(uuid) },
+    transactions: UserTransactionListAdapter = koinInject { parametersOf(uuid) },
+    users: UserEventListAdapter = koinInject { parametersOf(uuid) },
     onSelect: (Screen) -> Unit
 ) {
     val state by viewModel.loadState.collectAsState()

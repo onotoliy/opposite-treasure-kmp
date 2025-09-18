@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,21 +23,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.NUMBER_OF_ROWS
+import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.repositories.toPrettyString
+import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
-import com.github.onotoliy.opposite.ui.components.infinity.TableInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.events.models.EventListAdapter
 import com.github.onotoliy.opposite.ui.events.models.EventListModel
+import com.github.onotoliy.opposite.ui.events.models.EventTableModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.navigation.Screen.EventViewScreen
+import com.github.onotoliy.opposite.viewmodel.UiState
 import io.github.windedge.table.DataTable
+import io.github.windedge.table.m3.PaginatedDataTable
+import io.github.windedge.table.rememberPaginationState
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun EventListView(viewModel: EventListModel, onSelect: (Screen) -> Unit)
+expect fun EventListView(listAdapter: EventListAdapter, onSelect: (Screen) -> Unit)
 
 @Composable
 @OptIn(ExperimentalTime::class)
@@ -63,9 +71,10 @@ fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
         ) {
             Icon(imageVector = Icons.Outlined.Event, contentDescription = null)
 
-            Column(modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp)
             ) {
                 Text(text = event.name)
 
@@ -87,32 +96,56 @@ fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventTableWebView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
-//    TableInfinity<Event>(viewModel) { events ->
-//        DataTable(
-//            columns = {
-//                headerBackground {
-//                    Box(modifier = Modifier.background(Color.LightGray))
-//                }
-//                column { Text("Название") }
-//                column { Text("Сумма") }
-//                column { Text("Сдать до") }
-//            }
-//        ) {
-//            events.forEach { record ->
-//                row {
-//                    cell {
-//                        Text(
-//                            modifier = Modifier.clickable {
-//                                onSelect(EventViewScreen(record.uuid))
-//                            },
-//                            text = record.name
-//                        )
-//                    }
-//                    cell { Text(record.contribution) }
-//                    cell { Text(record.deadline.toString()) }
-//                }
-//            }
-//        }
-//    }
+fun EventTableWebView(viewModel: EventTableModel, onSelect: (Screen) -> Unit) {
+    val loadingState by viewModel.loadState.collectAsState()
+    val values by viewModel.values.collectAsState()
+    val total by viewModel.total.collectAsState()
+
+    val paginationState = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
+
+    Column {
+        when (loadingState) {
+            is UiState.Error -> {
+                Text("Ошибка: ${(loadingState as UiState.Error).message}")
+            }
+
+            is UiState.Loading -> {
+                LinearProgressIndicator()
+            }
+
+            is UiState.Success -> {
+
+            }
+        }
+
+        PaginatedDataTable(
+            columns = {
+                column { Text("Название") }
+                column { Text("Сумма") }
+                column { Text("Сдать до") }
+            },
+            paginationState = paginationState,
+            onPageChanged = {
+                println("ps " + paginationState.pageIndex)
+                println("it " + it.pageIndex)
+
+                viewModel.load((it.pageIndex - 1) * NUMBER_OF_ROWS)
+
+                viewModel.values.value
+            }
+        ) { event: Event ->
+            row(modifier = Modifier) {
+                cell {
+                    Text(
+                        modifier = Modifier.clickable {
+                            onSelect(EventViewScreen(event.uuid))
+                        },
+                        text = event.name
+                    )
+                }
+                cell { Text(event.contribution.toMoneyPrettyString()) }
+                cell { Text(event.deadline.toPrettyString()) }
+            }
+        }
+    }
 }

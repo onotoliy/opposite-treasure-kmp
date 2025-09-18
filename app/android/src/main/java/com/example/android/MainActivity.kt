@@ -3,6 +3,7 @@ package com.example.android
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.github.onotoliy.opposite.di.adapterModel
 import com.github.onotoliy.opposite.di.networkModule
 import com.github.onotoliy.opposite.di.repositoryModule
 import com.github.onotoliy.opposite.di.viewModelModule
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KoinApplication(application = {
-                modules(networkModule, repositoryModule, viewModelModule)
+                modules(networkModule, repositoryModule, viewModelModule, adapterModel)
             }) {
                 WebWindowNavigation()
             }

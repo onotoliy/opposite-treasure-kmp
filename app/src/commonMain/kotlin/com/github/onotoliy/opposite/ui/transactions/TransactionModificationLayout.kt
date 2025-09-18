@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.repositories.lablel
+import com.github.onotoliy.opposite.repositories.label
 import com.github.onotoliy.opposite.treasure.model.Option
 import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.ui.components.fields.CalendarField
@@ -54,7 +54,7 @@ fun TransactionModificationLayout(
         DropdownMenu(
             label = "Тип тразакции",
             enabled = isTypeEnable,
-            options = Transaction.Type.values().map { Option(it.name, it.lablel) },
+            options = Transaction.Type.values().map { Option(it.name, it.label) },
             onValueChange = { onTypeChanged(Transaction.Type.valueOf(it.uuid)) }
         )
 

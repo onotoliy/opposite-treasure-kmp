@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowOutward
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.NUMBER_OF_ROWS
+import com.github.onotoliy.opposite.repositories.label
 import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.repositories.toPrettyString
 import com.github.onotoliy.opposite.treasure.model.Transaction
@@ -29,11 +32,16 @@ import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButto
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.transactions.models.TransactionListAdapter
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionListModel
+import com.github.onotoliy.opposite.ui.transactions.models.TransactionTableModel
+import com.github.onotoliy.opposite.viewmodel.UiState
+import io.github.windedge.table.m3.PaginatedDataTable
+import io.github.windedge.table.rememberPaginationState
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun TransactionListView(viewModel: TransactionListModel, onSelect: (Screen) -> Unit)
+expect fun TransactionListView(listAdapter: TransactionListAdapter, onSelect: (Screen) -> Unit)
 
 @Composable
 fun TransactionListMobileView(viewModel: TransactionListModel, onSelect: (Screen) -> Unit) {
@@ -106,58 +114,82 @@ private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -
 }
 
 @Composable
-fun TransactionTableView(model: TransactionListModel, onSelect: (Screen) -> Unit) {
-    /*DataTable(
-        columns = {
-            headerBackground {
-                Box(modifier = Modifier.background(color = Color.LightGray))
+fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) -> Unit) {
+    val loadingState by viewModel.loadState.collectAsState()
+    val values by viewModel.values.collectAsState()
+    val total by viewModel.total.collectAsState()
+
+    val paginationState = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
+
+    Column {
+        when (loadingState) {
+            is UiState.Error -> {
+                Text("Ошибка: ${(loadingState as UiState.Error).message}")
             }
-            column { Text("Тип") }
-            column { Text("Название") }
-            column { Text("Сумма") }
-            column { Text("Пользователь") }
-            column { Text("Событие") }
-            column { Text("Дата создания") }
+
+            is UiState.Loading -> {
+                LinearProgressIndicator()
+            }
+
+            is UiState.Success -> {
+
+            }
         }
-    ) {
-        transactions.forEach { record ->
+
+        PaginatedDataTable(
+            columns = {
+                column { Text("Тип") }
+                column { Text("Название") }
+                column { Text("Сумма") }
+                column { Text("Пользователь") }
+                column { Text("Событие") }
+                column { Text("Дата создания") }
+            },
+            paginationState = paginationState,
+            onPageChanged = {
+                viewModel.load((it.pageIndex - 1) * NUMBER_OF_ROWS)
+
+                values
+            }
+        ) { transaction: Transaction ->
             row(modifier = Modifier) {
-                cell { Text(record.type.label) }
+                cell { Text(transaction.type.label) }
                 cell {
                     Text(
                         modifier = Modifier.clickable {
-                            onSelect(Screen.TransactionViewScreen(record.uuid))
+                            onSelect(Screen.TransactionViewScreen(transaction.uuid))
                         },
-                        text = record.name
+                        text = transaction.name
                     )
                 }
-                cell { Text(record.cash) }
+                cell { Text(transaction.cash.toMoneyPrettyString()) }
                 cell {
                     Text(
                         modifier = Modifier.then(
-                            record.person?.uuid?.let {
+                            transaction.person?.uuid?.let {
                                 Modifier.clickable {
                                     onSelect(Screen.UserViewScreen(it))
                                 }
                             } ?: Modifier
                         ),
-                        text = record.person?.name ?: ""
+                        text = transaction.person?.name ?: ""
                     )
                 }
                 cell {
                     Text(
                         modifier = Modifier.then(
-                            record.event?.uuid?.let {
+                            transaction.event?.uuid?.let {
                                 Modifier.clickable {
                                     onSelect(Screen.EventViewScreen(it))
                                 }
                             } ?: Modifier
                         ),
-                        text = record.event?.name ?: ""
+                        text = transaction.event?.name ?: ""
                     )
                 }
-                cell { Text(record.transactionDate) }
+                cell { Text(transaction.transactionDate.toPrettyString()) }
+
             }
         }
-    }*/
+    }
 }

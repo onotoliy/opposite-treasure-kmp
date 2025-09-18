@@ -15,6 +15,6 @@ open class TransactionListModel(
             depositID = null,
             offset = offset,
             numberOfRows = numberOfRows
-        )
+        ).context
 
 }

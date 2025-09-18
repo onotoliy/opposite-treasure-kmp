@@ -5,6 +5,8 @@ import com.github.onotoliy.opposite.treasure.api.EventResourceApi
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.treasure.model.PageDeposit
+import com.github.onotoliy.opposite.treasure.model.PageEvent
 import kotlin.String
 
 class EventRepository(private val api: EventResourceApi) {
@@ -17,16 +19,16 @@ class EventRepository(private val api: EventResourceApi) {
         name: String?,
         offset: Int,
         numberOfRows: Int
-    ): List<Event> {
-        return api.getAllEventResource(name, offset, numberOfRows).toRespose().context
+    ): PageEvent {
+        return api.getAllEventResource(name, offset, numberOfRows).toRespose()
     }
 
     suspend fun getDebtors(
         event: String,
         offset: Int,
         numberOfRows: Int
-    ): List<Deposit> {
-        return api.getDebtorsEventResource(event, offset, numberOfRows).toRespose().context
+    ): PageDeposit {
+        return api.getDebtorsEventResource(event, offset, numberOfRows).toRespose()
     }
 
     suspend fun create(event: Event): Event {

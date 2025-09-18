@@ -2,6 +2,7 @@ package com.github.onotoliy.opposite.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.github.onotoliy.opposite.repositories.HttpException
+import com.github.onotoliy.opposite.repositories.NUMBER_OF_ROWS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -37,9 +38,9 @@ abstract class AbstractInfinityListModel<T>: ViewModel() {
 
         scope.launch {
             try {
-                val page = getAll(_values.value.size, 10)
+                val page = getAll(_values.value.size, NUMBER_OF_ROWS)
 
-                _hasLoadMore.value = page.size == 10
+                _hasLoadMore.value = page.size == NUMBER_OF_ROWS
                 _values.value = _values.value + page
                 _loadState.value = UiState.Success
             } catch (e: HttpException) {
@@ -48,5 +49,5 @@ abstract class AbstractInfinityListModel<T>: ViewModel() {
         }
     }
 
-    protected suspend abstract fun getAll(offset: Int = 0, numberOfRows: Int = 10): List<T>
+    protected suspend abstract fun getAll(offset: Int = 0, numberOfRows: Int = NUMBER_OF_ROWS): List<T>
 }

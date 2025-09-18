@@ -4,6 +4,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.ExperimentalBrowserHistoryApi
 import androidx.navigation.bindToBrowserNavigation
+import com.github.onotoliy.opposite.di.adapterModel
 import com.github.onotoliy.opposite.di.networkModule
 import com.github.onotoliy.opposite.di.repositoryModule
 import com.github.onotoliy.opposite.di.viewModelModule
@@ -16,7 +17,7 @@ fun main() {
     onWasmReady {
         ComposeViewport("composeApp") {
             KoinApplication(application = {
-                modules(networkModule, repositoryModule, viewModelModule)
+                modules(networkModule, repositoryModule, viewModelModule, adapterModel)
             }) {
                 WebWindowNavigation() {
                     it.bindToBrowserNavigation()

@@ -18,7 +18,9 @@ import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class HttpException(public val status: String, public override val message: String): Exception(message)
+const val NUMBER_OF_ROWS = 10
+
+class HttpException(public val status: String = "500", public override val message: String): Exception(message)
 
 @OptIn(InternalAPI::class)
 suspend fun <T : Any> HttpResponse<T>.toRespose(): T {
@@ -146,7 +148,7 @@ fun newDeposit(
     logo = logo
 )
 
-val Type.lablel: String
+val Type.label: String
     get() = when (this) {
         Type.NONE -> "Не выбрано"
         Type.COST -> "Расход"

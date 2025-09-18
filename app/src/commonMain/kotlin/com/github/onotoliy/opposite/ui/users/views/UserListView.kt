@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,19 +20,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.NUMBER_OF_ROWS
 import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
-import com.github.onotoliy.opposite.ui.components.infinity.TableInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.users.models.UserListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserListModel
+import com.github.onotoliy.opposite.ui.users.models.UserTableModel
+import com.github.onotoliy.opposite.viewmodel.UiState
 import io.github.windedge.table.m3.PaginatedDataTable
+import io.github.windedge.table.rememberPaginationState
 
 @Composable
-expect fun UserListView(viewModel: UserListModel, onSelect: (Screen) -> Unit)
+expect fun UserListView(listAdapter: UserListAdapter, onSelect: (Screen) -> Unit)
 
 @Composable
 fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
@@ -81,27 +86,52 @@ private fun UserMobileItem(user: Deposit, onSelect: (Screen) -> Unit) {
 }
 
 @Composable
-fun UserTableWebView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.loadState.collectAsState()
+fun UserTableWebView(viewModel: UserTableModel, onSelect: (Screen) -> Unit) {
+    val loadingState by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
-    val hasLoadMore by viewModel.hasLoadMore.collectAsState()
+    val total by viewModel.total.collectAsState()
 
-    TableInfinity(
-        loadingState = state,
-        values = values,
-        canLoadMore = hasLoadMore,
-        onLoadMore = viewModel::load,
-        header = {
-            Text("ФИО")
-            Text("Депозит")
+    val paginationState = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
+
+    Column {
+        when (loadingState) {
+            is UiState.Error -> {
+                Text("Ошибка: ${(loadingState as UiState.Error).message}")
+            }
+
+            is UiState.Loading -> {
+                LinearProgressIndicator()
+            }
+
+            is UiState.Success -> {
+
+            }
         }
-    ) { user ->
-        Text(
-            modifier = Modifier.clickable {
-                onSelect(Screen.UserViewScreen(user.uuid))
+
+        PaginatedDataTable(
+            columns = {
+                column { Text("ФИО") }
+                column { Text("Депозит") }
             },
-            text = user.name
-        )
-        Text(user.deposit)
+            paginationState = paginationState,
+            onPageChanged = {
+                viewModel.load((it.pageIndex - 1) * NUMBER_OF_ROWS)
+
+                values
+            }
+        ) { user: Deposit ->
+            row(modifier = Modifier) {
+                cell {
+                    Text(
+                        modifier = Modifier.clickable {
+                            onSelect(Screen.UserViewScreen(user.uuid))
+                        },
+                        text = user.name
+                    )
+                }
+                cell { Text(user.deposit.toMoneyPrettyString()) }
+            }
+        }
     }
+
 }

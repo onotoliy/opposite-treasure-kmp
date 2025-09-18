@@ -10,6 +10,8 @@ import com.github.onotoliy.opposite.treasure.model.Transaction
 import com.github.onotoliy.opposite.viewmodel.AbstractCreateModel
 import com.github.onotoliy.opposite.viewmodel.UiState
 import com.github.onotoliy.opposite.repositories.EventRepository
+import com.github.onotoliy.opposite.repositories.HttpException
+import com.github.onotoliy.opposite.repositories.NUMBER_OF_ROWS
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -33,10 +35,13 @@ class TransactionCreateModel(
 
         scope.launch {
             try {
-                _events.value = erepository.getAll(q, 0, 10).map { Option(it.uuid, it.name) }
+                _events.value = erepository
+                    .getAll(q, 0, NUMBER_OF_ROWS)
+                    .context
+                    .map { Option(it.uuid, it.name) }
                 _loadState.value = UiState.Success
-            } catch (e: Exception) {
-                _loadState.value = UiState.Error(e.message ?: "Unknown error")
+            } catch (e: HttpException) {
+                _loadState.value = UiState.Error(e.message)
             }
         }
     }
@@ -46,10 +51,13 @@ class TransactionCreateModel(
 
         scope.launch {
             try {
-                _deposits.value = drepository.getAll(q, 0, 10).map { Option(it.uuid, it.name) }
+                _deposits.value = drepository
+                    .getAll(q, 0, NUMBER_OF_ROWS)
+                    .context
+                    .map { Option(it.uuid, it.name) }
                 _loadState.value = UiState.Success
-            } catch (e: Exception) {
-                _loadState.value = UiState.Error(e.message ?: "Unknown error")
+            } catch (e: HttpException) {
+                _loadState.value = UiState.Error(e.message)
             }
         }
     }

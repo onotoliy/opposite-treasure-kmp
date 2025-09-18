@@ -12,20 +12,36 @@ import com.github.onotoliy.opposite.treasure.api.TransactionResourceApi
 import com.github.onotoliy.opposite.ui.cashbox.models.CashboxViewModel
 import com.github.onotoliy.opposite.ui.events.models.EventCreateModel
 import com.github.onotoliy.opposite.ui.events.models.EventEditModel
+import com.github.onotoliy.opposite.ui.events.models.EventListAdapter
 import com.github.onotoliy.opposite.ui.events.models.EventListModel
+import com.github.onotoliy.opposite.ui.events.models.EventTableModel
+import com.github.onotoliy.opposite.ui.events.models.EventTransactionListAdapter
 import com.github.onotoliy.opposite.ui.events.models.EventTransactionListModel
+import com.github.onotoliy.opposite.ui.events.models.EventTransactionTableModel
+import com.github.onotoliy.opposite.ui.events.models.EventUserListAdapter
 import com.github.onotoliy.opposite.ui.events.models.EventUserListModel
+import com.github.onotoliy.opposite.ui.events.models.EventUserTableModel
 import com.github.onotoliy.opposite.ui.events.models.EventViewModel
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionCreateModel
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionEditModel
+import com.github.onotoliy.opposite.ui.transactions.models.TransactionListAdapter
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionListModel
+import com.github.onotoliy.opposite.ui.transactions.models.TransactionTableModel
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionViewModel
 import com.github.onotoliy.opposite.ui.users.models.UserCreateModel
 import com.github.onotoliy.opposite.ui.users.models.UserEditModel
+import com.github.onotoliy.opposite.ui.users.models.UserEventListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserEventListModel
+import com.github.onotoliy.opposite.ui.users.models.UserEventTableModel
+import com.github.onotoliy.opposite.ui.users.models.UserListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserListModel
+import com.github.onotoliy.opposite.ui.users.models.UserTableModel
+import com.github.onotoliy.opposite.ui.users.models.UserTransactionListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserTransactionListModel
+import com.github.onotoliy.opposite.ui.users.models.UserTransactionTableModel
 import com.github.onotoliy.opposite.ui.users.models.UserViewModel
+import io.ktor.http.parametersOf
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val networkModule = module {
@@ -47,21 +63,38 @@ val viewModelModule = module {
     factory { (id: String) -> EventViewModel(get(), get(), id) }
     factory { (id: String) -> EventEditModel(get(), id) }
     factory { (id: String) -> EventTransactionListModel(get(), id) }
+    factory { (id: String) -> EventTransactionTableModel(get(), id) }
     factory { (id: String) -> EventUserListModel(get(), get(), id) }
+    factory { (id: String) -> EventUserTableModel(get(), get(), id) }
     single { EventListModel(get()) }
+    single { EventTableModel(get()) }
     single { EventCreateModel(get()) }
 
     factory { (id: String) -> TransactionViewModel(get(), get(), id) }
     factory { (id: String) -> TransactionEditModel(get(), id) }
     single { TransactionListModel(get()) }
+    single { TransactionTableModel(get()) }
     single { TransactionCreateModel(get(), get(), get()) }
 
     factory { (id: String) -> UserViewModel(get(), get(), id) }
     factory { (id: String) -> UserEditModel(get(), id) }
     factory { (id: String) -> UserTransactionListModel(get(), id) }
+    factory { (id: String) -> UserTransactionTableModel(get(), id) }
     factory { (id: String) -> UserEventListModel(get(), get(),id) }
+    factory { (id: String) -> UserEventTableModel(get(), get(), id) }
     single { UserListModel(get()) }
+    single { UserTableModel(get()) }
     single { UserCreateModel(get()) }
 
     single { CashboxViewModel(get()) }
+}
+
+val adapterModel = module {
+    factory { (id: String) -> EventUserListAdapter(id,get { parametersOf(id) }, get { parametersOf(id) }) }
+    factory { (id: String) -> UserEventListAdapter(id, get { parametersOf(id) }, get { parametersOf(id) }) }
+    factory { (id: String) -> EventTransactionListAdapter(id, get { parametersOf(id) }, get { parametersOf(id) }) }
+    factory { (id: String) -> UserTransactionListAdapter(id, get { parametersOf(id) }, get { parametersOf(id) }) }
+    single { UserListAdapter(get(), get()) }
+    single { EventListAdapter(get(), get()) }
+    single { TransactionListAdapter(get(), get()) }
 }

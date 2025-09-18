@@ -9,5 +9,5 @@ open class UserListModel(
 ) : AbstractInfinityListModel<Deposit>() {
 
     override suspend fun getAll(offset: Int, numberOfRows: Int): List<Deposit> =
-        repository.getAll(null, offset, numberOfRows)
+        repository.getAll(null, offset, numberOfRows).context
 }
