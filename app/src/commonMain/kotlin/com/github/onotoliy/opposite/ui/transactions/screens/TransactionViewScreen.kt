@@ -30,9 +30,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.onotoliy.opposite.ui.components.scaffold.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.transactions.views.TransactionInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionViewModel
 import com.github.onotoliy.opposite.viewmodel.UiState
 import org.jetbrains.compose.resources.DrawableResource
@@ -44,8 +46,8 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun TransactionViewScreen(
     uuid: String,
-    viewModel: TransactionViewModel = koinViewModel { parametersOf(uuid) },
-    onSelect: (Screen) -> Unit
+    nav: NavController,
+    viewModel: TransactionViewModel = koinViewModel { parametersOf(uuid) }
 ) {
     val state by viewModel.loadState.collectAsState()
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -65,7 +67,7 @@ fun TransactionViewScreen(
     }
 
     ApplicationScaffold(
-        onSelect = onSelect
+        onSelect = nav::goto
     ) {
         Column {
             when (state) {
@@ -96,7 +98,7 @@ fun TransactionViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> TransactionInformationView(viewModel.info.value, onSelect)
+                0 -> TransactionInformationView(viewModel.info.value, nav::goto)
                 1 -> FilesTab(viewModel.receipts.value)
             }
         }

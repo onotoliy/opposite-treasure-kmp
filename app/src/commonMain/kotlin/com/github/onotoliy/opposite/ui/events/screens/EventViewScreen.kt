@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.onotoliy.opposite.ui.components.scaffold.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.events.models.EventTransactionListAdapter
 import com.github.onotoliy.opposite.ui.transactions.views.TransactionListView
@@ -36,6 +37,7 @@ import com.github.onotoliy.opposite.ui.events.models.EventUserListModel
 import com.github.onotoliy.opposite.ui.events.models.EventViewModel
 import com.github.onotoliy.opposite.ui.events.views.EventInformationView
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 import com.github.onotoliy.opposite.ui.users.views.UserListView
 import com.github.onotoliy.opposite.viewmodel.UiState
 import org.koin.compose.koinInject
@@ -46,10 +48,10 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EventViewScreen(
     uuid: String,
+    nav: NavController,
     viewModel: EventViewModel = koinViewModel { parametersOf(uuid) },
     transactions: EventTransactionListAdapter = koinInject { parametersOf(uuid) },
-    users: EventUserListAdapter = koinInject { parametersOf(uuid) },
-    onSelect: (Screen) -> Unit
+    users: EventUserListAdapter = koinInject { parametersOf(uuid) }
 ) {
     val state by viewModel.loadState.collectAsState()
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -69,7 +71,7 @@ fun EventViewScreen(
     }
 
     ApplicationScaffold(
-        onSelect = onSelect
+        onSelect = nav::goto
     ) {
         Column {
             when (state) {
@@ -100,9 +102,9 @@ fun EventViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> EventInformationView(viewModel.info.value, viewModel.logo.value, onSelect)
-                1 -> TransactionListView(transactions, onSelect = onSelect)
-                2 -> UserListView(users, onSelect = onSelect)
+                0 -> EventInformationView(viewModel.info.value, viewModel.logo.value, nav::goto)
+                1 -> TransactionListView(transactions, onSelect = nav::goto)
+                2 -> UserListView(users, onSelect = nav::goto)
             }
         }
     }

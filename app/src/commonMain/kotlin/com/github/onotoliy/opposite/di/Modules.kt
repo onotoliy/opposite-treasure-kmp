@@ -1,5 +1,6 @@
 package com.github.onotoliy.opposite.di
 
+import androidx.navigation.NavHostController
 import com.github.onotoliy.opposite.repositories.CashboxRepository
 import com.github.onotoliy.opposite.repositories.DepositeRepository
 import com.github.onotoliy.opposite.repositories.EventRepository
@@ -43,10 +44,6 @@ import com.github.onotoliy.opposite.ui.users.models.UserViewModel
 import io.ktor.http.parametersOf
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
-
-val navigationModule = module {
-    single { getNavController() }
-}
 
 val networkModule = module {
     single { CashboxResourceApi("https://91.201.41.66/api/treasure/v1", getHttpClient()) }

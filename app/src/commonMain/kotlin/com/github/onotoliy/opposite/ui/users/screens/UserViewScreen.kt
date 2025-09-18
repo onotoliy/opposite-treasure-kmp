@@ -27,10 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.github.onotoliy.opposite.ui.components.scaffold.ApplicationScaffold
 import com.github.onotoliy.opposite.ui.events.models.EventTransactionListAdapter
 import com.github.onotoliy.opposite.ui.events.views.EventListView
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 import com.github.onotoliy.opposite.ui.transactions.views.TransactionListView
 import com.github.onotoliy.opposite.ui.users.models.UserEventListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserEventListModel
@@ -47,10 +49,10 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun UserViewScreen(
     uuid: String,
+    nav: NavController,
     viewModel: UserViewModel = koinViewModel { parametersOf(uuid) },
     transactions: UserTransactionListAdapter = koinInject { parametersOf(uuid) },
     users: UserEventListAdapter = koinInject { parametersOf(uuid) },
-    onSelect: (Screen) -> Unit
 ) {
     val state by viewModel.loadState.collectAsState()
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -70,7 +72,7 @@ fun UserViewScreen(
     }
 
     ApplicationScaffold(
-        onSelect = onSelect
+        onSelect = nav::goto
     ) {
         Column {
             when (state) {
@@ -101,9 +103,9 @@ fun UserViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> UserInformationView(viewModel.info.value, viewModel.logo.value, onSelect)
-                1 -> TransactionListView(transactions, onSelect = onSelect)
-                2 -> EventListView(users, onSelect = onSelect)
+                0 -> UserInformationView(viewModel.info.value, viewModel.logo.value, nav::goto)
+                1 -> TransactionListView(transactions, nav::goto)
+                2 -> EventListView(users, nav::goto)
             }
         }
     }
