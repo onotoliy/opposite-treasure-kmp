@@ -88,31 +88,31 @@ fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
 @Composable
 @OptIn(ExperimentalTime::class)
 fun EventTableWebView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
-    TableInfinity<Event>(viewModel) { events ->
-        DataTable(
-            columns = {
-                headerBackground {
-                    Box(modifier = Modifier.background(Color.LightGray))
-                }
-                column { Text("Название") }
-                column { Text("Сумма") }
-                column { Text("Сдать до") }
-            }
-        ) {
-            events.forEach { record ->
-                row {
-                    cell {
-                        Text(
-                            modifier = Modifier.clickable {
-                                onSelect(EventViewScreen(record.uuid))
-                            },
-                            text = record.name
-                        )
-                    }
-                    cell { Text(record.contribution) }
-                    cell { Text(record.deadline.toString()) }
-                }
-            }
-        }
-    }
+//    TableInfinity<Event>(viewModel) { events ->
+//        DataTable(
+//            columns = {
+//                headerBackground {
+//                    Box(modifier = Modifier.background(Color.LightGray))
+//                }
+//                column { Text("Название") }
+//                column { Text("Сумма") }
+//                column { Text("Сдать до") }
+//            }
+//        ) {
+//            events.forEach { record ->
+//                row {
+//                    cell {
+//                        Text(
+//                            modifier = Modifier.clickable {
+//                                onSelect(EventViewScreen(record.uuid))
+//                            },
+//                            text = record.name
+//                        )
+//                    }
+//                    cell { Text(record.contribution) }
+//                    cell { Text(record.deadline.toString()) }
+//                }
+//            }
+//        }
+//    }
 }

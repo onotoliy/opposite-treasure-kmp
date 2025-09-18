@@ -26,7 +26,6 @@ fun <T> ListInfinity(
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        println("=== First Start ")
         onLoadMore(true)
     }
 
@@ -36,8 +35,6 @@ fun <T> ListInfinity(
                 val lvx = lastVisibleIndex ?: return@collect
 
                 if (loadingState is UiState.Success && lvx >= values.lastIndex - 3) {
-                    println("=== New Load ")
-
                     onLoadMore(false)
                 }
             }

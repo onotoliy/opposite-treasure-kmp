@@ -24,9 +24,11 @@ import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
+import com.github.onotoliy.opposite.ui.components.infinity.TableInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.users.models.UserListModel
+import io.github.windedge.table.m3.PaginatedDataTable
 
 @Composable
 expect fun UserListView(viewModel: UserListModel, onSelect: (Screen) -> Unit)
@@ -80,27 +82,26 @@ private fun UserMobileItem(user: Deposit, onSelect: (Screen) -> Unit) {
 
 @Composable
 fun UserTableWebView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
-//    DataTable(
-//        columns = {
-//            headerBackground {
-//                Box(modifier = Modifier.background(color = Color.LightGray))
-//            }
-//            column { Text("ФИО") }
-//            column { Text("Депозит") }
-//        }
-//    ) {
-//        users.forEach { record ->
-//            row(modifier = Modifier) {
-//                cell {
-//                    Text(
-//                        modifier = Modifier.clickable {
-//                            onSelect(Screen.UserViewScreen(record.uuid))
-//                        },
-//                        text = record.name
-//                    )
-//                }
-//                cell { Text(record.deposit) }
-//            }
-//        }
-//    }
+    val state by viewModel.loadState.collectAsState()
+    val values by viewModel.values.collectAsState()
+    val hasLoadMore by viewModel.hasLoadMore.collectAsState()
+
+    TableInfinity(
+        loadingState = state,
+        values = values,
+        canLoadMore = hasLoadMore,
+        onLoadMore = viewModel::load,
+        header = {
+            Text("ФИО")
+            Text("Депозит")
+        }
+    ) { user ->
+        Text(
+            modifier = Modifier.clickable {
+                onSelect(Screen.UserViewScreen(user.uuid))
+            },
+            text = user.name
+        )
+        Text(user.deposit)
+    }
 }

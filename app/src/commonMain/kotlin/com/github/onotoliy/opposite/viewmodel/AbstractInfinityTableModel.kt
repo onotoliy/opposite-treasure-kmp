@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class AbstractInfinityListModel<T>: ViewModel() {
+abstract class AbstractInfinityTableModel<T>: ViewModel() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val _loadState = MutableStateFlow<UiState>(UiState.Success)
     private val _values = MutableStateFlow<List<T>>(mutableListOf())
@@ -18,7 +18,7 @@ abstract class AbstractInfinityListModel<T>: ViewModel() {
     val values: StateFlow<List<T>> = _values
     val hasLoadMore: StateFlow<Boolean> = _hasLoadMore
 
-    fun load(reload: Boolean = true) {
+    fun load() {
         if (_loadState.value is UiState.Loading) {
             return
         }

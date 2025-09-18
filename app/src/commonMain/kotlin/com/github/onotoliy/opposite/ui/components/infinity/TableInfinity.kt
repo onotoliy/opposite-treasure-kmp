@@ -1,59 +1,82 @@
 package com.github.onotoliy.opposite.ui.components.infinity
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.github.onotoliy.opposite.ui.events.models.EventListModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.viewmodel.UiState
+import io.github.windedge.table.m3.PaginatedDataTable
 
 @Composable
 fun <T> TableInfinity(
-    viewModel: EventListModel,
-    content: @Composable (List<T>) -> Unit
+    loadingState: UiState,
+    values: List<T>,
+    canLoadMore: Boolean,
+    onLoadMore: (reload: Boolean) -> Unit,
+    header: @Composable RowScope.() -> Unit,
+    row: @Composable RowScope.(T) -> Unit,
 ) {
-
-//    Column {
-//        when (state) {
-//            is UiState.Error -> {
+//    val listState = rememberLazyListState()
 //
-//            }
+//    LaunchedEffect(Unit) {
+//        onLoadMore(true)
+//    }
 //
-//            UiState.Loading -> {
-//                LinearProgressIndicator()
-//            }
+//    LaunchedEffect(listState, values, canLoadMore, loadingState) {
+//        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+//            .collect { lastVisibleIndex ->
+//                val lvx = lastVisibleIndex ?: return@collect
 //
-//            is UiState.Success<*> -> {
-//
-//            }
-//        }
-//
-//
-////        content(values)
-//
-//        if (state is UiState.Success && canLoadMore) {
-//            Box(
-//                modifier = Modifier.fillMaxWidth().padding(12.dp),
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Button(onClick = {
-//                    onLoadMore()
-//                }) {
-//                    Text("Загрузить ещё")
+//                if (loadingState is UiState.Success && lvx >= values.lastIndex - 3) {
+//                    onLoadMore(false)
 //                }
 //            }
+//    }
+//
+//    Column {
+//        when (loadingState) {
+//            is UiState.Error -> {
+//                Text("Ошибка: ${loadingState.message}")
+//            }
+//            is UiState.Loading -> {
+//                LinearProgressIndicator()
+//            }
+//            is UiState.Success -> {
+//
+//            }
+//        }
+//
+//        LazyColumn(
+//            state = listState,
+//            verticalArrangement = Arrangement.spacedBy(10.dp),
+//            modifier = Modifier.fillMaxSize()
+//        ) {
+//            item {
+//                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+//                    header()
+//                }
+//            }
+//
+//            itemsIndexed(values) { index, value ->
+//                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+//                    row(value)
+//                }
+//
+//            }
+//
+//            PaginatedDataTable()
 //        }
 //    }
-}
-
-private fun <T> load(
-    onLoadMore: (offset: Int) -> List<T>,
-    values: List<T>,
-    onSuccess: (newValues: List<T>, hasMoreItems: Boolean) -> Unit,
-    onError: (String) -> Unit
-) {
-    try {
-        val page = onLoadMore(values.size)
-        val newValues = values + page
-        val total = page.size
-        onSuccess(newValues, newValues.size < total)
-    } catch (e: Exception) {
-        onError("Ошибка загрузки: ${e.message}")
-    }
 }

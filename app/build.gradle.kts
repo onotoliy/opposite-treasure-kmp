@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.detekt)
 }
 
 repositories {
@@ -31,7 +32,11 @@ kotlin {
 
     js(IR) {
         binaries.executable()
-        browser()
+        browser {
+            webpackTask {
+                sourceMaps = true
+            }
+        }
     }
 
     sourceSets {
@@ -60,10 +65,14 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.windows_x64)
                 implementation(libs.skiko.awt.runtime.windows.x64)
+                implementation(libs.ktor.client.okhttp)
             }
         }
 
         jsMain.dependencies {
+            implementation("io.ktor:ktor-client-js:3.1.3")
+            implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
         }
 
         androidMain.dependencies {
@@ -72,6 +81,14 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
     }
+}
+
+detekt {
+    toolVersion = "1.22.0" // Укажите актуальную версию Detekt
+    config = files("detekt.yml") // Путь к вашему конфигу
+    buildUponDefaultConfig = true // Использует настройки по умолчанию, если не указан конфиг
+    allRules = false // Отключаем все правила по умолчанию
+    autoCorrect = false // Включаем автоматическое исправление
 }
 
 compose.desktop {
