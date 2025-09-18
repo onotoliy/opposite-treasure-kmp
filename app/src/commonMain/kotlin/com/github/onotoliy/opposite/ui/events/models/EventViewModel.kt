@@ -24,7 +24,7 @@ class EventViewModel(
     override suspend fun get(): Event = events.get(uuid)
 
     override suspend fun loadAdditionalValues() {
-        _logo.value = files.download(uuid)
+        _logo.value = files.download()
     }
 
     override val defaultValue: Event

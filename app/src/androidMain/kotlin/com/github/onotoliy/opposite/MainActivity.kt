@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             KoinApplication(application = {
                 modules(networkModule, repositoryModule, viewModelModule, adapterModel)
             }) {
-                WebWindowNavigation() {
+                WebWindowNavigation () {
 
                 }
             }

@@ -44,6 +44,15 @@ fun CancelButton(onClick: () -> Unit) {
     }
 }
 
+@Composable
+fun EditButton(onClick: () -> Unit) {
+    Button(onClick = onClick) {
+        Row {
+            Icon(imageVector = Icons.Outlined.Edit, contentDescription = null)
+            Text("Изменить")
+        }
+    }
+}
 
 @Composable
 fun SaveButton(onClick: () -> Unit) {

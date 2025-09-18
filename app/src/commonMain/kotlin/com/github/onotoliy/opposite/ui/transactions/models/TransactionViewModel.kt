@@ -22,7 +22,7 @@ class TransactionViewModel(
     override suspend fun get(): Transaction = transactions.get(uuid)
 
     override suspend fun loadAdditionalValues() {
-        _receipts.value = mutableListOf(files.download(uuid))
+        _receipts.value = mutableListOf(files.download())
     }
 
     override val defaultValue: Transaction

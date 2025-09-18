@@ -9,6 +9,4 @@ class UserTransactionListAdapter(
     private val userID: String,
     override val list: UserTransactionListModel,
     override val table: UserTransactionTableModel
-) : TransactionListAdapter(table, list) {
-
-}
+) : TransactionListAdapter(table, list)

@@ -20,7 +20,11 @@ import kotlin.uuid.Uuid
 
 const val NUMBER_OF_ROWS = 10
 
-class HttpException(public val status: String = "500", public override val message: String): Exception(message)
+class HttpException(
+    public val status: String,
+    public override val message: String,
+    override val cause: Throwable? = null
+) : Exception(message, cause)
 
 @OptIn(InternalAPI::class)
 suspend fun <T : Any> HttpResponse<T>.toRespose(): T {
@@ -33,8 +37,8 @@ suspend fun <T : Any> HttpResponse<T>.toRespose(): T {
             val info = Json { ignoreUnknownKeys = true }
                 .decodeFromString(ExceptionInformation.serializer(), body)
             throw HttpException(info.status.name, info.message)
-        } catch (e: SerializationException) {
-            throw HttpException("INTERNAL_SERVER_ERROR", body)
+        } catch (exception: SerializationException) {
+            throw HttpException("INTERNAL_SERVER_ERROR", body, exception)
         }
     }
 }
@@ -135,7 +139,7 @@ fun newDeposit(
     position: Deposit.Position = Deposit.Position.NONE,
     logo: String? = null
 ) = Deposit(
-    uuid = Uuid.random().toString(),
+    uuid = uuid,
     username = username,
     firstName = firstName,
     lastName = lastName,

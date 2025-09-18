@@ -22,8 +22,6 @@ abstract class AbstractInfinityTableModel<T>: ViewModel() {
     val values: StateFlow<List<T>> = _values
     val total: StateFlow<Int> = _total
 
-    protected suspend abstract fun getAll(offset: Int, numberOfRows: Int): Page<T>
-
     fun load(offset: Int) {
         println("offset " + offset)
 
@@ -45,4 +43,6 @@ abstract class AbstractInfinityTableModel<T>: ViewModel() {
             }
         }
     }
+
+    protected abstract suspend fun getAll(offset: Int, numberOfRows: Int): Page<T>
 }

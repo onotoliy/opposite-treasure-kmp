@@ -53,6 +53,7 @@ fun TransactionModificationLayout(
     ) {
         DropdownMenu(
             label = "Тип тразакции",
+            value = Option(type.value, type.label),
             enabled = isTypeEnable,
             options = Transaction.Type.values().map { Option(it.name, it.label) },
             onValueChange = { onTypeChanged(Transaction.Type.valueOf(it.uuid)) }
@@ -75,6 +76,7 @@ fun TransactionModificationLayout(
 
         SwaggestBox(
             label = "Позьзователь",
+            value = user,
             enabled = isUserEnable,
             onSelected = onUserChanged,
             onQueryChanged = onUserQueryChanged
@@ -82,6 +84,7 @@ fun TransactionModificationLayout(
 
         SwaggestBox(
             label = "Событие",
+            value = event,
             enabled = isEventEnable,
             onSelected = onEventChanged,
             onQueryChanged = onEventQueryChanged

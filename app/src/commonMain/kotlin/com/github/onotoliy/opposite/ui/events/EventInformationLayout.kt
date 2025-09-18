@@ -1,4 +1,4 @@
-package com.github.onotoliy.opposite.ui.components.events
+package com.github.onotoliy.opposite.ui.events
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

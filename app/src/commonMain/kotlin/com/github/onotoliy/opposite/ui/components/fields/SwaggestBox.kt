@@ -23,12 +23,13 @@ import kotlinx.coroutines.delay
 @Composable
 fun SwaggestBox(
     label: String,
+    value: Option?,
     enabled: Boolean,
     onSelected: (Option) -> Unit,
     onQueryChanged: (String) -> List<Option>
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf(value?.name ?: "") }
     var values by remember { mutableStateOf<List<Option>>(emptyList()) }
 
     LaunchedEffect(Unit) {

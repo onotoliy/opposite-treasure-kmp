@@ -23,7 +23,7 @@ class UserViewModel(
     override suspend fun get(): Deposit = users.get(uuid)
 
     override suspend fun loadAdditionalValues() {
-        _logo.value = files.download(uuid)
+        _logo.value = files.download()
     }
 
     override val defaultValue: Deposit

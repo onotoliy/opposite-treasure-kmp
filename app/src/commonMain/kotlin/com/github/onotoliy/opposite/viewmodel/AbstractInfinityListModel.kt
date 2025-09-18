@@ -49,5 +49,5 @@ abstract class AbstractInfinityListModel<T>: ViewModel() {
         }
     }
 
-    protected suspend abstract fun getAll(offset: Int = 0, numberOfRows: Int = NUMBER_OF_ROWS): List<T>
+    protected abstract suspend fun getAll(offset: Int = 0, numberOfRows: Int = NUMBER_OF_ROWS): List<T>
 }

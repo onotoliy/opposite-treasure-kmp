@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.treasure.model.Deposit
+import com.github.onotoliy.opposite.ui.components.buttons.EditButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
@@ -78,11 +79,8 @@ fun UserInformationWebView(deposit: Deposit, logo: DrawableResource, onSelect: (
         ) {
             UserInformationLayout(deposit)
 
-            Button(
-                onClick = { /* обработка */ },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Сохранить")
+            EditButton {
+                onSelect(Screen.UserEditScreen(deposit.uuid))
             }
         }
     }

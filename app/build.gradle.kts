@@ -83,14 +83,14 @@ kotlin {
     }
 }
 
-//detekt {
-//    toolVersion = "1.23.8" // Укажите актуальную версию Detekt
-//    config = files("../detekt.yml") // Путь к вашему конфигу
-//    buildUponDefaultConfig = true // Использует настройки по умолчанию, если не указан конфиг
-//    allRules = false // Отключаем все правила по умолчанию
-//    autoCorrect = false // Включаем автоматическое исправление
-//    source = files("src/commonMain/kotlin", "src/androidMain/kotlin", "src/jsMain/kotlin")
-//}
+detekt {
+    toolVersion = "1.23.8"
+    config = files("../detekt.yml")
+    buildUponDefaultConfig = true
+    allRules = false
+    autoCorrect = false
+    source = files("src/commonMain/kotlin", "src/androidMain/kotlin", "src/jsMain/kotlin")
+}
 
 compose.desktop {
     application {
