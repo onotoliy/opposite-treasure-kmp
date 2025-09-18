@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.github.onotoliy.opposite.repositories.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -8,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class AbstractViewModel<T>() : ViewModel() {
+abstract class AbstractViewModel<T> : ViewModel() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val _loadState = MutableStateFlow<UiState>(UiState.Loading)
 
@@ -25,8 +26,8 @@ abstract class AbstractViewModel<T>() : ViewModel() {
             try {
                 _info.value = get()
                 _loadState.value = UiState.Success
-            } catch (e: Exception) {
-                _loadState.value = UiState.Error(e.message ?: "Unknown error")
+            } catch (e: HttpException) {
+                _loadState.value = UiState.Error(e.message)
             }
         }
     }

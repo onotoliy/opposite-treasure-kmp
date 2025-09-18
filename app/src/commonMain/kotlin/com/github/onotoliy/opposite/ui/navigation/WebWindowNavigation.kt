@@ -3,6 +3,7 @@ package com.github.onotoliy.opposite.ui.navigation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -32,18 +33,18 @@ fun WebWindowNavigation(
 
     NavHost(navController, startDestination = "cashbox") {
         composable("cashbox") {
-            CashboxScreen(onSelect = { navController.navigate1(it) })
+            CashboxScreen(onSelect = { navController.goto(it) })
         }
 
         composable("events/new") {
             EventCreateScreen(
-                onSelect = { navController.navigate1(it) }
+                onSelect = { navController.goto(it) }
             )
         }
 
         composable("events") {
             EventListScreen(
-                onSelect = { navController.navigate1(it) }
+                onSelect = { navController.goto(it) }
             )
         }
 
@@ -51,77 +52,58 @@ fun WebWindowNavigation(
             route = "events/{uuid}",
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) { backStackEntry ->
-            val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
-                ?: throw IllegalArgumentException()
-
-            EventViewScreen(uuid, onSelect = { navController.navigate1(it) })
+            EventViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
         }
 
         composable(
             route = "events/{uuid}/edit",
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) { backStackEntry ->
-            val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
-                ?: throw IllegalArgumentException()
-
-            EventEditScreen(uuid, onSelect = { navController.navigate1(it) })
+            EventEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
         }
 
         composable("users") {
-            UserListScreen(onSelect = { navController.navigate1(it) })
+            UserListScreen(onSelect = { navController.goto(it) })
         }
 
         composable(route = "users/new") { backStackEntry ->
-
-            UserCreateScreen(onSelect = { navController.navigate1(it) })
+            UserCreateScreen(onSelect = { navController.goto(it) })
         }
 
         composable(
             route = "users/{uuid}",
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) { backStackEntry ->
-            val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
-                ?: throw IllegalArgumentException()
-
-            UserViewScreen(uuid, onSelect = { navController.navigate1(it) })
+            UserViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
         }
 
         composable(
             route = "users/{uuid}/edit",
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) { backStackEntry ->
-            val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
-                ?: throw IllegalArgumentException()
-
-            UserEditScreen(uuid, onSelect = { navController.navigate1(it) })
+            UserEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
         }
 
         composable("transactions") {
-            TransactionsTableScreen(onSelect = { navController.navigate1(it) })
+            TransactionsTableScreen(onSelect = { navController.goto(it) })
         }
 
         composable(route = "transactions/new") { backStackEntry ->
-            TransactionCreateScreen(onSelect = { navController.navigate1(it) })
+            TransactionCreateScreen(onSelect = { navController.goto(it) })
         }
 
         composable(
             route = "transactions/{uuid}",
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) { backStackEntry ->
-            val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
-                ?: throw IllegalArgumentException()
-
-            TransactionViewScreen(uuid, onSelect = { navController.navigate1(it) })
+            TransactionViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
         }
 
         composable(
             route = "transactions/{uuid}/edit",
             arguments = listOf(navArgument("uuid") { type = NavType.StringType })
         ) { backStackEntry ->
-            val uuid = backStackEntry.savedStateHandle.get<String>("uuid")
-                ?: throw IllegalArgumentException()
-
-            TransactionEditScreen(uuid, onSelect = { navController.navigate1(it) })
+            TransactionEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
         }
     }
 
@@ -131,7 +113,11 @@ fun WebWindowNavigation(
 
 }
 
-fun NavController.navigate1(screen: Screen) {
+private val NavBackStackEntry.uuid: String
+    get() = savedStateHandle.get<String>("uuid")
+        ?: throw IllegalArgumentException("UUID can not be empty")
+
+private fun NavController.goto(screen: Screen) {
     val route = when (screen) {
         is Screen.CashScreen -> "cashbox"
 

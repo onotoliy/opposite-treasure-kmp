@@ -94,14 +94,14 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
             isUserEnable = true,
             onUserChanged = { person = it },
             onUserQueryChanged = {
-                viewModel.getDeposits(it, type)
+                viewModel.getDeposits(it)
                 deposits
             },
             event = event,
             isEventEnable = true,
             onEventChanged = { event = it },
             onEventQueryChanged = {
-                viewModel.getEvents(it, type)
+                viewModel.getEvents(it)
                 events
             },
             transactionDate = transactionDate,

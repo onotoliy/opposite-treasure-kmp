@@ -48,6 +48,7 @@ fun SwaggestBox(
     ) {
         OutlinedTextField(
             value = query,
+            enabled = enabled,
             onValueChange = {
                 query = it
             },
@@ -97,6 +98,7 @@ fun DropdownMenu(
                 onValueChange = {},
                 label = { Text(label) },
                 readOnly = true,
+                enabled = enabled,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier.fillMaxWidth()
             )

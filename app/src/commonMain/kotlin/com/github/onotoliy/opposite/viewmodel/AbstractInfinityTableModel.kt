@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.github.onotoliy.opposite.repositories.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,14 +19,11 @@ abstract class AbstractInfinityTableModel<T>: ViewModel() {
     val values: StateFlow<List<T>> = _values
     val hasLoadMore: StateFlow<Boolean> = _hasLoadMore
 
+    protected suspend abstract fun getAll(offset: Int = 0, numberOfRows: Int = 10): List<T>
+
     fun load() {
         if (_loadState.value is UiState.Loading) {
             return
-        }
-
-        if (reload) {
-            _values.value = mutableListOf<T>()
-            _hasLoadMore.value = true
         }
 
         if (!_hasLoadMore.value) {
@@ -41,11 +39,9 @@ abstract class AbstractInfinityTableModel<T>: ViewModel() {
                 _hasLoadMore.value = page.size == 10
                 _values.value = _values.value + page
                 _loadState.value = UiState.Success
-            } catch (e: Exception) {
+            } catch (e: HttpException) {
                 _loadState.value = UiState.Error(e.message ?: "Unknown error")
             }
         }
     }
-
-    protected suspend abstract fun getAll(offset: Int = 0, numberOfRows: Int = 10): List<T>
 }

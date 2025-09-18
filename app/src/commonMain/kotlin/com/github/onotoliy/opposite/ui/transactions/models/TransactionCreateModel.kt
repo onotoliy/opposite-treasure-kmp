@@ -26,7 +26,9 @@ class TransactionCreateModel(
     val events: StateFlow<List<Option>> = _events
     val deposits: StateFlow<List<Option>> = _deposits
 
-    fun getEvents(q: String?, type: Transaction.Type?) {
+    override suspend fun create(value: Transaction): Transaction = repository.create(value)
+
+    fun getEvents(q: String?) {
         _loadState.value = UiState.Loading
 
         scope.launch {
@@ -39,7 +41,7 @@ class TransactionCreateModel(
         }
     }
 
-    fun getDeposits(q: String?, type: Transaction.Type?) {
+    fun getDeposits(q: String?) {
         _loadState.value = UiState.Loading
 
         scope.launch {
@@ -51,7 +53,5 @@ class TransactionCreateModel(
             }
         }
     }
-
-    override suspend fun create(value: Transaction): Transaction = repository.create(value)
 
 }

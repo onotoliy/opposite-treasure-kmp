@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.github.onotoliy.opposite.repositories.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -27,8 +28,8 @@ abstract class AbstractEditModel<T>(private val uuid: String): ViewModel() {
             try {
                 _info.value = get(uuid)
                 _loadState.value = UiState.Success
-            } catch (e: Exception) {
-                _loadState.value = UiState.Error(e.message ?: "Unknown error")
+            } catch (e: HttpException) {
+                _loadState.value = UiState.Error(e.message)
             }
         }
     }
@@ -46,8 +47,8 @@ abstract class AbstractEditModel<T>(private val uuid: String): ViewModel() {
                     onSuccess(newValue)
                 }
 
-            } catch (exception: Exception) {
-                _loadState.value = UiState.Error(exception.message ?: "Unknown error")
+            } catch (exception: HttpException) {
+                _loadState.value = UiState.Error(exception.message)
             }
         }
     }

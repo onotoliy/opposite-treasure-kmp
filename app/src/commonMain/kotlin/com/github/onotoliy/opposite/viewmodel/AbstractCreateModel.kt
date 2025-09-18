@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.github.onotoliy.opposite.repositories.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -31,8 +32,8 @@ abstract class AbstractCreateModel<T>: ViewModel() {
                     onSuccess(newValue) // переход на другой экран
                 }
 
-            } catch (exception: Exception) {
-                _loadState.value = UiState.Error(exception.message ?: "Unknown error")
+            } catch (exception: HttpException) {
+                _loadState.value = UiState.Error(exception.message)
             }
         }
     }

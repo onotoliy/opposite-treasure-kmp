@@ -12,6 +12,7 @@ open class CashboxViewModel(
     override suspend fun get(): Deposit = users.me()
 
     override suspend fun loadAdditionalValues() {
+
     }
 
     override val defaultValue: Deposit

@@ -1,6 +1,7 @@
 package com.github.onotoliy.opposite.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.github.onotoliy.opposite.repositories.HttpException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -41,8 +42,8 @@ abstract class AbstractInfinityListModel<T>: ViewModel() {
                 _hasLoadMore.value = page.size == 10
                 _values.value = _values.value + page
                 _loadState.value = UiState.Success
-            } catch (e: Exception) {
-                _loadState.value = UiState.Error(e.message ?: "Unknown error")
+            } catch (e: HttpException) {
+                _loadState.value = UiState.Error(e.message)
             }
         }
     }
