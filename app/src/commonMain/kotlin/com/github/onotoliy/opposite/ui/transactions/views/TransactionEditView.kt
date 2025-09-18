@@ -110,22 +110,25 @@ fun TransactionEditWebView(viewModel: TransactionEditModel, onSelect: (Screen) -
     val data by viewModel.info.collectAsState()
     val scaffoldState = rememberBottomSheetScaffoldState()
 
-    LaunchedEffect(Unit) {
-        viewModel.load()
-    }
-
-    LaunchedEffect(state) {
-        if (state is UiState.Error) {
-            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
-        }
-    }
-
     var type by remember { mutableStateOf(data.type) }
     var name by remember { mutableStateOf(data.name) }
     var cash by remember { mutableStateOf(data.cash) }
     var person by remember { mutableStateOf(data.person) }
     var event by remember { mutableStateOf(data.event) }
     var transactionDate by remember { mutableStateOf(data.transactionDate) }
+
+    LaunchedEffect(Unit) {
+        viewModel.load()
+    }
+
+    LaunchedEffect(data) {
+        type = data.type
+        name = data.name
+        cash = data.cash
+        person = data.person
+        event = data.event
+        transactionDate = data.transactionDate
+    }
 
     Column(
         modifier = Modifier.padding(horizontal = 4.dp),

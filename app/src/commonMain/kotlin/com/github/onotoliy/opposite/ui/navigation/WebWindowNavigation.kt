@@ -2,6 +2,7 @@ package com.github.onotoliy.opposite.ui.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -10,7 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.github.onotoliy.opposite.di.LocalNavController
 import com.github.onotoliy.opposite.ui.cashbox.screens.CashboxScreen
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.events.screens.EventCreateScreen
 import com.github.onotoliy.opposite.ui.events.screens.EventEditScreen
 import com.github.onotoliy.opposite.ui.events.screens.EventListScreen
@@ -31,85 +34,89 @@ fun WebWindowNavigation(
 ) {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "cashbox") {
-        composable("cashbox") {
-            CashboxScreen(onSelect = { navController.goto(it) })
-        }
-
-        composable("events/new") {
-            EventCreateScreen(
-                onSelect = { navController.goto(it) }
-            )
-        }
-
-        composable("events") {
-            EventListScreen(
-                onSelect = { navController.goto(it) }
-            )
-        }
-
-        composable(
-            route = "events/{uuid}",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            EventViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
-        }
-
-        composable(
-            route = "events/{uuid}/edit",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            EventEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
-        }
-
-        composable("users") {
-            UserListScreen(onSelect = { navController.goto(it) })
-        }
-
-        composable(route = "users/new") { backStackEntry ->
-            UserCreateScreen(onSelect = { navController.goto(it) })
-        }
-
-        composable(
-            route = "users/{uuid}",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            UserViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
-        }
-
-        composable(
-            route = "users/{uuid}/edit",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            UserEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
-        }
-
-        composable("transactions") {
-            TransactionsTableScreen(onSelect = { navController.goto(it) })
-        }
-
-        composable(route = "transactions/new") { backStackEntry ->
-            TransactionCreateScreen(onSelect = { navController.goto(it) })
-        }
-
-        composable(
-            route = "transactions/{uuid}",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            TransactionViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
-        }
-
-        composable(
-            route = "transactions/{uuid}/edit",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            TransactionEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
-        }
-    }
-
     LaunchedEffect(navController) {
         onNavHostReady(navController)
     }
+
+    CompositionLocalProvider(LocalNavController provides navController) {
+        NavHost(navController, startDestination = "cashbox") {
+            composable("cashbox") {
+                CashboxScreen(onSelect = { navController.goto(it) })
+            }
+
+            composable("events/new") {
+                EventCreateScreen(
+                    onSelect = { navController.goto(it) }
+                )
+            }
+
+            composable("events") {
+                EventListScreen(
+                    onSelect = { navController.goto(it) }
+                )
+            }
+
+            composable(
+                route = "events/{uuid}",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                EventViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
+            }
+
+            composable(
+                route = "events/{uuid}/edit",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                EventEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
+            }
+
+            composable("users") {
+                UserListScreen(onSelect = { navController.goto(it) })
+            }
+
+            composable(route = "users/new") { backStackEntry ->
+                UserCreateScreen(onSelect = { navController.goto(it) })
+            }
+
+            composable(
+                route = "users/{uuid}",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                UserViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
+            }
+
+            composable(
+                route = "users/{uuid}/edit",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                UserEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
+            }
+
+            composable("transactions") {
+                TransactionsTableScreen(onSelect = { navController.goto(it) })
+            }
+
+            composable(route = "transactions/new") { backStackEntry ->
+                TransactionCreateScreen(onSelect = { navController.goto(it) })
+            }
+
+            composable(
+                route = "transactions/{uuid}",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                TransactionViewScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
+            }
+
+            composable(
+                route = "transactions/{uuid}/edit",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                TransactionEditScreen(backStackEntry.uuid, onSelect = { navController.goto(it) })
+            }
+        }
+    }
+
+
 
 }
 

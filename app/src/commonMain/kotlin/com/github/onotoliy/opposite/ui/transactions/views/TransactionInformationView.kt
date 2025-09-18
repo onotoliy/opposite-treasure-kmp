@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.treasure.model.Transaction
+import com.github.onotoliy.opposite.ui.components.buttons.EditButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
 import com.github.onotoliy.opposite.ui.navigation.Screen
@@ -45,11 +46,8 @@ fun TransactionInformationWebView(transaction: Transaction, onSelect: (Screen) -
     ) {
         TransactionInformationLayout(transaction, onSelect)
 
-        Button(
-            onClick = { /* обработка */ },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Сохранить")
+        EditButton {
+            onSelect(Screen.TransactionEditScreen(transaction.uuid))
         }
     }
 }

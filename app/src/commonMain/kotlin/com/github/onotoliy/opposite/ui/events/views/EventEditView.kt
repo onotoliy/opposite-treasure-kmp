@@ -3,8 +3,10 @@ package com.github.onotoliy.opposite.ui.events.views
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -87,6 +89,10 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
     val data by viewModel.info.collectAsState()
     val scaffoldState = rememberBottomSheetScaffoldState()
 
+    var name by remember { mutableStateOf(data.name) }
+    var contribution by remember { mutableStateOf(data.contribution) }
+    var deadline by remember { mutableStateOf(data.deadline) }
+
     LaunchedEffect(Unit) {
         viewModel.load()
     }
@@ -97,9 +103,11 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
         }
     }
 
-    var name by remember { mutableStateOf(data.name) }
-    var contribution by remember { mutableStateOf(data.contribution) }
-    var deadline by remember { mutableStateOf(data.deadline) }
+    LaunchedEffect(data) {
+        name = data.name
+        contribution = data.contribution
+        deadline = data.deadline
+    }
 
     Column(
         modifier = Modifier.padding(horizontal = 4.dp),
@@ -127,6 +135,7 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
                     onSelect(Screen.EventViewScreen(it.uuid))
                 }
             }
+            Spacer(modifier = Modifier.width(8.dp))
             CancelButton {
                 onSelect(Screen.EventsScreen)
             }

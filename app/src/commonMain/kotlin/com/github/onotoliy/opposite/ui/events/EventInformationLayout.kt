@@ -34,7 +34,7 @@ fun EventInformationLayout(
         LabelledText("Сумма взноса", event.contribution.toMoneyPrettyString())
         LabelledText("До какого числа сдать", event.deadline.toPrettyString())
         LabelledText("Дата создания", event.creationDate.toPrettyString())
-        LabelledText("author", event.author.name) {
+        LabelledText("Автор", event.author.name) {
             onSelect(Screen.UserViewScreen(event.author.uuid))
         }
     }

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.ui.components.buttons.EditButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.events.EventInformationLayout
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
@@ -76,11 +77,8 @@ fun EventInformationWebView(event: Event, logo: DrawableResource, onSelect: (Scr
         ) {
             EventInformationLayout(event, onSelect)
 
-            Button(
-                onClick = { /* обработка */ },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Сохранить")
+            EditButton {
+                onSelect(Screen.EventEditScreen(event.uuid))
             }
         }
     }

@@ -44,6 +44,10 @@ import io.ktor.http.parametersOf
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
+val navigationModule = module {
+    single { getNavController() }
+}
+
 val networkModule = module {
     single { CashboxResourceApi("https://91.201.41.66/api/treasure/v1", getHttpClient()) }
     single { TransactionResourceApi("https://91.201.41.66/api/treasure/v1", getHttpClient()) }

@@ -3,8 +3,10 @@ package com.github.onotoliy.opposite.ui.users.views
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -113,16 +115,6 @@ fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val data by viewModel.info.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.load()
-    }
-
-    LaunchedEffect(state) {
-        if (state is UiState.Error) {
-            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
-        }
-    }
-
     var username by remember { mutableStateOf(data.username) }
     var firstName by remember { mutableStateOf(data.firstName) }
     var lastName by remember { mutableStateOf(data.lastName) }
@@ -131,6 +123,27 @@ fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
     var birthday by remember { mutableStateOf(data.birthday) }
     var joiningDate by remember { mutableStateOf(data.joiningDate) }
     var position by remember { mutableStateOf(data.position) }
+
+    LaunchedEffect(Unit) {
+        viewModel.load()
+    }
+
+    LaunchedEffect(data) {
+        username = data.username
+        firstName = data.firstName
+        lastName = data.lastName
+        patronymic = data.patronymic
+        email = data.email
+        birthday = data.birthday
+        joiningDate = data.joiningDate
+        position = data.position
+    }
+
+    LaunchedEffect(state) {
+        if (state is UiState.Error) {
+            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+        }
+    }
 
     Column(
         modifier = Modifier.padding(horizontal = 4.dp),
@@ -179,6 +192,7 @@ fun UserEditWebView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
                     onSelect(Screen.UserViewScreen(it.uuid))
                 }
             }
+            Spacer(modifier = Modifier.width(8.dp))
             CancelButton {
                 onSelect(Screen.EventsScreen)
             }
