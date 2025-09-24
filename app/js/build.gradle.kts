@@ -35,12 +35,12 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(project(":app")) // подключение common части
-                implementation("io.ktor:ktor-client-js:3.1.3")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-                implementation("org.jetbrains.androidx.navigation:navigation-compose-js:2.9.0-rc01")
-                implementation("io.insert-koin:koin-core-js:4.1.1")
-                implementation("io.insert-koin:koin-compose-viewmodel-js:4.1.1")
+                implementation(libs.ktor.client.js)
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.navigation.compose.js)
+                implementation(libs.koin.core.js)
+                implementation(libs.koin.compose.viewmodel.js)
             }
         }
     }

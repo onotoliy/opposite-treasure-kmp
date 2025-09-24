@@ -22,6 +22,12 @@ jobs:
       - name: Build frontend (Compose Web)
         run: ./gradlew -Ponotoliy.github.username=${{ github.actor }} -Ponotoliy.github.token=${{ secrets.GITHUB_TOKEN }} :app:js:jsBrowserProductionWebpack --no-daemon
 
+      - name: Upload frontend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: app/js/build/distributions
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -30,7 +36,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME .
+        run: docker build -t ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME  -f app/js/Dockerfile 
 
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME
