@@ -10,11 +10,14 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 
@@ -49,8 +52,8 @@ fun CancelButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun EditButton(onClick: () -> Unit) {
-    Button(shape = RectangleShape, onClick = onClick) {
+fun EditButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Button(modifier = modifier, shape = RectangleShape, onClick = onClick) {
         Icon(imageVector = Icons.Outlined.Edit, contentDescription = null)
         Spacer(modifier = Modifier.width(8.dp))
         Text("Изменить")
@@ -68,9 +71,20 @@ fun SaveButton(onClick: () -> Unit) {
 
 @Composable
 fun DeleteButton(onClick: () -> Unit) {
-    Button(shape = RectangleShape, onClick = onClick) {
+    Button(
+        shape = RectangleShape,
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Red, contentColor = Color.White)
+    ) {
         Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
         Spacer(modifier = Modifier.width(8.dp))
         Text("Удалить")
+    }
+}
+
+@Composable
+fun DeleteIconButton(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
     }
 }

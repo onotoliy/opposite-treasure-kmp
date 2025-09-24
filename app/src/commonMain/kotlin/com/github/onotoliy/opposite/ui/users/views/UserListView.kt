@@ -27,7 +27,9 @@ import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.goto
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.Screen.UserViewScreen
 import com.github.onotoliy.opposite.ui.users.models.UserListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserListModel
 import com.github.onotoliy.opposite.ui.users.models.UserTableModel
@@ -43,6 +45,7 @@ fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
     LocalMobileScafoldState.current.floatingActionButton = {
         AddFloatingActionButton { onSelect(Screen.UserNewScreen) }
     }
+
     val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
     val hasLoadMore by viewModel.hasLoadMore.collectAsState()
@@ -53,36 +56,28 @@ fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
         canLoadMore = hasLoadMore,
         onLoadMore = viewModel::load
     ) { user ->
-        UserMobileItem(user, onSelect)
-    }
-}
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .clickable { onSelect(UserViewScreen(user.uuid)) },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Outlined.People, contentDescription = null)
 
-@Composable
-private fun UserMobileItem(user: Deposit, onSelect: (Screen) -> Unit) {
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 4.dp)
-            .clickable { onSelect(Screen.UserViewScreen(user.uuid)) },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(imageVector = Icons.Outlined.People, contentDescription = null)
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = user.name)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = user.deposit.toMoneyPrettyString())
+                }
 
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = user.name)
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(text = user.deposit.toMoneyPrettyString())
+                HorizontalDivider()
             }
-
-            HorizontalDivider()
         }
     }
-
 }
 
 @Composable
@@ -123,9 +118,7 @@ fun UserTableWebView(viewModel: UserTableModel, onSelect: (Screen) -> Unit) {
             row(modifier = Modifier) {
                 cell {
                     Text(
-                        modifier = Modifier.clickable {
-                            onSelect(Screen.UserViewScreen(user.uuid))
-                        },
+                        modifier = Modifier.goto(Screen.UserViewScreen(user.uuid)),
                         text = user.name
                     )
                 }

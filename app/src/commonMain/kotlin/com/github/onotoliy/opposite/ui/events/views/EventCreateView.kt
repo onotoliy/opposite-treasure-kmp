@@ -52,7 +52,7 @@ fun EventCreateMobileView(viewModel: EventCreateModel, onSelect: (Screen) -> Uni
     var contribution by remember { mutableStateOf("") }
     var deadline by remember { mutableStateOf(Clock.System.now()) }
 
-    LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
+    LocalMobileScafoldState.current.titleTopBar = { Text("Создание мероприятия") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(newEvent(name, contribution, deadline)) {

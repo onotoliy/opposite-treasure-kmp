@@ -103,7 +103,7 @@ fun UserViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> UserInformationView(viewModel.info.value, viewModel.logo.value, nav::goto)
+                0 -> UserInformationView(viewModel)
                 1 -> TransactionListView(transactions, nav::goto)
                 2 -> EventListView(users, nav::goto)
             }

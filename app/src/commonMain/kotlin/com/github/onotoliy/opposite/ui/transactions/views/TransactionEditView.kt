@@ -55,7 +55,7 @@ fun TransactionEditMobileView(viewModel: TransactionEditModel, onSelect: (Screen
     var event by remember { mutableStateOf(data.event) }
     var transactionDate by remember { mutableStateOf(data.transactionDate) }
 
-    LocalMobileScafoldState.current.topBar = { Text("Изменение транзакции") }
+    LocalMobileScafoldState.current.titleTopBar = { Text("Изменение транзакции") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(
@@ -108,7 +108,6 @@ fun TransactionEditMobileView(viewModel: TransactionEditModel, onSelect: (Screen
 fun TransactionEditWebView(viewModel: TransactionEditModel, onSelect: (Screen) -> Unit) {
     val state by viewModel.loadState.collectAsState()
     val data by viewModel.info.collectAsState()
-    val scaffoldState = rememberBottomSheetScaffoldState()
 
     var type by remember { mutableStateOf(data.type) }
     var name by remember { mutableStateOf(data.name) }

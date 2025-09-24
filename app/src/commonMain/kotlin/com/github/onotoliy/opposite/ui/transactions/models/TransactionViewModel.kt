@@ -20,6 +20,7 @@ class TransactionViewModel(
     val receipts: StateFlow<List<DrawableResource>> = _receipts
 
     override suspend fun get(): Transaction = transactions.get(uuid)
+    override suspend fun delete(uuid: String) = transactions.delete(uuid)
 
     override suspend fun loadAdditionalValues() {
         _receipts.value = mutableListOf(files.download())

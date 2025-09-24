@@ -8,6 +8,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.uuid.Uuid
 
 abstract class AbstractViewModel<T> : ViewModel() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -32,7 +34,27 @@ abstract class AbstractViewModel<T> : ViewModel() {
         }
     }
 
+    fun onDelete(uuid: String, onSuccess: () -> Unit) {
+        _loadState.value = UiState.Loading
+
+        scope.launch {
+            try {
+                withContext(Dispatchers.Default) {
+                    delete(uuid)
+                }
+
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+
+            } catch (exception: HttpException) {
+                _loadState.value = UiState.Error(exception.message)
+            }
+        }
+    }
+
     protected abstract suspend fun get(): T
+    protected abstract suspend fun delete(uuid: String)
 
     protected abstract suspend fun loadAdditionalValues()
 

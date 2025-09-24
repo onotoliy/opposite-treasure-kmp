@@ -59,7 +59,7 @@ fun UserEditMobileView(viewModel: UserEditModel, onSelect: (Screen) -> Unit) {
     var joiningDate by remember { mutableStateOf(data.joiningDate) }
     var position by remember { mutableStateOf(data.position) }
 
-    LocalMobileScafoldState.current.topBar = { Text("Изменение мероприятия") }
+    LocalMobileScafoldState.current.titleTopBar = { Text("Изменение мероприятия") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(

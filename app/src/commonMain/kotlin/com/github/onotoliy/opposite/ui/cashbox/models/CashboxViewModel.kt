@@ -10,6 +10,9 @@ open class CashboxViewModel(
 ) : AbstractViewModel<Deposit>() {
 
     override suspend fun get(): Deposit = users.me()
+    override suspend fun delete(uuid: String) {
+        throw NotImplementedError()
+    }
 
     override suspend fun loadAdditionalValues() {
 

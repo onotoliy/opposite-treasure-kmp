@@ -21,6 +21,7 @@ class UserViewModel(
     val logo: StateFlow<DrawableResource> = _logo
 
     override suspend fun get(): Deposit = users.get(uuid)
+    override suspend fun delete(uuid: String) = users.delete(uuid)
 
     override suspend fun loadAdditionalValues() {
         _logo.value = files.download()

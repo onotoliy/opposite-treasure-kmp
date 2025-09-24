@@ -22,6 +22,7 @@ class EventViewModel(
     val logo: StateFlow<DrawableResource> = _logo
 
     override suspend fun get(): Event = events.get(uuid)
+    override suspend fun delete(uuid: String) = events.delete(uuid)
 
     override suspend fun loadAdditionalValues() {
         _logo.value = files.download()

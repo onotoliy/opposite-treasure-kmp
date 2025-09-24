@@ -29,10 +29,7 @@ import com.github.onotoliy.opposite.ui.transactions.TransactionModificationLayou
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionCreateModel
 import com.github.onotoliy.opposite.viewmodel.UiState
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @Composable
 expect fun TransactionCreateView(viewModel: TransactionCreateModel, onSelect: (Screen) -> Unit)
@@ -56,7 +53,7 @@ fun TransactionCreateMobileView(viewModel: TransactionCreateModel, onSelect: (Sc
     var event by remember { mutableStateOf<Option?>(null) }
     var transactionDate by remember { mutableStateOf(Clock.System.now()) }
 
-    LocalMobileScafoldState.current.topBar = { Text("Создание мероприятия") }
+    LocalMobileScafoldState.current.titleTopBar = { Text("Создание мероприятия") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(

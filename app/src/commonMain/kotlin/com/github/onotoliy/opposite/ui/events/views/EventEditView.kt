@@ -54,7 +54,7 @@ fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
     var contribution by remember { mutableStateOf(data.contribution) }
     var deadline by remember { mutableStateOf(data.deadline) }
 
-    LocalMobileScafoldState.current.topBar = { Text("Изменение мероприятия") }
+    LocalMobileScafoldState.current.titleTopBar = { Text("Изменение мероприятия") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(data.copy(name = name, deadline = deadline)) {

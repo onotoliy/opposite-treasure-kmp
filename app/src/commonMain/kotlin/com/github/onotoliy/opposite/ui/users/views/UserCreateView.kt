@@ -54,7 +54,7 @@ fun UserCreateMobileView(viewModel: UserCreateModel, onSelect: (Screen) -> Unit)
         }
     }
 
-    LocalMobileScafoldState.current.topBar = { Text("Создание пользователя") }
+    LocalMobileScafoldState.current.titleTopBar = { Text("Создание пользователя") }
     LocalMobileScafoldState.current.floatingActionButton = {
         SaveFloatingActionButton {
             viewModel.onSave(

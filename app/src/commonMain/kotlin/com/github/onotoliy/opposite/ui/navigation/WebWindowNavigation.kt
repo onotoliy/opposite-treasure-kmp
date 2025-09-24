@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.github.onotoliy.opposite.ui.cashbox.screens.CashboxScreen
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.events.screens.EventCreateScreen
 import com.github.onotoliy.opposite.ui.events.screens.EventEditScreen
 import com.github.onotoliy.opposite.ui.events.screens.EventListScreen
@@ -37,76 +38,80 @@ fun WebWindowNavigation(
         onNavHostReady(navController)
     }
 
-    NavHost(navController, startDestination = "cashbox") {
-        composable("cashbox") {
-            CashboxScreen(nav = navController)
-        }
+    CompositionLocalProvider(
+        LocalNavHostController provides navController,
+    ) {
+        NavHost(navController, startDestination = "cashbox") {
+            composable("cashbox") {
+                CashboxScreen(nav = navController)
+            }
 
-        composable("events/new") {
-            EventCreateScreen(nav = navController)
-        }
+            composable("events/new") {
+                EventCreateScreen(nav = navController)
+            }
 
-        composable("events") {
-            EventListScreen(nav = navController)
-        }
+            composable("events") {
+                EventListScreen(nav = navController)
+            }
 
-        composable(
-            route = "events/{uuid}",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            EventViewScreen(uuid = backStackEntry.uuid, nav = navController)
-        }
+            composable(
+                route = "events/{uuid}",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                EventViewScreen(uuid = backStackEntry.uuid, nav = navController)
+            }
 
-        composable(
-            route = "events/{uuid}/edit",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            EventEditScreen(uuid = backStackEntry.uuid, nav = navController)
-        }
+            composable(
+                route = "events/{uuid}/edit",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                EventEditScreen(uuid = backStackEntry.uuid, nav = navController)
+            }
 
-        composable("users") {
-            UserListScreen(nav = navController)
-        }
+            composable("users") {
+                UserListScreen(nav = navController)
+            }
 
-        composable(route = "users/new") { backStackEntry ->
-            UserCreateScreen(nav = navController)
-        }
+            composable(route = "users/new") { backStackEntry ->
+                UserCreateScreen(nav = navController)
+            }
 
-        composable(
-            route = "users/{uuid}",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            UserViewScreen(uuid = backStackEntry.uuid, nav = navController)
-        }
+            composable(
+                route = "users/{uuid}",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                UserViewScreen(uuid = backStackEntry.uuid, nav = navController)
+            }
 
-        composable(
-            route = "users/{uuid}/edit",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            UserEditScreen(uuid = backStackEntry.uuid, nav = navController)
-        }
+            composable(
+                route = "users/{uuid}/edit",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                UserEditScreen(uuid = backStackEntry.uuid, nav = navController)
+            }
 
-        composable("transactions") {
-            TransactionsTableScreen(nav = navController)
-        }
+            composable("transactions") {
+                TransactionsTableScreen(nav = navController)
+            }
 
-        composable(route = "transactions/new") { backStackEntry ->
-            TransactionCreateScreen(nav = navController)
-        }
+            composable(route = "transactions/new") { backStackEntry ->
+                TransactionCreateScreen(nav = navController)
+            }
 
-        composable(
-            route = "transactions/{uuid}",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
-            TransactionViewScreen(uuid = backStackEntry.uuid, nav = navController)
-        }
+            composable(
+                route = "transactions/{uuid}",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                TransactionViewScreen(uuid = backStackEntry.uuid, nav = navController)
+            }
 
-        composable(
-            route = "transactions/{uuid}/edit",
-            arguments = listOf(navArgument("uuid") { type = NavType.StringType })
-        ) { backStackEntry ->
+            composable(
+                route = "transactions/{uuid}/edit",
+                arguments = listOf(navArgument("uuid") { type = NavType.StringType })
+            ) { backStackEntry ->
 
-            TransactionEditScreen(uuid = backStackEntry.uuid, nav = navController)
+                TransactionEditScreen(uuid = backStackEntry.uuid, nav = navController)
+            }
         }
     }
 

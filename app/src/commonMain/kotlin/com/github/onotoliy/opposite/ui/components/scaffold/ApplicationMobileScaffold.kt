@@ -31,19 +31,22 @@ fun ApplicationMobileScaffold(
 ) {
     val mobileScafoldState = remember { MobileScafoldState() }
 
-    CompositionLocalProvider(LocalMobileScafoldState provides mobileScafoldState) {
+    CompositionLocalProvider(
+        LocalMobileScafoldState provides mobileScafoldState,
+    ) {
         MaterialTheme {
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { mobileScafoldState.topBar?.invoke() ?: Text("Opposite MK") },
+                        title = { mobileScafoldState.titleTopBar?.invoke() ?: Text("Opposite MK") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = MaterialTheme.colorScheme.primary,
                             titleContentColor = MaterialTheme.colorScheme.onPrimary,
                             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                             actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                        )
+                        ),
+                        actions = { mobileScafoldState.actionsTopBar?.invoke() }
                     )
                 },
                 floatingActionButton = { mobileScafoldState.floatingActionButton?.invoke() },
