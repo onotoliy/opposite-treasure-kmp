@@ -6,6 +6,5 @@ import com.github.onotoliy.opposite.ui.users.models.UserEditModel
 
 @Composable
 actual fun UserEditView(
-    viewModel: UserEditModel,
-    onSelect: (Screen) -> Unit
-) = UserEditWebView(viewModel, onSelect)
+    viewModel: UserEditModel
+) = UserEditWebView(viewModel)

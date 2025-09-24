@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,26 +23,31 @@ import com.github.onotoliy.opposite.repositories.NUMBER_OF_ROWS
 import com.github.onotoliy.opposite.repositories.name
 import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.treasure.model.Deposit
+import com.github.onotoliy.opposite.ui.components.buttons.AddButton
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.components.scaffold.goto
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.navigation.Screen.UserViewScreen
+import com.github.onotoliy.opposite.ui.navigation.goto
 import com.github.onotoliy.opposite.ui.users.models.UserListAdapter
 import com.github.onotoliy.opposite.ui.users.models.UserListModel
 import com.github.onotoliy.opposite.ui.users.models.UserTableModel
-import com.github.onotoliy.opposite.viewmodel.UiState
+import com.github.onotoliy.opposite.viewmodel.AbstractTableView
 import io.github.windedge.table.m3.PaginatedDataTable
 import io.github.windedge.table.rememberPaginationState
 
 @Composable
-expect fun UserListView(listAdapter: UserListAdapter, onSelect: (Screen) -> Unit)
+expect fun UserListView(listAdapter: UserListAdapter, hasActionButtons: Boolean)
 
 @Composable
-fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
+fun UserListMobileView(viewModel: UserListModel, hasActionButtons: Boolean) {
+    val navHostController = LocalNavHostController.current
+
     LocalMobileScafoldState.current.floatingActionButton = {
-        AddFloatingActionButton { onSelect(Screen.UserNewScreen) }
+        AddFloatingActionButton { navHostController.goto(Screen.UserNewScreen) }
     }
 
     val state by viewModel.loadState.collectAsState()
@@ -59,7 +63,7 @@ fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
         Row(
             modifier = Modifier
                 .padding(horizontal = 4.dp)
-                .clickable { onSelect(UserViewScreen(user.uuid)) },
+                .clickable { navHostController.goto(UserViewScreen(user.uuid)) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Outlined.People, contentDescription = null)
@@ -81,25 +85,20 @@ fun UserListMobileView(viewModel: UserListModel, onSelect: (Screen) -> Unit) {
 }
 
 @Composable
-fun UserTableWebView(viewModel: UserTableModel, onSelect: (Screen) -> Unit) {
-    val loadingState by viewModel.loadState.collectAsState()
-    val values by viewModel.values.collectAsState()
+fun UserTableWebView(viewModel: UserTableModel, hasActionButtons: Boolean) {
+    val navHostController = LocalNavHostController.current
     val total by viewModel.total.collectAsState()
+    val page = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
 
-    val paginationState = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
-
-    Column {
-        when (loadingState) {
-            is UiState.Error -> {
-                Text("Ошибка: ${(loadingState as UiState.Error).message}")
-            }
-
-            is UiState.Loading -> {
-                LinearProgressIndicator(Modifier.fillMaxWidth())
-            }
-
-            is UiState.Success -> {
-
+    AbstractTableView(viewModel) {
+        if (hasActionButtons) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                AddButton {
+                    navHostController.goto(Screen.UserNewScreen)
+                }
             }
         }
 
@@ -108,23 +107,20 @@ fun UserTableWebView(viewModel: UserTableModel, onSelect: (Screen) -> Unit) {
                 column { Text("ФИО") }
                 column { Text("Депозит") }
             },
-            paginationState = paginationState,
+            paginationState = page,
             onPageChanged = {
-                viewModel.load((it.pageIndex - 1) * NUMBER_OF_ROWS)
-
-                values
+                viewModel.sload((it.pageIndex - 1) * NUMBER_OF_ROWS)
             }
-        ) { user: Deposit ->
+        ) { deposit: Deposit ->
             row(modifier = Modifier) {
                 cell {
                     Text(
-                        modifier = Modifier.goto(Screen.UserViewScreen(user.uuid)),
-                        text = user.name
+                        modifier = Modifier.goto(Screen.UserViewScreen(deposit.uuid)),
+                        text = deposit.name
                     )
                 }
-                cell { Text(user.deposit.toMoneyPrettyString()) }
+                cell { Text(deposit.deposit.toMoneyPrettyString()) }
             }
         }
     }
-
 }

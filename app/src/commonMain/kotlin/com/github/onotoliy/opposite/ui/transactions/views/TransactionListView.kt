@@ -28,25 +28,31 @@ import com.github.onotoliy.opposite.repositories.label
 import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.repositories.toPrettyString
 import com.github.onotoliy.opposite.treasure.model.Transaction
+import com.github.onotoliy.opposite.ui.components.buttons.AddButton
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionListAdapter
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionListModel
 import com.github.onotoliy.opposite.ui.transactions.models.TransactionTableModel
+import com.github.onotoliy.opposite.viewmodel.AbstractTableView
 import com.github.onotoliy.opposite.viewmodel.UiState
 import io.github.windedge.table.m3.PaginatedDataTable
 import io.github.windedge.table.rememberPaginationState
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun TransactionListView(listAdapter: TransactionListAdapter, onSelect: (Screen) -> Unit)
+expect fun TransactionListView(listAdapter: TransactionListAdapter, hasActionButtons: Boolean)
 
 @Composable
-fun TransactionListMobileView(viewModel: TransactionListModel, onSelect: (Screen) -> Unit) {
+fun TransactionListMobileView(viewModel: TransactionListModel, hasActionButtons: Boolean) {
+    val navHostController = LocalNavHostController.current
+
     LocalMobileScafoldState.current.floatingActionButton = {
-        AddFloatingActionButton { onSelect(Screen.TransactionNewScreen) }
+        AddFloatingActionButton { navHostController.goto(Screen.TransactionNewScreen) }
     }
     val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
@@ -58,17 +64,19 @@ fun TransactionListMobileView(viewModel: TransactionListModel, onSelect: (Screen
         canLoadMore = hasLoadMore,
         onLoadMore = viewModel::load
     ) { event ->
-        TransactionMobileItem(event, onSelect)
+        TransactionMobileItem(event)
     }
 }
 
 @OptIn(ExperimentalTime::class)
 @Composable
-private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -> Unit) {
+private fun TransactionMobileItem(transaction: Transaction) {
+    val navHostController = LocalNavHostController.current
+
     Row(
         modifier = Modifier
             .padding(horizontal = 4.dp)
-            .clickable { onSelect(Screen.TransactionViewScreen(transaction.uuid)) },
+            .clickable { navHostController.goto(Screen.TransactionViewScreen(transaction.uuid)) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         val icon = when (transaction.type) {
@@ -114,25 +122,20 @@ private fun TransactionMobileItem(transaction: Transaction, onSelect: (Screen) -
 }
 
 @Composable
-fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) -> Unit) {
-    val loadingState by viewModel.loadState.collectAsState()
-    val values by viewModel.values.collectAsState()
+fun TransactionTableView(viewModel: TransactionTableModel, hasActionButtons: Boolean) {
+    val navHostController = LocalNavHostController.current
     val total by viewModel.total.collectAsState()
-
     val paginationState = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
 
-    Column {
-        when (loadingState) {
-            is UiState.Error -> {
-                Text("Ошибка: ${(loadingState as UiState.Error).message}")
-            }
-
-            is UiState.Loading -> {
-                LinearProgressIndicator(Modifier.fillMaxWidth())
-            }
-
-            is UiState.Success -> {
-
+    AbstractTableView(viewModel) {
+        if (hasActionButtons) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                AddButton {
+                    navHostController.goto(Screen.TransactionNewScreen)
+                }
             }
         }
 
@@ -147,9 +150,7 @@ fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) ->
             },
             paginationState = paginationState,
             onPageChanged = {
-                viewModel.load((it.pageIndex - 1) * NUMBER_OF_ROWS)
-
-                values
+                viewModel.sload((it.pageIndex - 1) * NUMBER_OF_ROWS)
             }
         ) { transaction: Transaction ->
             row(modifier = Modifier) {
@@ -157,7 +158,7 @@ fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) ->
                 cell {
                     Text(
                         modifier = Modifier.clickable {
-                            onSelect(Screen.TransactionViewScreen(transaction.uuid))
+                            navHostController.goto(Screen.TransactionViewScreen(transaction.uuid))
                         },
                         text = transaction.name
                     )
@@ -168,7 +169,7 @@ fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) ->
                         modifier = Modifier.then(
                             transaction.person?.uuid?.let {
                                 Modifier.clickable {
-                                    onSelect(Screen.UserViewScreen(it))
+                                    navHostController.goto(Screen.UserViewScreen(it))
                                 }
                             } ?: Modifier
                         ),
@@ -180,7 +181,7 @@ fun TransactionTableView(viewModel: TransactionTableModel, onSelect: (Screen) ->
                         modifier = Modifier.then(
                             transaction.event?.uuid?.let {
                                 Modifier.clickable {
-                                    onSelect(Screen.EventViewScreen(it))
+                                    navHostController.goto(Screen.EventViewScreen(it))
                                 }
                             } ?: Modifier
                         ),

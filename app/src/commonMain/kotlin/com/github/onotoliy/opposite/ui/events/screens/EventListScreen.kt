@@ -11,9 +11,9 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun EventListScreen(list: EventListAdapter = koinInject(), nav: NavController) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        EventListView(list, nav::goto)
+fun EventListScreen(list: EventListAdapter = koinInject()) {
+    ApplicationScaffold {
+        EventListView(list, true)
     }
 }
 

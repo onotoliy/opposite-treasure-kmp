@@ -14,11 +14,10 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun TransactionEditScreen(
     uuid: String,
-    nav: NavController,
     model: TransactionEditModel = koinViewModel { parametersOf(uuid) }
 ) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        TransactionEditView(model, nav::goto)
+    ApplicationScaffold {
+        TransactionEditView(model)
     }
 }
 

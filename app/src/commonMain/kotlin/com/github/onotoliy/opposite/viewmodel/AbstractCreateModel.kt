@@ -19,6 +19,10 @@ abstract class AbstractCreateModel<T>: ViewModel() {
 
     val loadState: StateFlow<UiState> = _loadState
 
+    fun init() {
+        _loadState.value = UiState.Success
+    }
+
     fun onSave(value: T, onSuccess: (T) -> Unit) {
         _loadState.value = UiState.Loading
 

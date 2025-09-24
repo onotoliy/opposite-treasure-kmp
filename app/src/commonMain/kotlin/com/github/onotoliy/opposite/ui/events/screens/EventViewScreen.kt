@@ -48,7 +48,6 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EventViewScreen(
     uuid: String,
-    nav: NavController,
     viewModel: EventViewModel = koinViewModel { parametersOf(uuid) },
     transactions: EventTransactionListAdapter = koinInject { parametersOf(uuid) },
     users: EventUserListAdapter = koinInject { parametersOf(uuid) }
@@ -70,9 +69,7 @@ fun EventViewScreen(
         }
     }
 
-    ApplicationScaffold(
-        onSelect = nav::goto
-    ) {
+    ApplicationScaffold {
         Column {
             when (state) {
                 is UiState.Error -> {}
@@ -102,9 +99,9 @@ fun EventViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> EventInformationView(viewModel.info.value, viewModel.logo.value, nav::goto)
-                1 -> TransactionListView(transactions, onSelect = nav::goto)
-                2 -> UserListView(users, onSelect = nav::goto)
+                0 -> EventInformationView(viewModel)
+                1 -> TransactionListView(transactions, false)
+                2 -> UserListView(users, false)
             }
         }
     }

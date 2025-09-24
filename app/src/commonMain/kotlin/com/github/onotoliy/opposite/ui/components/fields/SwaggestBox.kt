@@ -7,6 +7,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,7 +81,7 @@ fun SwaggestBox(
 @Composable
 fun DropdownMenu(
     label: String,
-    value: Option = Option("", ""),
+    value: Option,
     options: List<Option>,
     enabled: Boolean,
     onValueChange: (Option) -> Unit,
@@ -88,12 +89,16 @@ fun DropdownMenu(
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(value) }
 
+    LaunchedEffect(value) {
+        selectedOption = value
+    }
+
     ExposedDropdownMenuBox(
         modifier = Modifier.clickable(onClick = { expanded = !expanded }),
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
+//        Box(modifier = Modifier.fillMaxWidth()) {
             OutlinedTextField(
                 value = selectedOption.name,
                 onValueChange = {},
@@ -101,11 +106,11 @@ fun DropdownMenu(
                 readOnly = true,
                 enabled = enabled,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled).fillMaxWidth()
             )
 
-            Box(modifier = Modifier.matchParentSize().clickable { expanded = true })
-        }
+//            Box(modifier = Modifier.matchParentSize().clickable { expanded = true })
+//        }
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }

@@ -10,8 +10,8 @@ import com.github.onotoliy.opposite.ui.users.views.UserCreateView
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun UserCreateScreen(model: UserCreateModel = koinViewModel(), nav: NavController) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        UserCreateView(model, nav::goto)
+fun UserCreateScreen(model: UserCreateModel = koinViewModel()) {
+    ApplicationScaffold {
+        UserCreateView(model)
     }
 }

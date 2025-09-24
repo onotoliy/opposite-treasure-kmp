@@ -22,13 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.onotoliy.opposite.ui.components.buttons.LabeledIconButton
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicationWebScaffold(
-    onSelect: (Screen) -> Unit,
     content: @Composable () -> Unit
 ) {
+    val navHostController = LocalNavHostController.current
+
     MaterialTheme {
         Scaffold(
             topBar = {
@@ -46,16 +48,16 @@ fun ApplicationWebScaffold(
                             .padding(16.dp)
                     ) {
                         LabeledIconButton(Icons.Outlined.Home, "Главная") {
-                            onSelect(Screen.CashScreen)
+                            navHostController.goto(Screen.CashScreen)
                         }
                         LabeledIconButton(Icons.Outlined.People, "Пользователи") {
-                            onSelect(Screen.UsersScreen)
+                            navHostController.goto(Screen.UserListScreen)
                         }
                         LabeledIconButton(Icons.Outlined.Event, "События") {
-                            onSelect(Screen.EventsScreen)
+                            navHostController.goto(Screen.EventListScreen)
                         }
                         LabeledIconButton(Icons.Outlined.CurrencyExchange, "Транзакции") {
-                            onSelect(Screen.TransactionsScreen)
+                            navHostController.goto(Screen.TransactionListScreen)
                         }
 
                     }

@@ -5,6 +5,5 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
 actual fun ApplicationScaffold(
-    onSelect: (Screen) -> Unit,
     content: @Composable (() -> Unit)
-) = ApplicationWebScaffold(onSelect, content)
+) = ApplicationWebScaffold(content)

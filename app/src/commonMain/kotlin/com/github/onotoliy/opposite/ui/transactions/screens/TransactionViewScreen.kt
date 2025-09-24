@@ -46,7 +46,6 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun TransactionViewScreen(
     uuid: String,
-    nav: NavController,
     viewModel: TransactionViewModel = koinViewModel { parametersOf(uuid) }
 ) {
     val state by viewModel.loadState.collectAsState()
@@ -66,9 +65,7 @@ fun TransactionViewScreen(
         }
     }
 
-    ApplicationScaffold(
-        onSelect = nav::goto
-    ) {
+    ApplicationScaffold {
         Column {
             when (state) {
                 is UiState.Error -> {}
@@ -98,7 +95,7 @@ fun TransactionViewScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> TransactionInformationView(viewModel.info.value, nav::goto)
+                0 -> TransactionInformationView(viewModel)
                 1 -> FilesTab(viewModel.receipts.value)
             }
         }

@@ -1,53 +1,70 @@
 package com.github.onotoliy.opposite.ui.transactions.views
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.treasure.model.Transaction
+import com.github.onotoliy.opposite.ui.components.buttons.DeleteButton
+import com.github.onotoliy.opposite.ui.components.buttons.DeleteIconButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 import com.github.onotoliy.opposite.ui.transactions.TransactionInformationLayout
+import com.github.onotoliy.opposite.ui.transactions.models.TransactionViewModel
+import com.github.onotoliy.opposite.viewmodel.AbstractInformationView
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun TransactionInformationView(transaction: Transaction, onSelect: (Screen) -> Unit)
+expect fun TransactionInformationView(viewModel: TransactionViewModel)
 
 @Composable
-fun TransactionInformationMobileView(transaction: Transaction, onSelect: (Screen) -> Unit) {
+fun TransactionInformationMobileView(viewModel: TransactionViewModel) {
+    val transaction by viewModel.info.collectAsState()
+    val navHostController = LocalNavHostController.current
+
     LocalMobileScafoldState.current.floatingActionButton = {
         EditFloatingActionButton {
-            onSelect(
+            navHostController.goto(
                 Screen.TransactionEditScreen(transaction.uuid)
             )
         }
     }
+    LocalMobileScafoldState.current.actionsTopBar = {
+        DeleteIconButton {
+            viewModel.onDelete(transaction.uuid) {
+                navHostController.goto(Screen.TransactionListScreen)
+            }
+        }
+    }
 
-    Column(
-        modifier = Modifier.padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        TransactionInformationLayout(transaction, onSelect)
+    AbstractInformationView(viewModel = viewModel) {
+        TransactionInformationLayout(transaction, navHostController::goto)
     }
 }
 @OptIn(ExperimentalTime::class)
 @Composable
-fun TransactionInformationWebView(transaction: Transaction, onSelect: (Screen) -> Unit) {
-    Column(
-        modifier = Modifier.padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        TransactionInformationLayout(transaction, onSelect)
+fun TransactionInformationWebView(viewModel: TransactionViewModel) {
+    val transaction by viewModel.info.collectAsState()
+    val navHostController = LocalNavHostController.current
 
-        EditButton {
-            onSelect(Screen.TransactionEditScreen(transaction.uuid))
+    AbstractInformationView(viewModel = viewModel) {
+        TransactionInformationLayout(transaction, navHostController::goto)
+
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp),) {
+            EditButton {
+                navHostController.goto(Screen.TransactionEditScreen(transaction.uuid))
+            }
+
+            DeleteButton {
+                viewModel.onDelete(transaction.uuid) {
+                    navHostController.goto(Screen.TransactionListScreen)
+                }
+            }
         }
     }
 }

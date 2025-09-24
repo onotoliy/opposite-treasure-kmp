@@ -7,6 +7,5 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
 actual fun EventListView(
-    listAdapter: EventListAdapter,
-    onSelect: (Screen) -> Unit
-)  = EventTableWebView(listAdapter.table, onSelect)
+    listAdapter: EventListAdapter
+)  = EventTableWebView(listAdapter.table)

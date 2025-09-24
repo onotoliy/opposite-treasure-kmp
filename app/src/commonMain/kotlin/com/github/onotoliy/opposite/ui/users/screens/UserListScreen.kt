@@ -12,9 +12,9 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun UserListScreen(model: UserListAdapter = koinInject(), nav: NavController) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        UserListView(model, nav::goto)
+fun UserListScreen(model: UserListAdapter = koinInject()) {
+    ApplicationScaffold {
+        UserListView(model, true)
     }
 }
 

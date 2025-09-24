@@ -44,5 +44,28 @@ abstract class AbstractInfinityTableModel<T>: ViewModel() {
         }
     }
 
+    suspend fun sload(offset: Int): List<T> {
+        println("offset " + offset)
+
+        if (_loadState.value is UiState.Loading) {
+            return _values.value
+        }
+
+        _loadState.value = UiState.Loading
+
+        try {
+            val page = getAll(offset, NUMBER_OF_ROWS)
+
+            _total.value = page.total
+            _values.value = page.values
+            _loadState.value = UiState.Success
+
+            return page.values
+        } catch (e: HttpException) {
+            _loadState.value = UiState.Error(e.message)
+            return _values.value
+        }
+    }
+
     protected abstract suspend fun getAll(offset: Int, numberOfRows: Int): Page<T>
 }

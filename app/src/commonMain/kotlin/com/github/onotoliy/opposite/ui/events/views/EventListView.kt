@@ -29,14 +29,18 @@ import com.github.onotoliy.opposite.repositories.toMoneyPrettyString
 import com.github.onotoliy.opposite.repositories.toPrettyString
 import com.github.onotoliy.opposite.treasure.model.Deposit
 import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.ui.components.buttons.AddButton
 import com.github.onotoliy.opposite.ui.components.buttons.AddFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.infinity.ListInfinity
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.events.models.EventListAdapter
 import com.github.onotoliy.opposite.ui.events.models.EventListModel
 import com.github.onotoliy.opposite.ui.events.models.EventTableModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
 import com.github.onotoliy.opposite.ui.navigation.Screen.EventViewScreen
+import com.github.onotoliy.opposite.ui.navigation.goto
+import com.github.onotoliy.opposite.viewmodel.AbstractTableView
 import com.github.onotoliy.opposite.viewmodel.UiState
 import io.github.windedge.table.DataTable
 import io.github.windedge.table.m3.PaginatedDataTable
@@ -44,13 +48,16 @@ import io.github.windedge.table.rememberPaginationState
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun EventListView(listAdapter: EventListAdapter, onSelect: (Screen) -> Unit)
+expect fun EventListView(listAdapter: EventListAdapter, hasActionButtons: Boolean)
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
+fun EventListMobileView(viewModel: EventListModel, hasActionButtons: Boolean) {
+    val navHostController = LocalNavHostController.current
+
+
     LocalMobileScafoldState.current.floatingActionButton = {
-        AddFloatingActionButton { onSelect(Screen.EventNewScreen) }
+        AddFloatingActionButton { navHostController.goto(Screen.EventNewScreen) }
     }
     val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
@@ -66,7 +73,7 @@ fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 4.dp)
-                .clickable { onSelect(EventViewScreen(event.uuid)) },
+                .clickable { navHostController.goto(EventViewScreen(event.uuid)) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Outlined.Event, contentDescription = null)
@@ -96,25 +103,20 @@ fun EventListMobileView(viewModel: EventListModel, onSelect: (Screen) -> Unit) {
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventTableWebView(viewModel: EventTableModel, onSelect: (Screen) -> Unit) {
-    val loadingState by viewModel.loadState.collectAsState()
-    val values by viewModel.values.collectAsState()
+fun EventTableWebView(viewModel: EventTableModel, hasActionButtons: Boolean) {
+    val navHostController = LocalNavHostController.current
     val total by viewModel.total.collectAsState()
+    val page = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
 
-    val paginationState = rememberPaginationState(total, pageSize = NUMBER_OF_ROWS)
-
-    Column {
-        when (loadingState) {
-            is UiState.Error -> {
-                Text("Ошибка: ${(loadingState as UiState.Error).message}")
-            }
-
-            is UiState.Loading -> {
-                LinearProgressIndicator(Modifier.fillMaxWidth())
-            }
-
-            is UiState.Success -> {
-
+    AbstractTableView(viewModel) {
+        if (hasActionButtons) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                AddButton {
+                    navHostController.goto(Screen.EventNewScreen)
+                }
             }
         }
 
@@ -124,21 +126,16 @@ fun EventTableWebView(viewModel: EventTableModel, onSelect: (Screen) -> Unit) {
                 column { Text("Сумма") }
                 column { Text("Сдать до") }
             },
-            paginationState = paginationState,
+            paginationState = page,
             onPageChanged = {
-                println("ps " + paginationState.pageIndex)
-                println("it " + it.pageIndex)
-
-                viewModel.load((it.pageIndex - 1) * NUMBER_OF_ROWS)
-
-                viewModel.values.value
+                viewModel.sload((it.pageIndex - 1) * NUMBER_OF_ROWS)
             }
         ) { event: Event ->
             row(modifier = Modifier) {
                 cell {
                     Text(
                         modifier = Modifier.clickable {
-                            onSelect(EventViewScreen(event.uuid))
+                            navHostController.goto(EventViewScreen(event.uuid))
                         },
                         text = event.name
                     )

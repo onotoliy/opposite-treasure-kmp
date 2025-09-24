@@ -10,8 +10,8 @@ import com.github.onotoliy.opposite.ui.navigation.goto
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun EventCreateScreen(model: EventCreateModel = koinViewModel(), nav: NavController) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        EventCreateView(model, nav::goto)
+fun EventCreateScreen(model: EventCreateModel = koinViewModel()) {
+    ApplicationScaffold() {
+        EventCreateView(model)
     }
 }

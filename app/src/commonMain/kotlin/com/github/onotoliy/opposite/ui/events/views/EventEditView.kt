@@ -1,16 +1,9 @@
 package com.github.onotoliy.opposite.ui.events.views
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,90 +11,72 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.treasure.model.Event
 import com.github.onotoliy.opposite.ui.components.buttons.CancelButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.events.models.EventEditModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.UiState
+import com.github.onotoliy.opposite.ui.navigation.goto
+import com.github.onotoliy.opposite.viewmodel.AbstractEditView
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun EventEditView(viewModel: EventEditModel, onSelect: (Screen) -> Unit)
+expect fun EventEditView(viewModel: EventEditModel)
 
 @Composable
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
-fun EventEditMobileView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.loadState.collectAsState()
-    val data by viewModel.info.collectAsState()
-    val scaffoldState = rememberBottomSheetScaffoldState()
-
-    LaunchedEffect(Unit) {
-        viewModel.load()
-    }
-
-    LaunchedEffect(state) {
-        if (state is UiState.Error) {
-            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
-        }
-    }
-
-    var name by remember { mutableStateOf(data.name) }
-    var contribution by remember { mutableStateOf(data.contribution) }
-    var deadline by remember { mutableStateOf(data.deadline) }
+fun EventEditMobileView(viewModel: EventEditModel) {
+    val navHostController = LocalNavHostController.current
 
     LocalMobileScafoldState.current.titleTopBar = { Text("Изменение мероприятия") }
-    LocalMobileScafoldState.current.floatingActionButton = {
-        SaveFloatingActionButton {
-            viewModel.onSave(data.copy(name = name, deadline = deadline)) {
-                onSelect(Screen.EventViewScreen(it.uuid))
+
+    BaseEventEditWebView(viewModel) { event ->
+        LocalMobileScafoldState.current.floatingActionButton = {
+            SaveFloatingActionButton {
+                viewModel.onSave(event) {
+                    navHostController.goto(Screen.EventViewScreen(it.uuid))
+                }
             }
         }
-    }
-
-    Column {
-        when (state) {
-            is UiState.Error -> {}
-            UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
-            is UiState.Success -> {}
-        }
-
-        EventModificationLayout(
-            name = name,
-            onNameChange = { name = it },
-            contribution = contribution,
-            onContributionChange = { contribution = it },
-            isContributionEnable = false,
-            deadline = deadline,
-            onDeadlineChange = { deadline = it }
-        )
     }
 }
 
 @Composable
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
-fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.loadState.collectAsState()
+fun EventEditWebView(viewModel: EventEditModel) {
+    val navHostController = LocalNavHostController.current
+
+    BaseEventEditWebView(viewModel) { event ->
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            SaveButton {
+                viewModel.onSave(event) {
+                    navHostController.goto(Screen.EventViewScreen(event.uuid))
+                }
+            }
+            CancelButton {
+                navHostController.goto(Screen.EventListScreen)
+            }
+        }
+    }
+}
+
+
+@Composable
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
+private fun BaseEventEditWebView(
+    viewModel: EventEditModel,
+    actions: @Composable (event: Event) -> Unit
+) {
     val data by viewModel.info.collectAsState()
-    val scaffoldState = rememberBottomSheetScaffoldState()
 
     var name by remember { mutableStateOf(data.name) }
     var contribution by remember { mutableStateOf(data.contribution) }
     var deadline by remember { mutableStateOf(data.deadline) }
-
-    LaunchedEffect(Unit) {
-        viewModel.load()
-    }
-
-    LaunchedEffect(state) {
-        if (state is UiState.Error) {
-            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
-        }
-    }
 
     LaunchedEffect(data) {
         name = data.name
@@ -109,16 +84,7 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
         deadline = data.deadline
     }
 
-    Column(
-        modifier = Modifier.padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        when (state) {
-            is UiState.Error -> {}
-            UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
-            is UiState.Success -> {}
-        }
-
+    AbstractEditView(viewModel) {
         EventModificationLayout(
             name = name,
             onNameChange = { name = it },
@@ -129,16 +95,8 @@ fun EventEditWebView(viewModel: EventEditModel, onSelect: (Screen) -> Unit) {
             onDeadlineChange = { deadline = it }
         )
 
-        Row {
-            SaveButton {
-                viewModel.onSave(data.copy(name = name, deadline = deadline)) {
-                    onSelect(Screen.EventViewScreen(it.uuid))
-                }
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            CancelButton {
-                onSelect(Screen.EventsScreen)
-            }
-        }
+        actions(
+            data.copy(name = name, deadline = deadline)
+        )
     }
 }

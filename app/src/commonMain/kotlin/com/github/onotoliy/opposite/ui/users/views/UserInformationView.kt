@@ -44,7 +44,7 @@ fun UserInformationMobileView(viewModel: UserViewModel) {
     LocalMobileScafoldState.current.actionsTopBar = {
         DeleteIconButton {
             viewModel.onDelete(deposit.uuid) {
-                navHostController.goto(Screen.UsersScreen)
+                navHostController.goto(Screen.UserListScreen)
             }
         }
     }
@@ -102,13 +102,13 @@ fun UserInformationWebView(viewModel: UserViewModel) {
             Column {
                 UserInformationLayout(deposit)
 
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp),) {
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     EditButton {
                         navHostController.goto(Screen.UserEditScreen(deposit.uuid))
                     }
                     DeleteButton {
                         viewModel.onDelete(deposit.uuid) {
-                            navHostController.goto(Screen.UsersScreen)
+                            navHostController.goto(Screen.UserListScreen)
                         }
                     }
                 }

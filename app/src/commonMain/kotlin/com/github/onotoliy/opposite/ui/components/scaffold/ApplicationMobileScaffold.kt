@@ -65,19 +65,19 @@ fun ApplicationMobileScaffold(
                         )
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.UsersScreen) },
+                            onClick = { onSelect(Screen.UserListScreen) },
                             icon = { Icon(Icons.Outlined.People, contentDescription = "Users") },
                             label = { Text("Users") }
                         )
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.EventsScreen) },
+                            onClick = { onSelect(Screen.EventListScreen) },
                             icon = { Icon(Icons.Outlined.Event, contentDescription = "Events") },
                             label = { Text("Events") }
                         )
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.TransactionsScreen) },
+                            onClick = { onSelect(Screen.TransactionListScreen) },
                             icon = {
                                 Icon(
                                     Icons.Outlined.CurrencyExchange,

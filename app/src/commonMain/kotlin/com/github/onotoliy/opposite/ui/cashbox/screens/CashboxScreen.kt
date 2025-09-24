@@ -20,7 +20,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn( ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
-fun CashboxScreen(viewModel: CashboxViewModel = koinViewModel(), nav: NavController) {
+fun CashboxScreen(viewModel: CashboxViewModel = koinViewModel()) {
     val state by viewModel.loadState.collectAsState()
     val scaffoldState = rememberBottomSheetScaffoldState()
     val data by viewModel.info.collectAsState()
@@ -38,6 +38,6 @@ fun CashboxScreen(viewModel: CashboxViewModel = koinViewModel(), nav: NavControl
     when (state) {
         is UiState.Error -> { }
         UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
-        is UiState.Success -> UserViewScreen(data.uuid, nav = nav)
+        is UiState.Success -> UserViewScreen(data.uuid)
     }
 }

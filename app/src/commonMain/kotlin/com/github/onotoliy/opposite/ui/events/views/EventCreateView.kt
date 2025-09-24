@@ -1,111 +1,81 @@
 package com.github.onotoliy.opposite.ui.events.views
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.onotoliy.opposite.repositories.newEvent
 import com.github.onotoliy.opposite.treasure.model.Event
-import com.github.onotoliy.opposite.treasure.model.Option
+import com.github.onotoliy.opposite.ui.components.buttons.CancelButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveButton
 import com.github.onotoliy.opposite.ui.components.buttons.SaveFloatingActionButton
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
 import com.github.onotoliy.opposite.ui.events.EventModificationLayout
 import com.github.onotoliy.opposite.ui.events.models.EventCreateModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import com.github.onotoliy.opposite.viewmodel.UiState
+import com.github.onotoliy.opposite.ui.navigation.goto
+import com.github.onotoliy.opposite.viewmodel.AbstractCreateView
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlin.time.ExperimentalTime
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @Composable
-expect fun EventCreateView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit)
+expect fun EventCreateView(viewModel: EventCreateModel)
 
 @Composable
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
-fun EventCreateMobileView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.loadState.collectAsState()
-    val scaffoldState = rememberBottomSheetScaffoldState()
-
-    LaunchedEffect(state) {
-        if (state is UiState.Error) {
-            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
-        }
-    }
-
-    var name by remember { mutableStateOf("") }
-    var contribution by remember { mutableStateOf("") }
-    var deadline by remember { mutableStateOf(Clock.System.now()) }
+fun EventCreateMobileView(viewModel: EventCreateModel) {
+    val navHostController = LocalNavHostController.current
 
     LocalMobileScafoldState.current.titleTopBar = { Text("Создание мероприятия") }
-    LocalMobileScafoldState.current.floatingActionButton = {
-        SaveFloatingActionButton {
-            viewModel.onSave(newEvent(name, contribution, deadline)) {
-                onSelect(Screen.EventViewScreen(it.uuid))
+
+    BaseEventEditView(viewModel) { event ->
+        LocalMobileScafoldState.current.floatingActionButton = {
+            SaveFloatingActionButton {
+                viewModel.onSave(event) {
+                    navHostController.goto(Screen.UserViewScreen(it.uuid))
+                }
             }
         }
-    }
-
-    Column {
-        when (state) {
-            is UiState.Error -> {}
-            UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
-            is UiState.Success -> {}
-        }
-
-        EventModificationLayout(
-            name = name,
-            onNameChange = { name = it },
-            contribution = contribution,
-            onContributionChange = { contribution = it },
-            isContributionEnable = true,
-            deadline = deadline,
-            onDeadlineChange = { deadline = it }
-        )
     }
 }
 
 @Composable
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
-fun EventCreateWebView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) {
-    val state by viewModel.loadState.collectAsState()
-    val scaffoldState = rememberBottomSheetScaffoldState()
+fun EventCreateWebView(viewModel: EventCreateModel) {
+    val navHostController = LocalNavHostController.current
 
-    LaunchedEffect(state) {
-        if (state is UiState.Error) {
-            scaffoldState.snackbarHostState.showSnackbar((state as UiState.Error).message)
+    BaseEventEditView(viewModel) { event ->
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            SaveButton {
+                viewModel.onSave(event) {
+                    navHostController.goto(Screen.EventViewScreen(event.uuid))
+                }
+            }
+            CancelButton {
+                navHostController.goto(Screen.EventListScreen)
+            }
         }
     }
+}
 
+@Composable
+@OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
+private fun BaseEventEditView(
+    viewModel: EventCreateModel,
+    actions: @Composable (event: Event) -> Unit
+) {
     var name by remember { mutableStateOf("") }
     var contribution by remember { mutableStateOf("") }
     var deadline by remember { mutableStateOf(Clock.System.now()) }
 
-    Column(
-        modifier = Modifier.padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        when (state) {
-            is UiState.Error -> {}
-            UiState.Loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
-            is UiState.Success -> {}
-        }
-
+    AbstractCreateView(viewModel) {
         EventModificationLayout(
             name = name,
             onNameChange = { name = it },
@@ -116,26 +86,8 @@ fun EventCreateWebView(viewModel: EventCreateModel, onSelect: (Screen) -> Unit) 
             onDeadlineChange = { deadline = it }
         )
 
-        Row {
-            SaveButton {
-                viewModel.onSave(newEvent(name, contribution, deadline)) {
-                    onSelect(Screen.EventViewScreen(it.uuid))
-                }
-            }
-            SaveButton {
-                onSelect(Screen.EventsScreen)
-            }
-        }
+        actions(
+            newEvent(name = name, contribution = contribution, deadline = deadline)
+        )
     }
 }
-
-@OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
-fun newEvent(name: String, contribution: String, deadline: Instant): Event = Event(
-    uuid = Uuid.random().toString(),
-    name = name,
-    contribution = contribution,
-    deadline = deadline,
-    creationDate = Clock.System.now(),
-    author = Option("", ""),
-    deletionDate = null
-)

@@ -9,7 +9,7 @@ sealed class Screen {
     object CashScreen : Screen();
 
     @Serializable
-    object EventsScreen : Screen();
+    object EventListScreen : Screen();
 
     @Serializable
     data class EventViewScreen(val uuid: String) : Screen();
@@ -21,7 +21,7 @@ sealed class Screen {
     object EventNewScreen : Screen();
 
     @Serializable
-    object UsersScreen : Screen();
+    object UserListScreen : Screen();
 
     @Serializable
     object UserNewScreen : Screen();
@@ -33,7 +33,7 @@ sealed class Screen {
     data class UserEditScreen(val uuid: String) : Screen();
 
     @Serializable
-    object TransactionsScreen : Screen();
+    object TransactionListScreen : Screen();
 
     @Serializable
     data class TransactionViewScreen(val uuid: String) : Screen();

@@ -13,10 +13,9 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EventEditScreen(
     uuid: String,
-    nav: NavController,
     model: EventEditModel = koinViewModel { parametersOf(uuid) }
 ) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        EventEditView(model, nav::goto)
+    ApplicationScaffold {
+        EventEditView(model)
     }
 }

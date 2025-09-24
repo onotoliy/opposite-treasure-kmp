@@ -7,5 +7,4 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 @Composable
 actual fun EventCreateView(
     viewModel: EventCreateModel,
-    onSelect: (Screen) -> Unit
-) = EventCreateWebView(viewModel, onSelect)
+) = EventCreateWebView(viewModel)

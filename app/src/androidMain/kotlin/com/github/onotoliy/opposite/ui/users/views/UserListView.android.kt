@@ -8,5 +8,6 @@ import com.github.onotoliy.opposite.ui.users.models.UserListModel
 @Composable
 actual fun UserListView(
     listAdapter: UserListAdapter,
-    onSelect: (Screen) -> Unit
-) = UserListMobileView(listAdapter.list, onSelect)
+    hasActionButtons: Boolean
+) = UserListMobileView(listAdapter.list, hasActionButtons)
+

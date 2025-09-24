@@ -12,9 +12,9 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionCreateScreen(
-    model: TransactionCreateModel = koinViewModel(), nav: NavController
+    model: TransactionCreateModel = koinViewModel()
 ) {
-    ApplicationScaffold(onSelect = nav::goto) {
-        TransactionCreateView(model, nav::goto)
+    ApplicationScaffold {
+        TransactionCreateView(model)
     }
 }

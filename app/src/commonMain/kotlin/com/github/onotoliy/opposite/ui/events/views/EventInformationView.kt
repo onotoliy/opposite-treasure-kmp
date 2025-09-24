@@ -10,39 +10,53 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.onotoliy.opposite.treasure.model.Event
+import com.github.onotoliy.opposite.ui.components.buttons.DeleteButton
+import com.github.onotoliy.opposite.ui.components.buttons.DeleteIconButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditButton
 import com.github.onotoliy.opposite.ui.components.buttons.EditFloatingActionButton
 import com.github.onotoliy.opposite.ui.events.EventInformationLayout
 import com.github.onotoliy.opposite.ui.components.scaffold.LocalMobileScafoldState
+import com.github.onotoliy.opposite.ui.components.scaffold.LocalNavHostController
+import com.github.onotoliy.opposite.ui.events.models.EventViewModel
 import com.github.onotoliy.opposite.ui.navigation.Screen
-import org.jetbrains.compose.resources.DrawableResource
+import com.github.onotoliy.opposite.ui.navigation.goto
+import com.github.onotoliy.opposite.viewmodel.AbstractInformationView
 import org.jetbrains.compose.resources.painterResource
 import kotlin.time.ExperimentalTime
 
 @Composable
-expect fun EventInformationView(event: Event, logo: DrawableResource, onSelect: (Screen) -> Unit)
+expect fun EventInformationView(viewModel: EventViewModel)
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventInformationMobileView(event: Event, logo: DrawableResource, onSelect: (Screen) -> Unit) {
+fun EventInformationMobileView(viewModel: EventViewModel) {
+    val event by viewModel.info.collectAsState()
+    val logo by viewModel.logo.collectAsState()
+    val navHostController = LocalNavHostController.current
+
     LocalMobileScafoldState.current.titleTopBar = { Text(event.name) }
     LocalMobileScafoldState.current.floatingActionButton = {
         EditFloatingActionButton {
-            onSelect(
+            navHostController.goto(
                 Screen.EventEditScreen(event.uuid)
             )
         }
     }
+    LocalMobileScafoldState.current.actionsTopBar = {
+        DeleteIconButton {
+            viewModel.onDelete(event.uuid) {
+                navHostController.goto(Screen.TransactionListScreen)
+            }
+        }
+    }
 
-    Column(
-        modifier = Modifier.padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        EventInformationLayout(event, onSelect)
+    AbstractInformationView(viewModel = viewModel) {
+        EventInformationLayout(event, navHostController::goto)
 
         ElevatedCard(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Image(
@@ -57,27 +71,41 @@ fun EventInformationMobileView(event: Event, logo: DrawableResource, onSelect: (
 
 @Composable
 @OptIn(ExperimentalTime::class)
-fun EventInformationWebView(event: Event, logo: DrawableResource, onSelect: (Screen) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Image(
-            painter = painterResource(logo),
-            contentDescription = null,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.size(300.dp)
-        )
+fun EventInformationWebView(viewModel: EventViewModel) {
+    val event by viewModel.info.collectAsState()
+    val logo by viewModel.logo.collectAsState()
+    val navHostController = LocalNavHostController.current
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+    AbstractInformationView(viewModel = viewModel) {
+        Row(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.Top
         ) {
-            EventInformationLayout(event, onSelect)
+            Image(
+                painter = painterResource(logo),
+                contentDescription = null,
+                alignment = Alignment.TopCenter,
+                modifier = Modifier.size(300.dp)
+            )
 
-            EditButton {
-                onSelect(Screen.EventEditScreen(event.uuid))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                EventInformationLayout(event, navHostController::goto)
+
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp),) {
+                    EditButton {
+                        navHostController.goto(Screen.EventEditScreen(event.uuid))
+                    }
+
+                    DeleteButton {
+                        viewModel.onDelete(event.uuid) {
+                            navHostController.goto(Screen.EventListScreen)
+                        }
+                    }
+                }
             }
         }
     }

@@ -7,6 +7,6 @@ import com.github.onotoliy.opposite.ui.users.models.UserListModel
 
 @Composable
 actual fun UserListView(
-    listAdapter: UserListAdapter,
-    onSelect: (Screen) -> Unit
-) = UserTableWebView(listAdapter.table, onSelect)
+    listAdapter: UserListAdapter, hasActionButtons: Boolean
+) = UserTableWebView(listAdapter.table, hasActionButtons)
+
