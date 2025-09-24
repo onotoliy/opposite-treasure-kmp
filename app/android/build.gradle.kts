@@ -5,6 +5,18 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
 }
 
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        url = uri("https://maven.pkg.github.com/onotoliy/opposite-treasure-api")
+        credentials {
+            username = project.findProperty("onotoliy.github.username") as String? ?: ""
+            password = project.findProperty("onotoliy.github.token") as String? ?: ""
+        }
+    }
+}
+
 android {
     namespace = "com.github.onotoliy.opposite"
     compileSdk = 36
@@ -44,9 +56,11 @@ dependencies {
     implementation(compose.material3)
     implementation(compose.components.resources)
 
-    implementation("io.insert-koin:koin-android:4.1.1")
-    implementation("io.insert-koin:koin-androidx-compose:4.1.1")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.activity:activity-compose:1.10.1")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.appcompat)
+    implementation(libs.activity.compose)
+    implementation(libs.material)
+    implementation(libs.opposite.treasure.service.api.jvm)
+    implementation(libs.ktor.client.okhttp)
 }

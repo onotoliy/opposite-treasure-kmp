@@ -1,24 +1,38 @@
 [versions]
+activityCompose = "1.10.1"
 agp = "8.7.3"
+appcompat = "1.7.1"
 composematerialdatatable = "1.2.2"
 composeMultiplatform = "1.8.2"
+koin = "4.1.1"
 kotlin = "2.2.0"
-coreKtx = "1.17.0"
-junit = "4.13.2"
-junitVersion = "1.3.0"
-espressoCore = "3.7.0"
-appcompat = "1.7.1"
+kotlinxSerializationJson = "1.9.0"
+ktor = "3.1.3"
 material = "1.12.0"
+materialIconsExtended = "1.7.3"
+navigationCompose = "2.9.0-rc01"
+skikoAwtRuntimeWindowsX64 = "0.9.24"
+tableM3 = "0.2.2"
+oppositeTreasureServiceApi = "91701"
+detekt = "1.23.8"
 
 [libraries]
-composematerialdatatable-wasm-js = { module = "io.github.aleksandar-stefanovic:composematerialdatatable-wasm-js", version.ref = "composematerialdatatable" }
-composematerialdatatable = { module = "io.github.aleksandar-stefanovic:composematerialdatatable", version.ref = "composematerialdatatable" }
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+opposite-treasure-service-api = { module = "com.github.onotoliy.opposite.treasure:opposite-treasure-service-api", version.ref = "oppositeTreasureServiceApi" }
+opposite-treasure-service-api-jvm = { module = "com.github.onotoliy.opposite.treasure:opposite-treasure-service-api-jvm", version.ref = "oppositeTreasureServiceApi" }
+skiko-awt-runtime-windows-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-windows-x64", version.ref = "skikoAwtRuntimeWindowsX64" }
+table-m3 = { module = "io.github.windedge.table:table-m3", version.ref = "tableM3" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -28,3 +42,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
