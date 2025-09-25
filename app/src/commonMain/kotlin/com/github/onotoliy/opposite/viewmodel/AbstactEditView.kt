@@ -30,9 +30,6 @@ import com.github.onotoliy.opposite.ui.users.UserModificationLayout
 import com.github.onotoliy.opposite.ui.users.models.UserEditModel
 import kotlin.time.ExperimentalTime
 
-class AbstactEditView {
-}
-
 @Composable
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
 fun <T> AbstactEditView(

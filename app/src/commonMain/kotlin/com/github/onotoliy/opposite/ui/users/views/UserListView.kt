@@ -46,8 +46,10 @@ expect fun UserListView(listAdapter: UserListAdapter, hasActionButtons: Boolean)
 fun UserListMobileView(viewModel: UserListModel, hasActionButtons: Boolean) {
     val navHostController = LocalNavHostController.current
 
-    LocalMobileScafoldState.current.floatingActionButton = {
-        AddFloatingActionButton { navHostController.goto(Screen.UserNewScreen) }
+    if (hasActionButtons) {
+        LocalMobileScafoldState.current.floatingActionButton = {
+            AddFloatingActionButton { navHostController.goto(Screen.UserNewScreen) }
+        }
     }
 
     val state by viewModel.loadState.collectAsState()

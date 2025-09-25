@@ -51,9 +51,12 @@ expect fun TransactionListView(listAdapter: TransactionListAdapter, hasActionBut
 fun TransactionListMobileView(viewModel: TransactionListModel, hasActionButtons: Boolean) {
     val navHostController = LocalNavHostController.current
 
-    LocalMobileScafoldState.current.floatingActionButton = {
-        AddFloatingActionButton { navHostController.goto(Screen.TransactionNewScreen) }
+    if (hasActionButtons) {
+        LocalMobileScafoldState.current.floatingActionButton = {
+            AddFloatingActionButton { navHostController.goto(Screen.TransactionNewScreen) }
+        }
     }
+
     val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
     val hasLoadMore by viewModel.hasLoadMore.collectAsState()

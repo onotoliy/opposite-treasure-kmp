@@ -55,10 +55,12 @@ expect fun EventListView(listAdapter: EventListAdapter, hasActionButtons: Boolea
 fun EventListMobileView(viewModel: EventListModel, hasActionButtons: Boolean) {
     val navHostController = LocalNavHostController.current
 
-
-    LocalMobileScafoldState.current.floatingActionButton = {
-        AddFloatingActionButton { navHostController.goto(Screen.EventNewScreen) }
+    if (hasActionButtons) {
+        LocalMobileScafoldState.current.floatingActionButton = {
+            AddFloatingActionButton { navHostController.goto(Screen.EventNewScreen) }
+        }
     }
+
     val state by viewModel.loadState.collectAsState()
     val values by viewModel.values.collectAsState()
     val hasLoadMore by viewModel.hasLoadMore.collectAsState()
