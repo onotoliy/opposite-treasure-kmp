@@ -10,7 +10,7 @@ import com.github.onotoliy.opposite.di.viewModelModule
 import com.github.onotoliy.opposite.ui.navigation.WebWindowNavigation
 import org.koin.compose.KoinApplication
 
-class MainActivity : AppCompatActivity() {
+class MainActivity1 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
