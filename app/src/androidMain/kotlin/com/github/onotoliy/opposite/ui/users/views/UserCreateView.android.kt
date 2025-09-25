@@ -6,6 +6,5 @@ import com.github.onotoliy.opposite.ui.users.models.UserCreateModel
 
 @Composable
 actual fun UserCreateView(
-    viewModel: UserCreateModel,
-    onSelect: (Screen) -> Unit
-) = UserCreateMobileView(viewModel, onSelect)
+    viewModel: UserCreateModel
+) = UserCreateMobileView(viewModel)

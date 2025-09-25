@@ -6,6 +6,5 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
 actual fun EventEditView(
-    viewModel: EventEditModel,
-    onSelect: (Screen) -> Unit
-) = EventEditWebView(viewModel, onSelect)
+    viewModel: EventEditModel
+) = EventEditWebView(viewModel)

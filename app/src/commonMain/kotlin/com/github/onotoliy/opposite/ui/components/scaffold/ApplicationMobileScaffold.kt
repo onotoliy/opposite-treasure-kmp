@@ -22,18 +22,20 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.github.onotoliy.opposite.ui.navigation.Screen
+import com.github.onotoliy.opposite.ui.navigation.goto
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicationMobileScaffold(
-    onSelect: (Screen) -> Unit,
     content: @Composable () -> Unit
 ) {
     val mobileScafoldState = remember { MobileScafoldState() }
+    val navHostController = LocalNavHostController.current
 
     CompositionLocalProvider(
         LocalMobileScafoldState provides mobileScafoldState,
     ) {
+
         MaterialTheme {
             Scaffold(
                 topBar = {
@@ -59,25 +61,25 @@ fun ApplicationMobileScaffold(
                     NavigationBar {
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.CashScreen) },
+                            onClick = { navHostController.goto(Screen.CashScreen) },
                             icon = { Icon(Icons.Outlined.Home, contentDescription = "Cash") },
                             label = { Text("Cash") }
                         )
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.UserListScreen) },
+                            onClick = { navHostController.goto(Screen.UserListScreen) },
                             icon = { Icon(Icons.Outlined.People, contentDescription = "Users") },
                             label = { Text("Users") }
                         )
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.EventListScreen) },
+                            onClick = { navHostController.goto(Screen.EventListScreen) },
                             icon = { Icon(Icons.Outlined.Event, contentDescription = "Events") },
                             label = { Text("Events") }
                         )
                         NavigationBarItem(
                             selected = false,
-                            onClick = { onSelect(Screen.TransactionListScreen) },
+                            onClick = { navHostController.goto(Screen.TransactionListScreen) },
                             icon = {
                                 Icon(
                                     Icons.Outlined.CurrencyExchange,

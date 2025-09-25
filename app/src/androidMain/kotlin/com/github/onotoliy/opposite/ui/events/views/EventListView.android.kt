@@ -7,5 +7,5 @@ import com.github.onotoliy.opposite.ui.navigation.Screen
 
 @Composable
 actual fun EventListView(
-    listAdapter: EventListAdapter
-) = EventListMobileView(listAdapter.list, onSelect)
+    listAdapter: EventListAdapter, hasActionButtons: Boolean
+) = EventListMobileView(listAdapter.list, hasActionButtons)

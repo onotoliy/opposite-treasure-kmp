@@ -7,6 +7,5 @@ import com.github.onotoliy.opposite.ui.transactions.models.TransactionListModel
 
 @Composable
 actual fun TransactionListView(
-    listAdapter: TransactionListAdapter,
-    onSelect: (Screen) -> Unit
-) = TransactionListMobileView(listAdapter.list, onSelect)
+    listAdapter: TransactionListAdapter, hasActionButtons: Boolean
+) = TransactionListMobileView(listAdapter.list, hasActionButtons)

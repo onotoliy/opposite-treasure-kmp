@@ -6,6 +6,5 @@ import com.github.onotoliy.opposite.ui.transactions.models.TransactionCreateMode
 
 @Composable
 actual fun TransactionCreateView(
-    viewModel: TransactionCreateModel,
-    onSelect: (Screen) -> Unit
-)= TransactionCreateWebView(viewModel, onSelect)
+    viewModel: TransactionCreateModel
+)= TransactionCreateWebView(viewModel)
