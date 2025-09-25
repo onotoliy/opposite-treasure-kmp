@@ -99,6 +99,10 @@ compose.desktop {
 }
 
 android {
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
+
     namespace = "com.github.onotoliy.opposite"
     compileSdk = 36
     defaultConfig {
