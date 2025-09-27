@@ -105,6 +105,13 @@ compose.desktop {
             )
             packageName = "OppositeTreasure"
             packageVersion = "1.0.0"
+
+        }
+
+        buildTypes.release {
+            proguard {
+                isEnabled.value(false)
+            }
         }
     }
 }
