@@ -1,4 +1,4 @@
-name: Build Desktop EXE
+name: Build Desktop
 
 on:
   release:
@@ -34,10 +34,3 @@ jobs:
           files: |
             app/build/compose/binaries/main-release/exe/*.exe
             app/build/compose/binaries/main-release/msi/*.msi    
-
-      - name: Upload to GitHub Packages
-        run: |
-          gh release upload ${{ github.ref_name }} app/build/compose/binaries/main-release/exe/*.exe --clobber
-          gh release upload ${{ github.ref_name }} app/build/compose/binaries/main-release/msi/*.msi --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
