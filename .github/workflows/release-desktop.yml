@@ -20,13 +20,13 @@ jobs:
           java-version: 17
 
       - name: Build EXE
-        run: ./gradlew packageReleaseExe
+        run: ./gradlew :app:packageReleaseExe
         
       - name: Install WiX Toolset
         run: choco install wixtoolset --no-progress -y
 
       - name: Build MSI
-        run: ./gradlew packageReleaseMsi  
+        run: ./gradlew :app:packageReleaseMsi  
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

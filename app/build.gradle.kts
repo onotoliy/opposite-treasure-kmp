@@ -95,6 +95,15 @@ detekt {
 compose.desktop {
     application {
         mainClass = "com.github.onotoliy.opposite.MainKt"
+
+        nativeDistributions {
+            targetFormats(
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe,
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
+            )
+            packageName = "OppositeTreasure"
+            packageVersion = "1.0.0"
+        }
     }
 }
 
