@@ -28,8 +28,13 @@ jobs:
       - name: Archive Web
         run: |
           cd app/js/build/dist/js/productionExecutable
-          zip -r ../../frontend-web-${VERSION}.zip .
+          zip -r ../../../frontend-web-${{ github.ref_name }}.zip .
         shell: bash
+
+      - name: Upload Web to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/frontend-web-${{ github.ref_name }}.zip
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
