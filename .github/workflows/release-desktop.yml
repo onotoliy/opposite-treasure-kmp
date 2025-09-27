@@ -1,9 +1,9 @@
 name: Build Desktop EXE
 
 on:
-  workflow_dispatch: # вручную
-  push:
-    branches: [ "main" ]
+  release:
+    types:
+      - created
 
 jobs:
   build-desktop:
@@ -22,7 +22,7 @@ jobs:
       - name: Install WiX Toolset
         run: choco install wixtoolset --no-progress -y
 
-      - name: Build MSI
+      - name: Build EXE & MSI
         run: ./gradlew :app:packageReleaseExe :app:packageReleaseMsi
         env:
           onotoliy.github.username: ${{ github.actor }}
