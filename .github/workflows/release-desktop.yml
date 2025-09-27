@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: desktop-exe
-          path: ./
+          path: app/build/compose/binaries/main-release/msi
