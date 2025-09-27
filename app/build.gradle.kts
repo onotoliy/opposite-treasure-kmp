@@ -105,7 +105,7 @@ compose.desktop {
             )
             packageName = "OppositeTreasure"
             packageVersion = "1.0.0"
-
+            includeAllModules = true
         }
 
         buildTypes.release {
