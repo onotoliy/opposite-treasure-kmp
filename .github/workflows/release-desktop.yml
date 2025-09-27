@@ -1,0 +1,35 @@
+name: Build Desktop EXE
+
+on:
+  workflow_dispatch: # вручную
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-desktop:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build EXE
+        run: ./gradlew packageReleaseExe
+        
+      - name: Install WiX Toolset
+        run: choco install wixtoolset --no-progress -y
+
+      - name: Build MSI
+        run: ./gradlew packageReleaseMsi  
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-exe
+          path: build/compose/binaries/main-release
