@@ -22,8 +22,8 @@ jobs:
       - name: Build Web
         run: ./gradlew :app:js:jsBrowserDistribution
         env:
-          onotoliy.github.username: ${{ github.actor }}
-          onotoliy.github.token: ${{ secrets.GITHUB_TOKEN }}
+          ONOTOLIY_GITHUB_USERNAME: ${{ github.actor }}
+          ONOTOLIY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Archive Web
         run: |

@@ -25,8 +25,8 @@ jobs:
       - name: Build EXE & MSI
         run: ./gradlew :app:packageReleaseExe :app:packageReleaseMsi
         env:
-          onotoliy.github.username: ${{ github.actor }}
-          onotoliy.github.token: ${{ secrets.GITHUB_TOKEN }}
+          ONOTOLIY_GITHUB_USERNAME: ${{ github.actor }}
+          ONOTOLIY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Upload EXE & MSI to Release
         uses: softprops/action-gh-release@v2

@@ -12,9 +12,9 @@ repositories {
         url = uri("https://maven.pkg.github.com/onotoliy/opposite-treasure-api")
         credentials {
             username = project.findProperty("onotoliy.github.username") as String?
-                ?: System.getenv("onotoliy.github.username")
+                ?: System.getenv("ONOTOLIY_GITHUB_USERNAME")
             password = project.findProperty("onotoliy.github.token") as String?
-                ?: System.getenv("onotoliy.github.token")
+                ?: System.getenv("ONOTOLIY_GITHUB_TOKEN")
         }
     }
 }
