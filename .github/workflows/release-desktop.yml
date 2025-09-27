@@ -20,13 +20,13 @@ jobs:
           java-version: 17
 
       - name: Build EXE
-        run: ./gradlew -Ponotoliy.github.username=${{ github.actor }} -Ponotoliy.github.token=${{ secrets.GITHUB_TOKEN }} :app:packageReleaseExe
+        run: ./gradlew :app:packageReleaseExe -Ponotoliy.github.username=${{ github.actor }} -Ponotoliy.github.token=${{ secrets.GITHUB_TOKEN }}
         
       - name: Install WiX Toolset
         run: choco install wixtoolset --no-progress -y
 
       - name: Build MSI
-        run: ./gradlew -Ponotoliy.github.username=${{ github.actor }} -Ponotoliy.github.token=${{ secrets.GITHUB_TOKEN }} :app:packageReleaseMsi  
+        run: ./gradlew :app:packageReleaseMsi -Ponotoliy.github.username=${{ github.actor }} -Ponotoliy.github.token=${{ secrets.GITHUB_TOKEN }} 
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
