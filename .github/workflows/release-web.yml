@@ -47,5 +47,11 @@ jobs:
         run: docker build -t ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME  -f app/js/Dockerfile app/js
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME       
+        run: docker push ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME
+      
+      - name: Upload frontend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: app
 
