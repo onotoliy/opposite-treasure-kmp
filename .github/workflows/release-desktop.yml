@@ -18,24 +18,19 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-
-      - name: Build EXE
-        run: ./gradlew :app:packageReleaseExe
-        env:
-          onotoliy.github.username: ${{ github.actor }}
-          onotoliy.github.token: ${{ secrets.GITHUB_TOKEN }}
-        
+       
       - name: Install WiX Toolset
         run: choco install wixtoolset --no-progress -y
 
       - name: Build MSI
-        run: ./gradlew :app:packageReleaseMsi
+        run: ./gradlew :app:packageReleaseExe :app:packageReleaseMsi
         env:
           onotoliy.github.username: ${{ github.actor }}
           onotoliy.github.token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+          
+      - name: Upload EXE & MSI to Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: desktop-exe
-          path: app/build/compose/binaries/main-release/msi
+          files: |
+            app/build/compose/binaries/main-release/exe/*.exe
+            app/build/compose/binaries/main-release/msi/*.msi    
