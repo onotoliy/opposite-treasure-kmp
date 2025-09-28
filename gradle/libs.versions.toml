@@ -15,6 +15,10 @@ skiko = "0.9.24"
 table-m3 = "0.2.2"
 opposite-treasure-service-api = "91701"
 detekt = "1.23.8"
+core-ktx = "1.17.0"
+junit = "4.13.2"
+junit-version = "1.3.0"
+espresso-core = "3.7.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -39,6 +43,10 @@ opposite-treasure-service-api = { module = "com.github.onotoliy.opposite.treasur
 opposite-treasure-service-api-jvm = { module = "com.github.onotoliy.opposite.treasure:opposite-treasure-service-api-jvm", version.ref = "opposite-treasure-service-api" }
 skiko-awt-runtime-windows-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-windows-x64", version.ref = "skiko" }
 table-m3 = { module = "io.github.windedge.table:table-m3", version.ref = "table-m3" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-version" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

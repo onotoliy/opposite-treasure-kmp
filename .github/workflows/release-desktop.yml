@@ -23,7 +23,7 @@ jobs:
         run: choco install wixtoolset --no-progress -y
 
       - name: Build EXE & MSI
-        run: ./gradlew :app:packageReleaseExe :app:packageReleaseMsi
+        run: ./gradlew :app:desktop:packageReleaseExe :app:desktop:packageReleaseMsi
         env:
           ONOTOLIY_GITHUB_USERNAME: ${{ github.actor }}
           ONOTOLIY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
