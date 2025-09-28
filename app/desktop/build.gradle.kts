@@ -19,8 +19,6 @@ repositories {
     }
 }
 
-version = "1.0-SNAPSHOT"
-
 compose.desktop {
     application {
         mainClass = "com.github.onotoliy.opposite.MainKt"
@@ -31,7 +29,7 @@ compose.desktop {
                 org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
             )
             packageName = "OppositeTreasure"
-            packageVersion = "1.0.0"
+            packageVersion = System.getenv("VERSION") ?: "1.0"
             includeAllModules = true
         }
 

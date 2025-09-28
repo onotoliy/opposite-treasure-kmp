@@ -23,7 +23,7 @@ repositories {
     }
 }
 
-version = "1.0-SNAPSHOT"
+version = System.getenv("VERSION") ?: "1.0-SNAPSHOT"
 
 kotlin {
     androidTarget {
@@ -92,28 +92,6 @@ detekt {
     allRules = false
     autoCorrect = false
     source = files("src/commonMain/kotlin", "src/androidMain/kotlin", "src/jsMain/kotlin")
-}
-
-compose.desktop {
-    application {
-        mainClass = "com.github.onotoliy.opposite.MainKt"
-
-        nativeDistributions {
-            targetFormats(
-                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe,
-                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi
-            )
-            packageName = "OppositeTreasure"
-            packageVersion = "1.0.0"
-            includeAllModules = true
-        }
-
-        buildTypes.release {
-            proguard {
-                isEnabled.value(false)
-            }
-        }
-    }
 }
 
 android {

@@ -25,6 +25,7 @@ jobs:
       - name: Build EXE & MSI
         run: ./gradlew :app:desktop:packageReleaseExe :app:desktop:packageReleaseMsi
         env:
+          VERSION: ${{ github.ref_name }}
           ONOTOLIY_GITHUB_USERNAME: ${{ github.actor }}
           ONOTOLIY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

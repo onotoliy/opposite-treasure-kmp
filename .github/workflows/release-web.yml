@@ -22,6 +22,7 @@ jobs:
       - name: Build Web
         run: ./gradlew :app:js:jsBrowserDistribution
         env:
+          VERSION: ${{ github.ref_name }}
           ONOTOLIY_GITHUB_USERNAME: ${{ github.actor }}
           ONOTOLIY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,10 +49,3 @@ jobs:
 
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}/opposite-treasure-kmp-js:$GITHUB_REF_NAME
-      
-      - name: Upload frontend artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: app
-
