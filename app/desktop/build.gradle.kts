@@ -48,6 +48,7 @@ dependencies {
     implementation(compose.desktop.windows_x64)
     implementation(libs.skiko.awt.runtime.windows.x64)
     implementation(libs.ktor.client.okhttp)
-    implementation(libs.koin.core.js)
-    implementation(libs.koin.compose.viewmodel.js)
+    implementation(libs.koin.core.jvm)
+    implementation(libs.koin.compose.viewmodel.jvm)
+    implementation(libs.navigation.compose.desktop)
 }

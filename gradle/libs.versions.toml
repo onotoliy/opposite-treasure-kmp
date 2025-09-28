@@ -25,9 +25,11 @@ activity-compose = { module = "androidx.activity:activity-compose", version.ref 
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-core-js = { module = "io.insert-koin:koin-core-js", version.ref = "koin" }
+koin-core-jvm = { module = "io.insert-koin:koin-core-jvm", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-compose-viewmodel-js = { module = "io.insert-koin:koin-compose-viewmodel-js", version.ref = "koin" }
+koin-compose-viewmodel-jvm = { module = "io.insert-koin:koin-compose-viewmodel-jvm", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -38,6 +40,7 @@ ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 navigation-compose-js = { module = "org.jetbrains.androidx.navigation:navigation-compose-js", version.ref = "navigation-compose" }
+navigation-compose-desktop = { module = "org.jetbrains.androidx.navigation:navigation-compose-desktop", version.ref = "navigation-compose" }
 material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons" }
 opposite-treasure-service-api = { module = "com.github.onotoliy.opposite.treasure:opposite-treasure-service-api", version.ref = "opposite-treasure-service-api" }
 opposite-treasure-service-api-jvm = { module = "com.github.onotoliy.opposite.treasure:opposite-treasure-service-api-jvm", version.ref = "opposite-treasure-service-api" }
